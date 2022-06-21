@@ -1,0 +1,2476 @@
+openapi: "3.0.1"
+info:
+  title:
+    Fn::Sub: "${OfferApiName}"
+  version: "1.0"
+servers:
+- url: https://api.{env}.alayamarket.{region}/offers
+  variables:
+    env:
+      description: The server environment.
+      enum:
+        - staging
+        - sandbox
+        - prod
+      default: prod
+    region:
+      description: The server top-level domain indicating the region.
+      enum:
+        - ca
+        - com
+        - com.au
+      default: ca
+paths:
+  /v1/outbox/offers:
+    post:
+      tags:
+        - offer outbox
+      description: |
+        # Authorization
+        Required role: `org_admin`
+
+        # Description
+        Create an Offer by the Demand organization.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OutboxOfferCreateRequest'
+      responses:
+        201:
+          description: "Successfully created Offer"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutboxOfferDetailResponse'
+      x-amazon-apigateway-request-validator: "body"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+    get:
+      # missing query parameters for offer_type, care_type, etc.
+      tags:
+        - offer outbox
+      description: |
+        # Authorization
+        Required role: `org_admin`
+
+        # Description
+        Get a collection of Offers created by the Demand organization.
+      parameters:
+        - in: query
+          name: care_type
+          schema:
+            $ref: '#/components/schemas/CareTypeCore'
+        - in: query
+          name: offer_type
+          schema:
+            $ref: '#/components/schemas/OfferTypeCore'
+        - in: query
+          name: status
+          schema:
+            $ref: '#/components/schemas/OfferStatusCore'
+        - $ref: '#/components/parameters/PageNumberParam'
+        - $ref: '#/components/parameters/ItemsPerPageParam'
+        - $ref: '#/components/parameters/SortByParam'
+        - $ref: '#/components/parameters/SortOrderParam'
+      responses:
+        200:
+          description: 'Successfully returned Offer Outbox Collection'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutboxOfferPageResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
+  /v1/outbox/offers/{offer_id}:
+    parameters:
+      - $ref: '#/components/parameters/OfferIdPathParam'
+    get:
+      tags:
+        - offer outbox
+      description: |
+        # Authorization
+
+        Required role: `org_admin`
+
+        # Description
+        Get the details of an Offer created by the Demand organization.
+      responses:
+        200:
+          description: 'Successfully returned Offer Outbox Scalar'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutboxOfferDetailResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
+  /v1/outbox/offers/{offer_id}/matches:
+    parameters:
+    - $ref: '#/components/parameters/OfferIdPathParam'
+    get:
+      tags:
+        - offer outbox
+      description: |
+        # Authorization
+
+        Required role: `org_admin`
+
+        # Description
+        Get the Offer Matches of an Offer created by the Demand organization.
+      parameters:
+        - in: query
+          name: response
+          schema:
+            $ref: '#/components/schemas/OfferMatchResponseCore'
+          description: |
+            Response of an Offer Match to filter on. <br>
+            Multiple values are supported (in an `OR` fashion). <br>
+        - $ref: '#/components/parameters/PageNumberParam'
+        - $ref: '#/components/parameters/ItemsPerPageParam'
+        - $ref: '#/components/parameters/SortByParam'
+        - $ref: '#/components/parameters/SortOrderParam'
+      responses:
+        200:
+          description: 'Successfully returned Offer Matches.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutboxOfferMatchPageResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
+  /v1/outbox/offers/{offer_id}/close:
+    parameters:
+      - $ref: '#/components/parameters/OfferIdPathParam'
+    post:
+      tags:
+        - offer outbox
+      description: |
+        # Authorization
+        Required role: `org_admin`
+
+        Required offer state: `sent`
+
+
+        # Description
+        Close an Offer created by the Demand organization that has not yet been assigned.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OutboxOfferCloseRequest'
+      responses:
+        204:
+          description: "Successfully marked Offer as Cancelled"
+      x-amazon-apigateway-request-validator: "body"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
+  /v1/outbox/offers/{offer_id}/assign:
+    parameters:
+      - $ref: '#/components/parameters/OfferIdPathParam'
+    post:
+      tags:
+        - offer outbox
+      description: |
+        # Authorization
+        Required role: `org_admin`.
+
+        Required offer state: `accepted`.
+
+        # Description
+        Assign an Offer created by the Demand Organization to a
+        Supply Organization that accepted the Offer.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OutboxOfferAssignRequest'
+      responses:
+        204:
+          description: "Successfully marked Offer as Assigned."
+      x-amazon-apigateway-request-validator: "body"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
+  /v1/inbox/offers:
+    get:
+      tags:
+        - offer inbox
+      description: |
+        # Authorization
+        Required role: `org_admin`
+
+        # Description
+        Get a collection of Offers matched to the Supply Organization.
+      parameters:
+        - in: query
+          name: status
+          description: |
+            Filter on an Offer Match status. Filtering on multiple statuses is not supported.
+          schema:
+            $ref: '#/components/schemas/OfferMatchStatusCore'
+        - $ref: '#/components/parameters/PageNumberParam'
+        - $ref: '#/components/parameters/ItemsPerPageParam'
+        - $ref: '#/components/parameters/SortByParam'
+        - $ref: '#/components/parameters/SortOrderParam'
+      responses:
+        200:
+          description: "Successfully returned Offer Inbox Collection."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InboxOfferPageResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
+  /v1/inbox/offers/{offer_id}:
+    parameters:
+      - $ref: '#/components/parameters/OfferIdPathParam'
+    get:
+      tags:
+        - offer inbox
+      description: |
+        # Authorization
+        Required role: `org_admin`
+
+        # Description
+        Get the anonamyzed details of Offers matched to the Supply
+        organization. This must contain no PHI.
+      responses:
+        200:
+          description: "Successfully returned Offer Inbox Scalar"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InboxOfferDetailResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
+  /v1/inbox/offers/{offer_id}/accept:
+    parameters:
+      - $ref: '#/components/parameters/OfferIdPathParam'
+    post:
+      tags:
+        - offer inbox
+      description: |
+        # Authorization
+        Required role: `org_admin`
+
+        Required offer state: `sent`
+
+        # Description
+        Accept an Offer matched to the Supply organization.
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InboxOfferAcceptRequest'
+      responses:
+        204:
+          description: "Successfully marked Offer as Accepted"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
+  /v1/inbox/offers/{offer_id}/decline:
+    parameters:
+      - $ref: '#/components/parameters/OfferIdPathParam'
+    post:
+      tags:
+        - offer inbox
+      description: |
+        # Authorization
+        Required role: `org_admin`
+
+        Required offer state: `sent`
+
+        # Description
+        Decline an Offer matched to the Supply organization.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InboxOfferDeclineRequest'
+      responses:
+        204:
+          description: "Successfully marked Offer as Declined"
+      x-amazon-apigateway-request-validator: "body"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
+  /v1/sys_admin/demand_personas/{demand_persona_id}/settings/assignment:
+    parameters:
+      - in: path
+        name: demand_persona_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+        description: ID of an organization.
+    post:
+      tags:
+        - organization settings
+      description: |
+        # Authorization
+        Required role: `sys_admin`
+
+        # Description
+        Set offer assignment setting for an organization.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OutboxOfferAssignmentSettingUpdateRequest'
+      responses:
+        204:
+          description: "Setting succesfully saved."
+      x-amazon-apigateway-request-validator: "body"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+    get:
+      tags:
+        - organization settings
+      description: |
+        # Authorization
+        Required role: `sys_admin`
+
+        # Description
+        Get offer assignment setting for an organization.
+      responses:
+        200:
+          description: Offer assignment setting.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutboxOfferAssignmentSettingUpdateResponse'
+      x-amazon-apigateway-request-validator: "body"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
+  /v1/outbox/referrals:
+    post:
+      tags:
+        - referral outbox
+      description: |
+        # Authorization
+        Required role: `org_admin`
+
+        # Description
+        Create a Referral by the Demand organization.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OutboxReferralCreateRequest'
+      responses:
+        201:
+          description: "Successfully created Referral"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutboxReferralDetailResponse'
+      x-amazon-apigateway-request-validator: "body"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+    get:
+      # missing query parameters for referral_type, care_type, etc.
+      tags:
+        - referral outbox
+      description: |
+        # Authorization
+        Required role: `org_admin`
+
+        # Description
+        Get a collection of Referrals created by the Demand organization.
+      parameters:
+        - in: query
+          name: status
+          schema:
+            $ref: '#/components/schemas/ReferralStatusCore'
+        - $ref: '#/components/parameters/OfferIdQueryParam'
+        - $ref: '#/components/parameters/PageNumberParam'
+        - $ref: '#/components/parameters/ItemsPerPageParam'
+        - $ref: '#/components/parameters/SortByParam'
+        - $ref: '#/components/parameters/SortOrderParam'
+      responses:
+        200:
+          description: 'Successfully returned Referral Outbox Collection'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutboxReferralPageResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
+  /v1/outbox/referrals/{referral_id}:
+    parameters:
+    - $ref: '#/components/parameters/ReferralIdPathParam'
+    get:
+      tags:
+        - referral outbox
+      description: |
+        # Authorization
+
+        Required role: `org_admin`
+
+        # Description
+        Get the details of an Referral created by the Demand organization.
+      responses:
+        200:
+          description: 'Successfully returned Referral Outbox Scalar'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutboxReferralDetailResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
+  /v1/outbox/referrals/{referral_id}/cancel:
+    parameters:
+      - $ref: '#/components/parameters/ReferralIdPathParam'
+    post:
+      tags:
+        - referral outbox
+      description: |
+        # Authorization
+        Required role: `org_admin`
+
+        # Description
+        Cancel a Referral created by the Demand Organization.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OutboxReferralCancelRequest'
+      responses:
+        204:
+          description: "Successfully marked Referral as Cancelled"
+      x-amazon-apigateway-request-validator: "body"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
+  /v1/inbox/referrals:
+    get:
+      tags:
+        - referral inbox
+      description: |
+        # Authorization
+        Required role: `org_admin`
+
+        # Description
+        Get a collection of Referrals matched to the Supply Organization.
+      parameters:
+        - in: query
+          name: referral_status
+          schema:
+            $ref: '#/components/schemas/ReferralStatusCore'
+        - $ref: '#/components/parameters/OfferIdQueryParam'
+        - $ref: '#/components/parameters/PageNumberParam'
+        - $ref: '#/components/parameters/ItemsPerPageParam'
+        - $ref: '#/components/parameters/SortByParam'
+        - $ref: '#/components/parameters/SortOrderParam'
+      responses:
+        200:
+          description: "Successfully returned Referral Inbox Collection."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InboxReferralPageResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
+  /v1/inbox/referrals/{referral_id}:
+    parameters:
+      - $ref: '#/components/parameters/ReferralIdPathParam'
+    get:
+      tags:
+        - referral inbox
+      description: |
+        # Authorization
+        Required role: `org_admin`
+
+        # Description
+        Get the anonamyzed details of Referrals matched to the Supply
+        organization. This must contain no PHI.
+      responses:
+        200:
+          description: "Successfully returned Referral Inbox Scalar"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InboxReferralDetailResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
+  /v1/inbox/referrals/{referral_id}/mark_processed:
+    parameters:
+      - $ref: '#/components/parameters/ReferralIdPathParam'
+    post:
+      tags:
+        - referral inbox
+      description: |
+        # Authorization
+        Required role: `org_admin`
+
+        Required referral state: `assigned`
+
+        # Description
+        Acknowledges that the Supply organization has received and processed the assigned Referral.
+        This will mark the Referral as `processed` and will inform the Demand organization.
+      responses:
+        204:
+          description: "Successfully marked Referral as Processed."
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
+  /v1/inbox/referrals/{referral_id}/cancel:
+    parameters:
+      - $ref: '#/components/parameters/ReferralIdPathParam'
+    post:
+      tags:
+        - referral inbox
+      description: |
+        # Authorization
+        Required role: `org_admin`
+
+        # Description
+        Cancel an Referral after it's assigned to the Supply Organization.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InboxReferralCancelRequest'
+      responses:
+        204:
+          description: "Successfully marked Referral as Cancelled"
+      x-amazon-apigateway-request-validator: "body"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
+  /v1/outbox/visits:
+    get:
+      tags:
+        - visit outbox
+      description: |
+        # Authorization
+        Required role: demand `org_admin` who created the associated referral or service.
+
+        # Description
+        Get a collection of Visits for a given referral or service.
+
+        One of `referral_id`, `service_id`, or `service_outbox_id` must be provided.
+      parameters:
+        - $ref: '#/components/parameters/ReferralIdQueryParam'
+          required: false
+        - $ref: '#/components/parameters/ServiceIdQueryParam'
+          required: false
+        - in: query
+          name: service_outbox_id
+          schema:
+            type: string
+          description: ID of a service in the demand system.
+          required: false
+        - $ref: '#/components/parameters/PageNumberParam'
+        - $ref: '#/components/parameters/ItemsPerPageParam'
+        - in: query
+          name: sort_by
+          schema:
+            type: string
+            enum:
+              - last_modified
+              - start_at
+            default: start_at
+        - $ref: '#/components/parameters/SortOrderParam'
+      responses:
+        200:
+          description: "Successfully retrieved a collection of Visits."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutboxVisitPageResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
+  /v1/inbox/visits/schedule:
+    post:
+      tags:
+        - visit inbox
+      description: |
+        # Authorization
+        Required role: supply `org_admin`.
+
+        # Description
+        Schedule a visit by the Supply organization for an associated service or
+        referral.
+
+        One of `referral_id` or `service_id` must be provided.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InboxVisitScheduleRequest'
+      responses:
+        201:
+          description: "Successfully scheduled a Visit."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InboxVisitScheduleResponse'
+      x-amazon-apigateway-request-validator: "body"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
+  /v1/outbox/work_sessions:
+    parameters:
+      - in: query
+        name: visit_id
+        schema:
+          type: string
+        description: ID of a visit.
+        required: false
+      - in: query
+        name: visit_outbox_id
+        schema:
+          type: string
+        description: ID of a visit in the demand system.
+        required: false
+    get:
+      tags:
+        - work session outbox
+      description: |
+        # Authorization
+        Required role: demand `org_admin` who created the associated referral.
+
+        # Description
+        Get a collection of Work Sessions for a given visit.
+
+        One of `visit_id` or `visit_outbox_id` must be provided.
+      # Filters TBD.
+      responses:
+        200:
+          description: "Successfully retrieved a collection of Work Sessions."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutboxWorkSessionPageResponse'
+      x-amazon-apigateway-request-validator: "body"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
+  /v1/inbox/work_sessions/start:
+    post:
+      tags:
+        - work session inbox
+      description: |
+        # Authorization
+        Required role: `org_admin` assigned to the associated referral.
+
+        # Description
+        Start a Work Session for a given visit.
+
+        One of `visit_id` or `visit_inbox_id` must be provided.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InboxWorkSessionStartRequest'
+      responses:
+        201:
+          description: "Successfully started a Work Session."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InboxWorkSessionStartResponse'
+      x-amazon-apigateway-request-validator: "body"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
+  /v1/inbox/work_sessions/end:
+    post:
+      tags:
+        - work session inbox
+      description: |
+        # Authorization
+        Required role: `org_admin` who started the Work Session.
+
+        # Description
+        End a Work Session.
+        
+        One of `work_session_id` or `inbox_id` must be provided.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InboxWorkSessionEndRequest'
+      responses:
+        204:
+          description: "Successfully ended a Work Session."
+      x-amazon-apigateway-request-validator: "body"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
+      # By default, All endpoints are using the CognitoAuthorizer
+security:
+  - CognitoAuthorizer: [ ]
+
+x-amazon-apigateway-request-validators:
+  body:
+    validateRequestBody: true
+    validateRequestParameters: false
+  params:
+    validateRequestBody: false
+    validateRequestParameters: true
+  params-and-body:
+    validateRequestBody: true
+    validateRequestParameters: true
+
+# By default, only the params (query params & headers will be validated)
+x-amazon-apigateway-request-validator: "params"
+
+x-amazon-apigateway-gateway-responses:
+  BAD_REQUEST_BODY:
+    statusCode: 400
+    responseTemplates:
+      application/json: '{"message": $context.error.messageString, "description": "$context.error.validationErrorString"}'
+
+components:
+  parameters:
+    OfferIdPathParam:
+      in: path
+      name: offer_id
+      schema:
+        $ref: '#/components/schemas/OfferIdCore'
+      required: true
+      description: ID of an offer
+    OfferIdQueryParam:
+      in: query
+      name: offer_id
+      schema:
+        $ref: '#/components/schemas/OfferIdCore'
+    ReferralIdQueryParam:
+      in: query
+      name: referral_id
+      schema:
+        $ref: '#/components/schemas/ReferralIdCore'
+    ReferralIdPathParam:
+      in: path
+      name: referral_id
+      schema:
+        $ref: '#/components/schemas/ReferralIdCore'
+      required: true
+    ServiceIdQueryParam:
+      in: query
+      name: service_id
+      schema:
+        $ref: '#/components/schemas/ServiceIdCore'
+    ItemsPerPageParam:
+      in: query
+      name: items_per_page
+      schema:
+        $ref: '#/components/schemas/ItemsPerPageCore'
+    PageNumberParam:
+      in: query
+      name: page
+      schema:
+        $ref: '#/components/schemas/PageNumberCore'
+    SortByParam:
+      in: query
+      name: sort_by
+      schema:
+        $ref: '#/components/schemas/SortByCore'
+    SortOrderParam:
+      in: query
+      name: sort_order
+      schema:
+        $ref: '#/components/schemas/SortOrderCore'
+
+  schemas:
+    OfferOutboxCore:
+      # Core fields on an offer expected to be present on requests and responses.
+      type: object
+      properties:
+        care_type:
+          $ref: '#/components/schemas/CareTypeCore'
+        offer_type:
+          $ref: '#/components/schemas/OfferTypeCore'
+        expires_at:
+          type: string
+          format: date-time
+        comment:
+          type: string
+      required:
+        - care_type
+        - offer_type
+        - expires_at
+
+    OutboxOfferCreateRequest:
+      type: object
+      properties:
+        offer:
+          $ref: '#/components/schemas/OfferOutboxCore'
+        direct_supply_persona_ids:
+          description: |
+            Identifiers of one (or more) supply organization for direct-to-supplier
+            matching.
+          type: array
+          items:
+            type: string
+            format: uuid
+        price:
+          $ref: '#/components/schemas/OutboxOfferPriceCore'
+        client:
+          $ref: '#/components/schemas/ClientOutboxCore'
+        service:
+          $ref: '#/components/schemas/ServiceOutboxCore'
+        visits:
+          type: array
+          items:
+            $ref: '#/components/schemas/OutboxOfferVisitRequest'
+      required:
+        - offer
+        - price
+        - client
+        - service
+
+    OutboxOfferCollectionResponse:
+      description: |
+        API response of an offer on the outbox API.
+      type: object
+      properties:
+        offer:
+          $ref: '#/components/schemas/OutboxOfferCore'
+        client:
+          type: object
+          properties:
+            demographics:
+              $ref: '#/components/schemas/DemographicLeanCore'
+          required:
+            - demographics
+        service:
+          $ref: '#/components/schemas/ServiceLeanCore'
+        response_counts:
+          $ref: '#/components/schemas/OfferResponseCountsCore'
+      required:
+        - offer
+        - client
+        - service
+        - response_counts
+
+    OutboxOfferCore:
+      allOf:
+        - $ref: '#/components/schemas/OfferOutboxCore'
+        - $ref: '#/components/schemas/OfferReasonCodeCore'
+        - type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            status:
+              $ref: '#/components/schemas/OfferStatusCore'
+            start_at:
+              type: string
+              format: date-time
+              description: Derived from the visits
+            end_at:
+              type: string
+              format: date-time
+              description: Derived from the visits
+            created_at:
+              type: string
+              format: date-time
+            updated_at:
+              type: string
+              format: date-time
+          required:
+            - id
+            - status
+            - start_at
+            - end_at
+            - created_at
+
+    OfferResponseCountsCore:
+      type: object
+      properties:
+        modified_at:
+          type: string
+          format: date-time
+          description: The creation or last update of the offer or any responses to it.
+        sent:
+          type: integer
+          minimum: 0
+          description: The number of recipients to whom the offer was sent.
+        accepted:
+          type: integer
+          minimum: 0
+          description: The number of accepted offers.
+        declined:
+          type: integer
+          minimum: 0
+          description: The number of declined offers.
+
+    OutboxOfferDetailResponse:
+      # Full blown representation of an offer, with related/nested entities
+      allOf:
+        - type: object
+          properties:
+            offer:
+              $ref: '#/components/schemas/OutboxOfferCore'
+            demand:
+              $ref: '#/components/schemas/OrganizationLeanCore'
+            supply:
+              $ref: '#/components/schemas/OrganizationLeanCore'
+            direct_supply_persona_ids:
+              description: |
+                Identifiers of one (or more) supply organization for direct-to-supplier
+                matching.
+              type: array
+              items:
+                type: string
+                format: uuid
+            price:
+              $ref: '#/components/schemas/OutboxOfferPriceCore'
+            client:
+              $ref: '#/components/schemas/ClientOutboxCore'
+            service:
+              $ref: '#/components/schemas/ServiceOutboxCore'
+            visits:
+              type: array
+              items:
+                $ref: '#/components/schemas/OutboxOfferVisitResponse'
+          required:
+            - offer
+            - demand
+            - price
+            - client
+            - service
+
+    OutboxOfferMatchCollectionResponse:
+      description: |
+        API response for the representation of Offer Matches on the outbox API.
+      type: object
+      properties:
+        match:
+          $ref: '#/components/schemas/OfferMatchCore'
+        supply:
+          # better to call destination (CCAC)?
+          $ref: '#/components/schemas/OrganizationLeanCore'
+
+    OutboxOfferPageResponse:
+      allOf:
+        - $ref: '#/components/schemas/PageCore'
+        - type: object
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/OutboxOfferCollectionResponse'
+
+    OutboxOfferMatchPageResponse:
+      allOf:
+        - $ref: '#/components/schemas/PageCore'
+        - type: object
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/OutboxOfferMatchCollectionResponse'
+
+    InboxOfferCollectionResponse:
+      description: |
+        API response for the core representation of an offer response on the inbox API.
+      type: object
+      properties:
+        offer:
+          $ref: '#/components/schemas/OfferInboxCore'
+        match:
+          $ref: '#/components/schemas/OfferMatchCore'
+
+    InboxReferralCollectionResponse:
+      description: |
+        API response for the core representation of a referral response on the inbox API.
+      type: object
+      properties:
+        referral:
+          $ref: '#/components/schemas/InboxReferralCore'
+
+    OfferInboxCore:
+      description: |
+        Core representation of an offer on the inbox API.
+        Meant to be used in the nested `offer` in a top level (API) response schema.
+      allOf:
+        - $ref: '#/components/schemas/OfferReasonCodeCore'
+        - type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            care_type:
+              $ref: '#/components/schemas/CareTypeCore'
+            offer_type:
+              $ref: '#/components/schemas/OfferTypeCore'
+            expires_at:
+              type: string
+              format: date-time
+            start_at:
+              type: string
+              format: date-time
+            end_at:
+              type: string
+              format: date-time
+            comment:
+              type: string
+            created_at:
+              type: string
+              format: date-time
+            updated_at:
+              type: string
+              format: date-time
+          required:
+            - id
+            - care_type
+            - offer_type
+            - expires_at
+            - start_at
+            - end_at
+            - status
+            - created_at
+
+    InboxOfferDetailResponse:
+      description: |
+        API response for the anonymous representation of an offer on the inbox API.
+        Similarly to the `InboxOfferCore`, this schema is meant to be used in the nested `offer`
+        in a top level (API) response schema, e.g. the `InboxOfferScalarApiResponse`
+        This includes everything from the `InboxOfferCore` along with some additional information
+        on the client, service and visits.
+        Not all client information is included here, hence the "anon" (anonymous) prefix.
+      type: object
+      properties:
+        offer:
+          $ref: '#/components/schemas/OfferInboxCore'
+        price:
+          $ref: '#/components/schemas/PriceCore'
+        client:
+          type: object
+          properties:
+            address:
+              $ref: '#/components/schemas/AddressAnonCore'
+            allergies:
+              type: array
+              items:
+                $ref: '#/components/schemas/AllergyCore'
+            risks:
+              type: array
+              items:
+                $ref: '#/components/schemas/RiskCore'
+          required:
+            - address
+        service:
+          allOf:
+            - $ref: '#/components/schemas/ServiceCore'
+            - type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                address:
+                  $ref: '#/components/schemas/AddressAnonCore'
+              required:
+                - id
+        visits:
+          type: array
+          items:
+            $ref: '#/components/schemas/InboxOfferVisitResponse'
+        match:
+          $ref: '#/components/schemas/OfferMatchCore'
+        demand:
+          # better to call sender (CCAC)? or demand_persona?
+          $ref: '#/components/schemas/OrganizationLeanCore'
+      required:
+        - offer
+        - price
+        - match
+        - demand
+
+    SortByCore:
+      type: string
+      enum:
+        - last_modified
+      default: last_modified
+
+    SortOrderCore:
+      type: string
+      enum:
+        - asc
+        - desc
+      default: desc
+
+    InboxOfferPageResponse:
+      allOf:
+        - $ref: '#/components/schemas/PageCore'
+        - type: object
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/InboxOfferCollectionResponse'
+          required:
+            - items
+
+    OfferMatchCore:
+      description: |
+        Core representation of an Offer Match.
+        Meant to be used in the nested `match` in a top level (API) response schema.
+      allOf:
+        - $ref: '#/components/schemas/OfferMatchReasonCodeCore'
+        - type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            response:
+              $ref: '#/components/schemas/OfferMatchResponseCore'
+            status:
+              $ref: '#/components/schemas/OfferMatchStatusCore'
+            # TODO: could be interesting to encapsulate the timestamp fields in a schema
+            created_at:
+              type: string
+              format: date-time
+            updated_at:
+              type: string
+              format: date-time
+          required:
+            - id
+            - response
+            - status
+            - created_at
+
+    OutboxOfferCloseRequest:
+      allOf:
+        - $ref: '#/components/schemas/OfferReasonCodeCore'
+
+    OfferReasonCodeCore:
+      description: |
+        `reason_code` and `reason_comment` associated to a cancelled or closed offer.
+      type: object
+      properties:
+        reason_code:
+          type: string
+          enum:
+          - datetime_change
+          - client_request
+          - client_hospitalization
+          - client_passed_away
+          - client_refused_service
+        reason_comment:
+          type: string
+
+    OfferMatchReasonCodeCore:
+      description: |
+        `reason_code` associated with a declined Offer Match.
+      type: object
+      properties:
+        reason_code:
+          type: string
+          # TODO: AM-488: we will leave this as free-form for now
+          # as we leverage AlayaCare LHIN reason codes
+          #
+          # enum:
+          # - no_employee_availability
+          # - no_employee_in_region
+          # - no_employee_with_skills
+          # - offer_price
+          # - covid_19
+          # - other
+        comment:
+            type: string
+
+    InboxOfferDeclineRequest:
+      allOf:
+        - $ref: '#/components/schemas/OfferMatchReasonCodeCore'
+
+    InboxOfferAcceptRequest:
+      type: object
+      properties:
+        comment:
+          type: string
+
+    OutboxOfferAssignRequest:
+      type: object
+      properties:
+        offer_match_id:
+          type: string
+          format: uuid
+      required:
+        - offer_match_id
+
+    OfferStatusCore:
+      type: string
+      enum:
+        - open # wrapper for created + matched + sent + accepted
+        - assigned
+        - closed
+        - expired
+
+    OfferMatchResponseCore:
+      type: string
+      enum:
+        - pending
+        - accepted
+        - declined
+
+    OfferMatchStatusCore:
+      type: string
+      nullable: true
+      enum:
+        - open
+        - expired
+        - closed
+        - assigned
+        - fulfilled
+
+    CareTypeCore:
+      # sync this with the organization specs
+      type: string
+      enum:
+        - psw
+        - nursing
+
+    OfferTypeCore:
+      type: string
+      enum:
+        - visit
+        - service
+        # - recurrence
+
+    OutboxOfferPriceCore:
+      type: object
+      properties:
+        default:
+          $ref: '#/components/schemas/PriceCore'
+        custom:
+          type: array
+          items:
+            allOf:
+              - $ref: '#/components/schemas/PriceCore'
+              - type: object
+                properties:
+                  supply_persona_id:
+                    type: string
+                    format: uuid
+                required:
+                  - supply_persona_id
+      required:
+        - default
+
+    PriceCore:
+      type: object
+      properties:
+        rate:
+          type: number
+          format: float
+          description: The dollar amount for offer per unit.
+          example: 30.00
+        unit:
+          type: string
+          description: The unit for the rate.
+          enum:
+            - per_visit
+            - per_hour
+            - amount
+      required:
+        - rate
+        - unit
+
+    PageCore:
+      description: Root page schema for returning collections.
+      type: object
+      properties:
+        page:
+          $ref: '#/components/schemas/PageNumberCore'
+        items_per_page:
+          $ref: '#/components/schemas/ItemsPerPageCore'
+        total_items:
+          type: integer
+          minimum: 0
+        total_pages:
+          type: integer
+          minimum: 0
+      required:
+        - page
+        - items_per_page
+        - total_items
+        - total_pages
+
+    OfferIdCore:
+      type: string
+      format: uuid
+
+    ReferralIdCore:
+      type: string
+      format: uuid
+
+    PageNumberCore:
+      type: integer
+      minimum: 1
+      default: 1
+
+    ItemsPerPageCore:
+      type: integer
+      minimum: 1
+      default: 100
+
+    OrganizationLeanCore:
+      # sync this with the organization specs
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+        - name
+
+    InboxReferralVisitResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        start_at:
+          type: string
+          format: date-time
+        end_at:
+          type: string
+          format: date-time
+        instructions:
+          type: string
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/InboxReferralVisitTaskResponse'
+      required:
+        - id
+        - start_at
+        - end_at
+
+    OutboxOfferVisitRequest:
+      type: object
+      properties:
+        outbox_id:
+          type: string
+        start_at:
+          type: string
+          format: date-time
+        end_at:
+          type: string
+          format: date-time
+        instructions:
+          type: string
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/OutboxOfferVisitTaskRequest'
+      required:
+        - outbox_id
+        - start_at
+        - end_at
+
+    OutboxReferralVisitRequest:
+      type: object
+      properties:
+        outbox_id:
+          type: string
+        start_at:
+          type: string
+          format: date-time
+        end_at:
+          type: string
+          format: date-time
+        instructions:
+          type: string
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/OutboxReferralVisitTaskRequest'
+      required:
+        - outbox_id
+        - start_at
+        - end_at
+
+    OutboxOfferVisitResponse:
+      type: object
+      properties:
+        outbox_id:
+          type: string
+        start_at:
+          type: string
+          format: date-time
+        end_at:
+          type: string
+          format: date-time
+        instructions:
+          type: string
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/OutboxOfferVisitTaskResponse'
+      required:
+        - outbox_id
+        - start_at
+        - end_at
+
+    OutboxReferralVisitResponse:
+      type: object
+      properties:
+        outbox_id:
+          type: string
+        start_at:
+          type: string
+          format: date-time
+        end_at:
+          type: string
+          format: date-time
+        instructions:
+          type: string
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/OutboxReferralVisitTaskResponse'
+      required:
+        - outbox_id
+        - start_at
+        - end_at
+
+    InboxOfferVisitResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        start_at:
+          type: string
+          format: date-time
+        end_at:
+          type: string
+          format: date-time
+        instructions:
+          type: string
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/InboxOfferVisitTaskResponse'
+      required:
+        - id
+        - start_at
+        - end_at
+
+    OutboxOfferVisitTaskRequest:
+      type: object
+      properties:
+        outbox_id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        is_required:
+          type: boolean
+      required:
+        - outbox_id
+        - name
+        - is_required
+
+    OutboxOfferVisitTaskResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        outbox_id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        is_required:
+          type: boolean
+      required:
+        - id
+        - outbox_id
+        - name
+        - is_required
+
+    InboxOfferVisitTaskResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        is_required:
+          type: boolean
+      required:
+        - id
+        - name
+        - is_required
+
+    InboxReferralVisitTaskResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        is_required:
+          type: boolean
+        is_completed:
+          type: boolean
+        completed_at:
+          type: string
+          format: date-time
+        completion_comment:
+          type: string
+      required:
+        - id
+        - name
+        - is_required
+        - is_completed
+
+    OutboxReferralVisitTaskRequest:
+      type: object
+      properties:
+        outbox_id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        is_required:
+          type: boolean
+      required:
+        - outbox_id
+        - name
+        - is_required
+
+    OutboxReferralVisitTaskResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        outbox_id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        is_required:
+          type: boolean
+        is_completed:
+          type: boolean
+        completed_at:
+          type: string
+          format: date-time
+        completion_comment:
+          type: string
+      required:
+        - id
+        - outbox_id
+        - name
+        - is_required
+        - is_completed
+
+    ServiceCore:
+      allOf:
+        - $ref: '#/components/schemas/ServiceLeanCore'
+        - type: object
+          properties:
+            start_at:
+              type: string
+              format: date-time
+            end_at:
+              type: string
+              format: date-time
+            instructions:
+              # CCAC includes goals and other items in ServiceInstructions
+              type: string
+            skills:
+              # should this live here or at root level or client level?
+              # should this be a string or list of strings or list of objects?
+              type: array
+              items:
+                type: string
+          # CCAC service includes priority, some other codes, and nests Frequencies in Service
+
+    ServiceOutboxCore:
+      allOf:
+        - $ref: '#/components/schemas/ServiceCore'
+        - type: object
+          properties:
+            outbox_id:
+              type: string
+            address:
+              $ref: '#/components/schemas/AddressCore'
+          required:
+            - outbox_id
+
+    ServiceIdCore:
+      type: string
+      format: uuid
+
+    ServiceLeanCore:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+        - name
+
+    ClientCore:
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/AddressCore'
+        contacts:
+          # separate personal, medical contacts like CCAC?
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                # format: uuid
+              first_name:
+                type: string
+              last_name:
+                type: string
+              address:
+                type: object
+                properties:
+                  city:
+                    type: string
+                  state:
+                    type: string
+                  zip:
+                    type: string
+                  country:
+                    type: string
+                  name:
+                    type: string
+                  address:
+                    type: string
+                  address_suite:
+                    type: string
+                  latitude:
+                    type: number
+                    format: double
+                    minimum: -90
+                    maximum: 90
+                  longitude:
+                    type: number
+                    format: double
+                    minimum: -180
+                    maximum: 180
+              email:
+                type: string
+                format: email
+              phone_number:
+                type: string
+              language:
+                # should this be enum?
+                type: string
+              relationship:
+                # should this be enum?
+                type: string
+        demographics:
+          allOf:
+            - $ref: '#/components/schemas/DemographicLeanCore'
+            - type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                phone_number:
+                  type: string
+                date_of_birth:
+                  type: string
+                  format: date
+                gender:
+                  # should this be enum?
+                  type: string
+                language:
+                  # should this be enum?
+                  type: string
+                  # health card, etc?
+        allergies:
+          type: array
+          items:
+            $ref: '#/components/schemas/AllergyCore'
+        risks:
+          type: array
+          items:
+            $ref: '#/components/schemas/RiskCore'
+        diagnoses:
+          type: array
+          items:
+            type: object
+            # Based on AlayaCare: medical_history.health_history.current_medical_history
+            properties:
+              name:
+                # AlayaCare calls this diagnosis, combines CCAC code and description
+                type: string
+              description:
+                # AlayaCare doesn't use this for the CCAC
+                type: string
+              start_date:
+                type: string
+                format: date
+        surgeries:
+          type: array
+          items:
+            # Based on AlayaCare: medical_history.surgery.past_surgery_history
+            type: object
+            properties:
+              name:
+                # AlayaCare combines CCAC code and description
+                type: string
+              description:
+                # AlayaCare combines CCAC location and surgeon
+                type: string
+              start_date:
+                type: string
+                format: date
+      required:
+        - demographics
+        - address
+
+    ClientOutboxCore:
+      allOf:
+        - $ref: '#/components/schemas/ClientCore'
+        - type: object
+          properties:
+            outbox_id:
+              type: string
+              # format: uuid
+          required:
+            - outbox_id
+
+    DemographicLeanCore:
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+      required:
+        - first_name
+        - last_name
+
+    RiskCore:
+      type: object
+      properties:
+        name:
+          type: string
+        category:
+          # TODO: We should define a list of valid risk categories
+          type: string
+          example: "allergy"
+        severity:
+          # number ? allergy severity is a string ?
+          type: integer
+        start_date:
+          # this might be unclear
+          type: string
+          format: date
+
+    AllergyCore:
+      type: object
+      # Based on AlayaCare: medical_history.Allergies.allergies_list
+      properties:
+        # different schemas for CCAC and AlayaCare
+        name:
+          type: string
+        category:
+          type: string
+        severity:
+          type: string
+        start_date:
+          type: string
+          format: date
+        # AlayaCare has a treatment field?
+
+    AddressAnonCore:
+      type: object
+      properties:
+        city:
+          type: string
+        state:
+          type: string
+        zip:
+          type: string
+        country:
+          type: string
+      required:
+        - city
+        - state
+        - zip
+        - country
+
+    AddressCore:
+      allOf:
+        - $ref: '#/components/schemas/AddressAnonCore'
+        - type: object
+          properties:
+            name:
+              type: string
+            address:
+              type: string
+            address_suite:
+              type: string
+            latitude:
+              type: number
+              format: double
+              minimum: -90
+              maximum: 90
+            longitude:
+              type: number
+              format: double
+              minimum: -180
+              maximum: 180
+          required:
+            - address
+            - city
+            - state
+            - zip
+            - country
+
+    OutboxOfferAssignmentSettingUpdateRequest:
+      type: object
+      properties:
+        offer_assignment:
+          type: string
+          enum:
+          - auto
+          - manual
+      required:
+        - offer_assignment
+
+    OutboxOfferAssignmentSettingUpdateResponse:
+      type: object
+      properties:
+        offer_assignment:
+          type: string
+          enum:
+            - auto
+            - manual
+      required:
+        - offer_assignment
+
+    OutboxReferralCreateRequest:
+      type: object
+      properties:
+        referral:
+          type: object
+          properties:
+            care_type:
+              $ref: '#/components/schemas/CareTypeCore'
+            referral_type:
+              $ref: '#/components/schemas/ReferralTypeCore'
+            comment:
+              type: string
+          required:
+            - care_type
+            - referral_type
+        supply_persona_id:
+          type: string
+          format: uuid
+          description: The supply organization to which the referral is destined.
+        price:
+          $ref: '#/components/schemas/PriceCore'
+        client:
+          $ref: '#/components/schemas/ClientOutboxCore'
+        service:
+          $ref: '#/components/schemas/ServiceOutboxCore'
+        visits:
+          type: array
+          items:
+            $ref: '#/components/schemas/OutboxReferralVisitRequest'
+      required:
+        - referral
+        - supply_persona_id
+        - price
+        - client
+        - service
+
+    OutboxReferralCollectionResponse:
+      description: |
+        API response of an referral on the outbox API.
+      type: object
+      properties:
+        referral:
+          $ref: '#/components/schemas/OutboxReferralCore'
+        client:
+          type: object
+          properties:
+            demographics:
+              $ref: '#/components/schemas/DemographicLeanCore'
+          required:
+            - demographics
+        service:
+          $ref: '#/components/schemas/ServiceLeanCore'
+      required:
+        - referral
+        - client
+        - service
+
+    OutboxReferralCore:
+      allOf:
+        - $ref: '#/components/schemas/ReferralReasonCodeCore'
+        - type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            offer_id:
+              $ref: '#/components/schemas/OfferIdCore'
+            care_type:
+              $ref: '#/components/schemas/CareTypeCore'
+            referral_type:
+              $ref: '#/components/schemas/ReferralTypeCore'
+            comment:
+              type: string
+            status:
+              $ref: '#/components/schemas/ReferralStatusCore'
+            start_at:
+              type: string
+              format: date-time
+              description: Derived from the visits
+            end_at:
+              type: string
+              format: date-time
+              description: Derived from the visits
+            created_at:
+              type: string
+              format: date-time
+            updated_at:
+              type: string
+              format: date-time
+          required:
+            - id
+            - care_type
+            - referral_type
+            - status
+            - start_at
+            - end_at
+            - created_at
+
+    OutboxReferralDetailResponse:
+      # Full blown representation of an referral, with related/nested entities
+      allOf:
+        - type: object
+          properties:
+            referral:
+              $ref: '#/components/schemas/OutboxReferralCore'
+            supply:
+              $ref: '#/components/schemas/OrganizationLeanCore'
+            price:
+              $ref: '#/components/schemas/PriceCore'
+            client:
+              $ref: '#/components/schemas/ClientOutboxCore'
+            service:
+              $ref: '#/components/schemas/ServiceOutboxCore'
+            visits:
+              type: array
+              items:
+                $ref: '#/components/schemas/OutboxReferralVisitResponse'
+          required:
+            - referral
+            - supply
+            - price
+            - client
+            - service
+
+    OutboxReferralPageResponse:
+      allOf:
+        - $ref: '#/components/schemas/PageCore'
+        - type: object
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/OutboxReferralCollectionResponse'
+
+    InboxReferralCore:
+      description: |
+        Core representation of an referral on the inbox API.
+        Meant to be used in the nested `referral` in a top level (API) response schema.
+      allOf:
+        - $ref: '#/components/schemas/ReferralReasonCodeCore'
+        - type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            offer_id:
+              $ref: '#/components/schemas/OfferIdCore'
+            care_type:
+              $ref: '#/components/schemas/CareTypeCore'
+            referral_type:
+              $ref: '#/components/schemas/ReferralTypeCore'
+            start_at:
+              type: string
+              format: date-time
+            end_at:
+              type: string
+              format: date-time
+            comment:
+              type: string
+            status:
+              $ref: '#/components/schemas/ReferralStatusCore'
+            created_at:
+              type: string
+              format: date-time
+            updated_at:
+              type: string
+              format: date-time
+          required:
+            - id
+            - care_type
+            - referral_type
+            - exprires_at
+            - start_at
+            - end_at
+            - status
+            - created_at
+
+    InboxReferralDetailResponse:
+      description: |
+        API response for the complete representation of an assigned referral on the inbox API.
+        This schema is similar to the `InboxAnonReferral` except that it includes the complete
+        representation of the referral instead of the anonymous representation.
+      type: object
+      properties:
+        referral:
+          $ref: '#/components/schemas/InboxReferralCore'
+        demand:
+          # better to call sender (CCAC)? or demand_persona?
+          $ref: '#/components/schemas/OrganizationLeanCore'
+        price:
+          $ref: '#/components/schemas/PriceCore'
+        client:
+          allOf:
+            - $ref: '#/components/schemas/ClientCore'
+            - type: object
+              properties:
+                id:
+                  type: string
+                  # format: uuid
+              required:
+                - id
+        service:
+          allOf:
+            - $ref: '#/components/schemas/ServiceCore'
+            - type: object
+              properties:
+                id:
+                  $ref: '#/components/schemas/ServiceIdCore'
+                address:
+                  $ref: '#/components/schemas/AddressCore'
+              required:
+                - id
+        visits:
+          type: array
+          items:
+            $ref: '#/components/schemas/InboxReferralVisitResponse'
+      required:
+        - referral
+        - demand
+        - price
+        - service
+        - client
+
+    InboxReferralPageResponse:
+      allOf:
+        - $ref: '#/components/schemas/PageCore'
+        - type: object
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/InboxReferralCollectionResponse'
+          required:
+            - items
+
+    OutboxReferralCancelRequest:
+      allOf:
+        - $ref: '#/components/schemas/ReferralReasonCodeCore'
+
+    InboxReferralCancelRequest:
+      allOf:
+        - $ref: '#/components/schemas/ReferralReasonCodeCore'
+
+    ReferralReasonCodeCore:
+      description: |
+        `reason_code` associated to a cancelled or closed referral.
+      type: object
+      properties:
+        reason_code:
+          type: string
+          enum:
+          - datetime_change
+          - client_request
+          - client_hospitalization
+          - client_passed_away
+          - client_refused_service
+
+    ReferralStatusCore:
+      type: string
+      enum:
+        - assigned
+        - processed
+        - cancelled
+
+    ReferralTypeCore:
+      type: string
+      enum:
+        - visit
+        - service
+        # - recurrence
+
+    InboxVisitScheduleRequest:
+      type: object
+      properties:
+        inbox_id:
+          type: string
+        start_at:
+          type: string
+          format: date-time
+        end_at:
+          type: string
+          format: date-time
+        service_id:
+          $ref: '#/components/schemas/ServiceIdCore'
+        referral_id:
+          type: string
+          format: uuid
+      required:
+        - inbox_id
+        - start_at
+        - end_at
+
+    InboxVisitScheduleResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        inbox_id:
+          type: string
+        start_at:
+          type: string
+          format: date-time
+        end_at:
+          type: string
+          format: date-time
+        service_id:
+          $ref: '#/components/schemas/ServiceIdCore'
+        referral_id:
+          type: string
+          format: uuid
+      required:
+        - id
+        - inbox_id
+        - start_at
+        - end_at
+        - service_id
+        - referral_id
+
+    OutboxVisitPageResponse:
+      allOf:
+        - $ref: '#/components/schemas/PageCore'
+        - type: object
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/OutboxVisitCollectionResponse'
+
+    OutboxVisitCollectionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        visit_outbox_id:
+          type: string
+        referral_id:
+          type: string
+          format: uuid
+        service_id:
+          type: string
+          format: uuid
+        service_outbox_id:
+          type: string
+        start_at:
+          type: string
+          format: date-time
+        end_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - visit_id
+        - referral_id
+        - service_id
+        - service_outbox_id
+        - start_at
+        - end_at
+
+    InboxWorkSessionStartRequest:
+      type: object
+      properties:
+        start_at:
+          type: string
+          format: date-time
+        start_latitude:
+          type: number
+          format: double
+          minimum: -90
+          maximum: 90
+        start_longitude:
+          type: number
+          format: double
+          minimum: -180
+          maximum: 180
+        visit_id:
+          type: string
+          format: uuid
+        visit_inbox_id:
+          type: string
+        inbox_id:
+          type: string
+      required:
+        - start_at
+        - inbox_id
+
+    InboxWorkSessionEndRequest:
+      type: object
+      properties:
+        end_at:
+          type: string
+          format: date-time
+        work_session_id:  # TODO: `work_session_id` or `id` ?
+          type: string
+          format: uuid
+        end_latitude:
+          type: number
+          format: double
+          minimum: -90
+          maximum: 90
+        end_longitude:
+          type: number
+          format: double
+          minimum: -180
+          maximum: 180
+        visit_id:
+          type: string
+          format: uuid
+        inbox_id:
+          type: string
+      required:
+        - end_at
+        - visit_id
+
+    OutboxWorkSessionPageResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OutboxWorkSessionCollectionResponse'
+      required:
+        - items
+
+    OutboxWorkSessionCollectionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        visit_id:
+          type: string
+          format: uuid
+        visit_outbox_id:
+          type: string
+          description: ID of the visit provided by the demand organization.
+        start_at:
+          type: string
+          format: date-time
+        end_at:
+          type: string
+          format: date-time
+        start_latitude:
+          type: number
+          format: double
+          minimum: -90
+          maximum: 90
+        start_longitude:
+          type: number
+          format: double
+          minimum: -180
+          maximum: 180
+        end_latitude:
+          type: number
+          format: double
+          minimum: -90
+          maximum: 90
+        end_longitude:
+          type: number
+          format: double
+          minimum: -180
+          maximum: 180
+      required:
+        - id
+        - visit_id
+        - start_at
+
+    InboxWorkSessionStartResponse:
+        allOf:
+        - $ref: '#/components/schemas/InboxWorkSessionStartRequest'
+        type: object
+        properties:
+          id:
+            type: string
+            format: uuid
+            description: Work Session ID.
+        required:
+          - id
+
+  securitySchemes:
+    CognitoAuthorizer:
+      type: "apiKey"
+      name: "Authorization"
+      in: "header"
+      x-amazon-apigateway-authtype: "cognito_user_pools"
+      x-amazon-apigateway-authorizer:
+        type: "cognito_user_pools"
+        providerARNs:
+        - Fn::Sub: "{{resolve:ssm:/${StackName}/${UserPoolArnSSMParameterName}}}"

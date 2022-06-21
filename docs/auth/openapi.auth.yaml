@@ -1,0 +1,256 @@
+openapi: "3.0.1"
+info:
+  title:
+    Fn::Sub: "${AuthApiName}"
+  version: "1.0"
+servers:
+- url: https://api.{env}.alayamarket.{region}/auth
+  variables:
+    env:
+      description: The server environment.
+      enum:
+        - staging
+        - sandbox
+        - prod
+      default: prod
+    region:
+      description: The server top-level domain indicating the region.
+      enum:
+        - ca
+        - com
+        - com.au
+      default: ca
+paths:
+  /v1/login:
+    post:
+      tags:
+        - auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+      # This endpoint does not require authentication
+      security:
+        - NONE: []
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AuthApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        # TODO: I thought the passthrough behaviour was only used for non proxy integration
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+  /v1/forgot_password:
+    post:
+      tags:
+        - auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForgotPasswordRequest'
+      responses:
+        '204':
+          description: Forgot password sent
+      # This endpoint does not require authentication
+      security:
+        - NONE: []
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AuthApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        # TODO: I thought the passthrough behaviour was only used for non proxy integration
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+  /v1/confirm_forgot_password:
+    post:
+      tags:
+        - auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmForgotPasswordRequest'
+      responses:
+        '204':
+          description: Password changed
+      # This endpoint does not require authentication
+      security:
+        - NONE: []
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AuthApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        # TODO: I thought the passthrough behaviour was only used for non proxy integration
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+  /v1/change_password:
+    post:
+      tags:
+        - auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordRequest'
+      responses:
+        '204':
+          description: Password changed
+      # This endpoint does not require authentication
+      security:
+        - NONE: []
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AuthApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        # TODO: I thought the passthrough behaviour was only used for non proxy integration
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+#  /v1/logout:
+#    post:
+#      tags:
+#        - auth
+#      responses:
+#        204:
+#          description: Logout successful
+#      # This endpoint does not require authentication
+#      security:
+#        - NONE: [ ]
+#      x-amazon-apigateway-request-validator: "body"
+#      x-amazon-apigateway-integration:
+#        uri:
+#          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AuthApiFunction.Arn}/invocations"
+#        httpMethod: "POST"
+#        passthroughBehavior: "when_no_match"
+#        type: "aws_proxy"
+  /v1/current_identity:
+    get:
+      tags:
+        - auth
+      responses:
+        200:
+          description: Current identity information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CurrentIdentityDetailResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AuthApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
+# By default, All endpoints are using the CognitoAuthorizer
+security:
+  - CognitoAuthorizer: [ ]
+
+x-amazon-apigateway-request-validators:
+  body:
+    validateRequestBody: true
+    validateRequestParameters: false
+  params:
+    validateRequestBody: false
+    validateRequestParameters: true
+  params-and-body:
+    validateRequestBody: true
+    validateRequestParameters: true
+
+# By default, only the params (query params & headers will be validated)
+x-amazon-apigateway-request-validator: "params"
+
+x-amazon-apigateway-gateway-responses:
+  BAD_REQUEST_BODY:
+    statusCode: 400
+    responseTemplates:
+      application/json: '{"message": $context.error.messageString, "description": "$context.error.validationErrorString"}'
+
+components:
+  schemas:
+    LoginRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      required:
+        - username
+        - password
+    LoginResponse:
+      type: object
+      properties:
+        AccessToken:
+          type: string
+        ExpiresIn:
+          type: integer
+        IdToken:
+          type: string
+        RefreshToken:
+          type: string
+        TokenType:
+          type: string
+    CurrentIdentityDetailResponse:
+      type: object
+      properties:
+        organization_email:
+          type: string
+        organization_id:
+          type: string
+          format: uuid
+        organization_name:
+          type: string
+    ForgotPasswordRequest:
+      type: object
+      properties:
+        username:
+          type: string
+      required:
+        - username
+    ConfirmForgotPasswordRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        confirmation_code:
+          type: string
+        new_password:
+          type: string
+      required:
+        - username
+        - confirmation_code
+        - new_password
+    ChangePasswordRequest:
+      type: object
+      properties:
+        access_token:
+          type: string
+        old_password:
+          type: string
+        new_password:
+          type: string
+      required:
+        - access_token
+        - old_password
+        - new_password
+  securitySchemes:
+    CognitoAuthorizer:
+      type: "apiKey"
+      name: "Authorization"
+      in: "header"
+      x-amazon-apigateway-authtype: "cognito_user_pools"
+      x-amazon-apigateway-authorizer:
+        type: "cognito_user_pools"
+        providerARNs:
+        - Fn::Sub: "{{resolve:ssm:/${StackName}/${UserPoolArnSSMParameterName}}}"

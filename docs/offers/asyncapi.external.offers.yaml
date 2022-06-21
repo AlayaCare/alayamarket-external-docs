@@ -1,0 +1,284 @@
+asyncapi: 2.4.0
+info:
+  title: AlayaMarket Offers External Events API
+  version: 1.0.0
+  description: | 
+    Async API for external Offer events using AWS SNS as a broker. 
+    
+    Generally, subscriptions are expected to be https endpoints. 
+    In such cases, the messages described in this document will be 
+    stringified json data within the `Message` of the payload. 
+    
+    For more information see https://docs.aws.amazon.com/sns/latest/dg/SendMessageToHttp.prepare.html
+servers:
+  sandbox:
+    url: https://api.prod.alayamarket.{region}
+    description: Sandbox server
+    protocol: https
+    variables:
+        region:
+          description: Server region
+          default: ca
+          enum:
+            - ca
+            - com
+            - com.au
+
+  production:
+    url: https://api.prod.alayamarket.{region}
+    description: Production server
+    protocol: https
+    variables:
+        region:
+          description: Server region
+          default: ca
+          enum:
+            - ca
+            - com
+            - com.au
+
+defaultContentType: application/json
+
+channels:
+  # channels will represent topics in SNS.
+  # channels that the application publishes to, and consumers can subscribe to, should use the `subscribe` keyword.
+  # channels that the application consumes to, and other applications can publish to, should use the `publish` keyword.
+  outbox-offers:
+    subscribe:
+      operationId: sub_outbox_offers
+      description: |
+        Subscribe demand participants to outbox offer events published by the service.
+      message:
+        $ref: '#/components/messages/OutboxOfferEventMessage'
+  outbox-referrals:
+    subscribe:
+      operationId: sub_outbox_referrals
+      description: |
+        Subscribe demand participants to outbox referral events published by the service.
+      message:
+        $ref: '#/components/messages/OutboxReferralEventMessage'
+  outbox-visits:
+    subscribe:
+      operationId: sub_outbox_visits
+      description: |
+        Subscribe demand participants to outbox visit events published by the service. This is only supported for offers of type 'service'.
+      message:
+        $ref: '#/components/messages/OutboxVisitEventMessage'
+  outbox-work-sessions:
+    subscribe:
+      operationId: sub_outbox_work_sessions
+      description: |
+        Subscribe demand participants to outbox work session events published by the service.
+      message:
+        $ref: '#/components/messages/OutboxWorkSessionEventMessage'
+  inbox-offers:
+    subscribe:
+      operationId: sub_inbox_offers
+      description: |
+        Subscribe demand participants to inbox offer events published by the service.
+      message:
+        $ref: '#/components/messages/InboxOfferEventMessage'
+  inbox-referrals:
+    subscribe:
+      operationId: sub_inbox_referrals
+      description: |
+        Subscribe demand participants to inbox referral events published by the service.
+      message:
+        $ref: '#/components/messages/InboxReferralEventMessage'
+
+components:
+  messages:
+    OutboxOfferEventMessage:
+      messageId: message_outbox_offer
+      name: OutboxOfferEvent
+      title: Outbox offer state change event
+      summary: Inform relevant demand participants about a change to the offer state
+      payload:
+        $ref: '#/components/schemas/OutboxOfferEventPayload'
+    OutboxReferralEventMessage:
+      messageId: message_outbox_referral
+      name: OutboxOfferEvent
+      title: Outbox referral state change event
+      summary: Inform relevant demand participants about a change to the referral state
+      payload:
+        $ref: '#/components/schemas/OutboxReferralEventPayload'
+    OutboxVisitEventMessage:
+      messageId: message_outbox_visit
+      name: OutboxVisitEvent
+      title: Outbox visit state change event
+      summary: Inform relevant demand participants about a change to the visit state
+      payload:
+        $ref: '#/components/schemas/OutboxVisitEventPayload'
+    OutboxWorkSessionEventMessage:
+      messageId: message_outbox_work_session
+      name: OutboxWorkSessionEvent
+      title: Outbox work session state change event
+      summary: Inform relevant demand participants about a change to the work session state
+      payload:
+        $ref: '#/components/schemas/OutboxWorkSessionEventPayload'
+    InboxOfferEventMessage:
+      messageId: message_inbox_offer_event
+      name: InboxOfferEvent
+      title: Inbox offer state change event
+      summary: Inform relevant supply participants about a change to the offer state
+      payload:
+        $ref: '#/components/schemas/InboxOfferEventPayload'
+    InboxReferralEventMessage:
+        messageId: message_inbox_referral
+        name: InboxReferralEvent
+        title: Inbox referral state change event
+        summary: Inform relevant supply participants about a change to the referral state
+        payload:
+          $ref: '#/components/schemas/InboxReferralEventPayload'
+
+  schemas:
+    OutboxOfferEventPayload:
+      type: object
+      properties:
+        event_source:
+            type: string
+            description: Source of the event.
+            const: alayamarket.offers
+        event_name:
+            type: string
+            description: Name of the event.
+            enum:
+              - OfferAccepted
+              - OfferDeclined
+        id:
+          type: string
+          format: uuid
+          description: ID of the offer
+    OutboxReferralEventPayload:
+      type: object
+      properties:
+        event_source:
+            type: string
+            description: Source of the event.
+            const: alayamarket.referrals
+        event_name:
+            type: string
+            description: Name of the event.
+            enum:
+              - ReferralCreated
+              - ReferralProcessed
+              - ReferralSupplyCancelled
+        id:
+          type: string
+          format: uuid
+          description: ID of the referral
+    OutboxVisitEventPayload:
+      type: object
+      properties:
+        event_source:
+            type: string
+            description: Source of the event.
+            const: alayamarket.visits
+        event_name:
+            type: string
+            description: Name of the event.
+            enum:
+              - VisitSupplyScheduled
+        id:
+          type: string
+          format: uuid
+          description: ID of the visit
+        start_at:
+          type: string
+          format: date-time
+          description: Start date-time of the visit.
+        end_at:
+          type: string
+          format: date-time
+          description: End date-time of the visit.
+        service:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              description: ID of the service.
+            outbox_id:
+              type: string
+              description: ID of the service in the demand system.
+    OutboxWorkSessionEventPayload:
+      type: object
+      properties:
+        event_source:
+            type: string
+            description: Source of the event.
+            const: alayamarket.work_sessions
+        event_name:
+            type: string
+            description: Name of the event.
+            enum:
+              - WorkSessionStarted
+              - WorkSessionEnded
+        id:
+          type: string
+          format: uuid
+          description: ID of the work session.
+        visit_id:
+          type: string
+          format: uuid
+          description: ID of the visit associated to the work session.
+        visit_outbox_id:
+          type: string
+          format: uuid
+          description: ID of the visit in the demand system associated to the work session.
+        start_at:
+          type: string
+          format: date-time
+          description: Start date-time of the work session.
+        start_latitude:
+          type: number
+          description: Start latitude of the work session.
+        start_longitude:
+          type: number
+          description: Start longitude of the work session.
+        end_at:
+          type: string
+          format: date-time
+          description: End date-time of the work session.
+        end_latitude:
+          type: number
+          description: End latitude of the work session.
+        end_longitude:
+          type: number
+          description: End longitude of the work session.
+    InboxOfferEventPayload:
+      type: object
+      properties:
+        event_source:
+            type: string
+            description: Source of the event.
+            const: alayamarket.offers
+        event_name:
+            type: string
+            description: Name of the event.
+            enum:
+              - OfferMatched
+              - OfferClosed
+              - OfferFulfilled
+        id:
+          type: string
+          format: uuid
+          description: ID of the offer
+    InboxReferralEventPayload:
+      type: object
+      properties:
+        event_source:
+            type: string
+            description: Source of the event.
+            const: alayamarket.referrals
+        event_name:
+            type: string
+            description: Name of the event.
+            enum:
+              - ReferralCreated
+              - ReferralDemandCancelled
+        id:
+          type: string
+          format: uuid
+          description: ID of the referral
+            
