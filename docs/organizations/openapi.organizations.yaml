@@ -1,0 +1,874 @@
+openapi: "3.0.1"
+info:
+  title:
+    Fn::Sub: "${OrganizationApiName}"
+  version: "1.0"
+servers:
+- url: https://api.{env}.alayamarket.{region}/organizations
+  variables:
+    env:
+      description: The server environment.
+      enum:
+        - staging
+        - sandbox
+        - prod
+      default: prod
+    region:
+      description: The server top-level domain indicating the region.
+      enum:
+        - ca
+        - com
+        - com.au
+      default: ca
+paths:
+  /v1/sys_admin/auto_sign_up:
+    post:
+      tags:
+        - organizations (sys_admin)
+      description: |
+        # Authorization
+        Required role: `sys_admin`
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrgAutoSignUpRequest'
+      responses:
+        200:
+          description: "Sign up process started."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrgAutoSignUpResponse"
+      x-amazon-apigateway-request-validator: "body"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+  /v1/sys_admin/sign_up:
+    post:
+      tags:
+        - organizations (sys_admin)
+      description: |
+        # Authorization
+        Required role: `sys_admin`
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrgSignUpRequest'
+      responses:
+        200:
+          description: "Sign up successful. Confirmation code sent."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrgSignUpResponse'
+      x-amazon-apigateway-request-validator: "body"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+  /v1/sys_admin/confirm_sign_up:
+    post:
+      tags:
+        - organizations (sys_admin)
+      description: |
+        # Authorization
+        Required role: `sys_admin`
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrgConfirmSignUpRequest'
+      responses:
+        204:
+          description: "Sign up confirmed"
+      x-amazon-apigateway-request-validator: "body"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+  /v1/sys_admin/admin_confirm_sign_up:
+    post:
+      tags:
+        - organizations (sys_admin)
+      description: |
+        # Authorization
+        Required role: `sys_admin`
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrgConfirmSignUpAdminRequest'
+      responses:
+        204:
+          description: "Sign up confirmed"
+      x-amazon-apigateway-request-validator: "body"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+  /v1/sys_admin:
+    get:
+      tags:
+        - organizations (sys_admin)
+      description: |
+        Get a list of organizations sorted by name ascending.
+        # Authorization
+        Required role: `sys_admin`
+      parameters:
+        - in: query
+          name: email
+          schema:
+            type: string
+            format: email
+        - in: query
+          name: id
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: name
+          schema:
+            type: string
+        - $ref: '#/components/parameters/PageNumberParam'
+        - $ref: '#/components/parameters/ItemsPerPageParam'
+      responses:
+        200:
+          description: "List of organizations"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrgPageResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+  /v1/sys_admin/{organization_id}/demand_persona/activate:
+    post:
+      tags:
+        - organizations (sys_admin)
+      parameters:
+        - $ref: '#/components/parameters/OrgIdPathParam'
+      description: |
+        Activates the organization on the demand side.
+        # Authorization
+        Required role: `sys_admin`
+      responses:
+        204:
+          description: "Demand activated - empty response"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+  /v1/sys_admin/{organization_id}/demand_persona/deactivate:
+    post:
+      tags:
+        - organizations (sys_admin)
+      parameters:
+        - $ref: '#/components/parameters/OrgIdPathParam'
+      description: |
+        Deactivates the organization on the demand side.
+        # Authorization
+        Required role: `sys_admin`
+      responses:
+        204:
+          description: "Demand deactivated - empty response"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+  /v1/sys_admin/{organization_id}/supply_persona/activate:
+    post:
+      tags:
+        - organizations (sys_admin)
+      parameters:
+        - $ref: '#/components/parameters/OrgIdPathParam'
+      description: |
+        Activates the organization as a supplier.
+        # Authorization
+        Required role: `sys_admin`
+      responses:
+        204:
+          description: "Supply activated - empty response"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+  /v1/sys_admin/{organization_id}/supply_persona/deactivate:
+    post:
+      tags:
+        - organizations (sys_admin)
+      parameters:
+        - $ref: '#/components/parameters/OrgIdPathParam'
+      description: |
+        Deactivates the organization as a supplier.
+        # Authorization
+        Required role: `sys_admin`
+      responses:
+        204:
+          description: "Supply deactivated - empty response"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+  /v1/demand_persona/trusted_network:
+    get:
+      tags:
+        - organizations (org_admin)
+      description: |
+        Retrieves the trusted network of an organization.
+        # Authorization
+        Required role: `org_admin`
+      responses:
+        200:
+          description: Trusted network
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DemandTrustedNetworkResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+  /v1/sys_admin/{organization_id}/demand_persona:
+    get:
+      tags:
+        - organizations (sys_admin)
+      parameters:
+        - $ref: '#/components/parameters/OrgIdPathParam'
+      description: |
+        Retrieves the demand persona of an organization.
+        # Authorization
+        Required role: `sys_admin`
+      responses:
+        200:
+          description: Demand persona
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DemandDetailResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+  /v1/sys_admin/{organization_id}/supply_persona:
+    get:
+      tags:
+        - organizations (sys_admin)
+      parameters:
+        - $ref: '#/components/parameters/OrgIdPathParam'
+      description: |
+        Retrieves the supply persona of an organization.
+        # Authorization
+        Required role: `sys_admin`
+      responses:
+        200:
+          description: Supply persona
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupplyDetailResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+  /v1/sys_admin/{organization_id}/supply_persona/care_types:
+    post:
+      tags:
+        - organizations (sys_admin)
+      parameters:
+        - $ref: '#/components/parameters/OrgIdPathParam'
+      description: |
+        Sets activated care types for the supply persona.
+        # Authorization
+        Required role: `sys_admin`
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SupplyUpdateCareTypesRequest'
+      responses:
+        204:
+          description: "Care types saved - empty response"
+      x-amazon-apigateway-request-validator: "body"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+  /v1/sys_admin/{organization_id}/demand_persona/trusted_network:
+    post:
+      tags:
+        - organizations (sys_admin)
+      parameters:
+        - $ref: '#/components/parameters/OrgIdPathParam'
+      description: |
+        Sets the trusted network for the demand persona.
+        The trusted network is composed of supply personas.
+        # Authorization
+        Required role: `sys_admin`
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DemandUpdateTrustedNetworkRequest'
+      responses:
+        204:
+          description: "Trusted Network saved - empty response"
+      x-amazon-apigateway-request-validator: "body"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+  /v1/sys_admin/{organization_id}/subscribe:
+    post:
+      tags:
+        - organizations (sys_admin)
+      parameters:
+        - $ref: '#/components/parameters/OrgIdPathParam'
+      description: |
+        Subscribe an organization to the notifications for a given topic.
+        # Authorization
+        Required role: `sys_admin`
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrgSubscribeRequest'
+      responses:
+        200:
+          description: Subscribe complete
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrgSubscribeResponse'
+      x-amazon-apigateway-request-validator: "body"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+  /v1/sys_admin/unsubscribe:
+    post:
+      tags:
+        - organizations (sys_admin)
+      description: |
+        Unsubscribe an organization from a notification topic.
+        # Authorization
+        Required role: `sys_admin`
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrgUnsubscribeRequest'
+      responses:
+        204:
+          description: Unsubscribe complete
+      x-amazon-apigateway-request-validator: "body"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+  /v1/sys_admin/subscriptions:
+    get:
+      tags:
+        - organizations (sys_admin)
+      parameters:
+        - in: query
+          name: endpoint
+          schema:
+            type: string
+      description: |
+        Get the subscriptions.
+        # Authorization
+        Required role: `sys_admin`
+      responses:
+        200:
+          description: Subscriptions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionPageResponse'
+      x-amazon-apigateway-request-validator: "body"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+# By default, All endpoints are using the CognitoAuthorizer
+security:
+  - CognitoAuthorizer: [ ]
+
+x-amazon-apigateway-request-validators:
+  body:
+    validateRequestBody: true
+    validateRequestParameters: false
+  params:
+    validateRequestBody: false
+    validateRequestParameters: true
+  params-and-body:
+    validateRequestBody: true
+    validateRequestParameters: true
+
+# By default, only the params (query params & headers will be validated)
+x-amazon-apigateway-request-validator: "params"
+
+x-amazon-apigateway-gateway-responses:
+  BAD_REQUEST_BODY:
+    statusCode: 400
+    responseTemplates:
+      application/json: '{"message": $context.error.messageString, "description": "$context.error.validationErrorString"}'
+
+components:
+  parameters:
+    OrgIdPathParam:
+      in: path
+      name: organization_id
+      schema:
+        type: string
+        format: uuid
+      required: true
+      description: ID of an organization
+    ItemsPerPageParam:
+      in: query
+      name: items_per_page
+      schema:
+        $ref: '#/components/schemas/ItemsPerPageCore'
+    PageNumberParam:
+      in: query
+      name: page
+      schema:
+        $ref: '#/components/schemas/PageNumberCore'
+
+  schemas:
+    ItemsPerPageCore:
+      type: integer
+      minimum: 1
+      default: 100
+    PageNumberCore:
+      type: integer
+      minimum: 1
+      default: 1
+    PageCore:
+      description: Root page schema for returning collections.
+      type: object
+      properties:
+        page:
+          $ref: '#/components/schemas/PageNumberCore'
+        items_per_page:
+          $ref: '#/components/schemas/ItemsPerPageCore'
+        total_items:
+          type: integer
+          minimum: 0
+        total_pages:
+          type: integer
+          minimum: 0
+      required:
+        - page
+        - items_per_page
+        - total_items
+        - total_pages
+    AddressCore:
+      type: object
+      properties:
+        name:
+          type: string
+        address:
+          type: string
+        address_suite:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zip:
+          type: string
+        country:
+          type: string
+        latitude:
+          type: number
+        longitude:
+          type: number
+      required:
+        - address
+        - city
+        - state
+        - zip
+        - country
+        - latitude
+        - longitude
+
+    OrgAutoSignUpRequest:
+      type: object
+      properties:
+        organization:
+          $ref: '#/components/schemas/OrgSignUpRequest'
+        demand_configuration:
+          type: object
+          properties:
+            trusted_network:
+              $ref: '#/components/schemas/TrustedNetworkCore'
+            offer_assignment:
+              type: string
+              enum:
+              - auto
+              - manual
+        supply_configuration:
+          $ref: "#/components/schemas/SupplyUpdateCareTypesRequest"
+        subscriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrgSubscribeRequest'
+        auto_confirm:
+          type: boolean
+      required:
+        - organization
+        - auto_confirm
+
+    OrgAutoSignUpResponse:
+      type: object
+      properties:
+        execution_arn:
+          description: "State machine execution ARN."
+          type: string
+      required:
+        - execution_arn
+
+    OrgSignUpRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        name:
+          type: string
+        source:
+          type: string
+        password:
+          type: string
+        phone_number:
+          type: string
+        phone_extension:
+          type: string
+        address:
+          $ref: '#/components/schemas/AddressCore'
+      required:
+        - email
+        - name
+        - password
+        - source
+        - phone_number
+        - address
+
+    OrgConfirmSignUpRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        confirmation_code:
+          # I originally mapped this as an integer, but it seems the transformation
+          # was automatically adding format: int32, which api gateway doesn't support.
+          # https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-known-issues.html
+          type: string
+      required:
+        - username
+        - confirmation_code
+
+    OrgConfirmSignUpAdminRequest:
+      type: object
+      properties:
+        username:
+          type: string
+      required:
+        - username
+
+    OrgLeanCore:
+      # Do not remove this schema.
+      # This is currently not used by the http api, but the generated pydantic
+      # schema is imported and used by the service layer.
+      type: object
+      properties:
+        email:
+          type: string
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        source:
+          type: string
+      required:
+        - email
+        - id
+        - name
+        - source
+
+    OrgSignUpResponse:
+      type: object
+      properties:
+        email:
+          type: string
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        source:
+          type: string
+        phone:
+          type: object
+          properties:
+            number:
+              type: string
+            extension:
+              type: string
+          required:
+            - number
+        address:
+          $ref: '#/components/schemas/AddressCore'
+        demand_persona:
+          $ref: '#/components/schemas/DemandDetailResponse'
+        supply_persona:
+          $ref: '#/components/schemas/SupplyDetailResponse'
+      required:
+        - email
+        - id
+        - name
+        - source
+        - phone
+        - address
+        - demand_persona
+        - supply_persona
+
+    DemandDetailResponse:
+      allOf:
+        - $ref: '#/components/schemas/DemandTrustedNetworkResponse'
+        - type: object
+          properties:
+            status:
+              type: string
+              enum: [ active, disabled ]
+          required:
+            - status
+
+    DemandTrustedNetworkResponse:
+      type: object
+      properties:
+        trusted_network:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              id:
+                type: string
+                format: uuid
+            required:
+              - name
+              - id
+      required:
+        - trusted_network
+
+    SupplyDetailResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [ active, disabled ]
+        care_types:
+          type: array
+          items:
+            type: string
+      required:
+        - status
+
+    SupplyUpdateCareTypesRequest:
+      type: object
+      description: |
+        Note: The `care_types` key is required and not nullable.
+        Providing an empty array `[]` will remove all care_types.
+      properties:
+        care_types:
+          type: array
+          items:
+            type: string
+            enum: ["psw", "nursing"]
+      required:
+        - care_types
+
+    DemandUpdateTrustedNetworkRequest:
+      type: object
+      properties:
+        supply_persona_ids:
+          $ref: '#/components/schemas/TrustedNetworkCore'
+      required:
+        - supply_persona_ids
+
+    TrustedNetworkCore:
+      type: array
+      items:
+        type: string
+        format: uuid
+
+    OrgSubscribeRequest:
+      type: object
+      properties:
+        topic:
+          type: string
+          enum:
+            - inbox-offers
+            - inbox-referrals
+            - outbox-offers
+            - outbox-referrals
+            - outbox-visits
+            - outbox-work-sessions
+        protocol:
+          type: string
+          enum: [ https, email ]
+        endpoint:
+          type: string
+      required:
+        - topic
+        - protocol
+        - endpoint
+
+    OrgSubscribeResponse:
+      type: object
+      properties:
+        subscription_arn:
+          type: string
+      required:
+        - subscription_arn
+
+    OrgUnsubscribeRequest:
+      type: object
+      properties:
+        subscription_arn:
+          type: string
+      required:
+        - subscription_arn
+
+    SubscriptionCollectionResponse:
+      type: object
+      properties:
+        subscription_arn:
+          type: string
+        topic_arn:
+          type: string
+        protocol:
+          type: string
+        endpoint:
+          type: string
+      required:
+        - subscription_arn
+        - topic_arn
+        - protocol
+        - endpoint
+
+    SubscriptionPageResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubscriptionCollectionResponse'
+      required:
+        - items
+
+    OrgCollectionResponse:
+      type: object
+      properties:
+        email:
+          type: string
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        source:
+          type: string
+        demand_persona:
+          type: object
+          properties:
+            status:
+              type: string
+              enum: [ active, disabled ]
+          required:
+            - status
+        supply_persona:
+          type: object
+          properties:
+            status:
+              type: string
+              enum: [ active, disabled ]
+          required:
+            - status
+      required:
+        - email
+        - id
+        - name
+        - source
+        - demand_persona
+        - supply_persona
+
+    OrgPageResponse:
+      allOf:
+        - $ref: '#/components/schemas/PageCore'
+        - type: object
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/OrgCollectionResponse'
+
+  securitySchemes:
+    CognitoAuthorizer:
+      type: "apiKey"
+      name: "Authorization"
+      in: "header"
+      x-amazon-apigateway-authtype: "cognito_user_pools"
+      x-amazon-apigateway-authorizer:
+        type: "cognito_user_pools"
+        providerARNs:
+        - Fn::Sub: "{{resolve:ssm:/${StackName}/${UserPoolArnSSMParameterName}}}"
