@@ -11,24 +11,18 @@ info:
     
     For more information see https://docs.aws.amazon.com/sns/latest/dg/SendMessageToHttp.prepare.html
 servers:
-  sandbox:
-    url: https://api.prod.alayamarket.{region}
+  live:
+    url: https://api.{env}.alayamarket.{region}
     description: Sandbox server
     protocol: https
     variables:
-        region:
-          description: Server region
-          default: ca
+        env:
+          description: Server environment
+          default: prod
           enum:
-            - ca
-            - com
-            - com.au
-
-  production:
-    url: https://api.prod.alayamarket.{region}
-    description: Production server
-    protocol: https
-    variables:
+            - staging
+            - sandbox
+            - prod
         region:
           description: Server region
           default: ca
@@ -64,6 +58,14 @@ channels:
         Subscribe demand participants to outbox visit events published by the service. This is only supported for offers of type 'service'.
       message:
         $ref: '#/components/messages/OutboxVisitEventMessage'
+  outbox-visit-tasks:
+    subscribe:
+      operationId: sub_outbox_visit_tasks
+      description: |
+        Subscribe demand participants to outbox visit task events published by the
+        service. This is only supported for offers of type 'visit'.
+      message:
+        $ref: '#/components/messages/OutboxVisitTaskEventMessage'
   outbox-work-sessions:
     subscribe:
       operationId: sub_outbox_work_sessions
@@ -109,6 +111,14 @@ components:
       summary: Inform relevant demand participants about a change to the visit state
       payload:
         $ref: '#/components/schemas/OutboxVisitEventPayload'
+    OutboxVisitTaskEventMessage:
+      messageId: message_outbox_visit_task
+      name: OutboxVisitTaskEvent
+      title: Outbox visit task state change event
+      summary: Inform relevant demand participants about a change to one (or more) visit
+        task state
+      payload:
+        $ref: '#/components/schemas/OutboxVisitTaskEventPayload'
     OutboxWorkSessionEventMessage:
       messageId: message_outbox_work_session
       name: OutboxWorkSessionEvent
@@ -201,6 +211,47 @@ components:
             outbox_id:
               type: string
               description: ID of the service in the demand system.
+    OutboxVisitTaskEventPayload:
+      type: object
+      properties:
+        event_source:
+            type: string
+            description: Source of the event.
+            const: alayamarket.visit_tasks
+        event_name:
+            type: string
+            description: Name of the event.
+            enum:
+              - VisitTasksCompleted
+        id:
+          type: string
+          format: uuid
+          description: ID of the visit.
+        visit_outbox_id:
+          type: string
+          description: ID of the visit in the demand system associated with the visit.
+        tasks:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+                description: ID of the visit task.
+              outbox_id:
+                type: string
+                description: ID of the visit task in the demand system.
+              is_completed:
+                type: boolean
+                description: Is the visit task completed?
+              completed_at:
+                type: string
+                format: date-time
+                description: The date-time at which the visit task was completed.
+              completion_comment:
+                type: string
+                description: Comment related to the completion of the visit task.
     OutboxWorkSessionEventPayload:
       type: object
       properties:

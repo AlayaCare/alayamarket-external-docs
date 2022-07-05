@@ -41,7 +41,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/OrgAutoSignUpResponse"
-      x-amazon-apigateway-request-validator: "body"
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}/invocations"
@@ -68,7 +67,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrgSignUpResponse'
-      x-amazon-apigateway-request-validator: "body"
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}/invocations"
@@ -91,7 +89,6 @@ paths:
       responses:
         204:
           description: "Sign up confirmed"
-      x-amazon-apigateway-request-validator: "body"
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}/invocations"
@@ -114,7 +111,6 @@ paths:
       responses:
         204:
           description: "Sign up confirmed"
-      x-amazon-apigateway-request-validator: "body"
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}/invocations"
@@ -153,6 +149,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrgPageResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+  /v1/sys_admin/{organization_id}:
+    get:
+      tags:
+        - organizations (sys_admin)
+      description: |
+        Get the details of an organization.
+        # Authorization
+        Required role: `sys_admin`
+      parameters:
+        - $ref: '#/components/parameters/OrgIdPathParam'
+      responses:
+        200:
+          description: "Organization detail"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrgDetailResponse'
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}/invocations"
@@ -321,7 +340,6 @@ paths:
       responses:
         204:
           description: "Care types saved - empty response"
-      x-amazon-apigateway-request-validator: "body"
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}/invocations"
@@ -348,7 +366,6 @@ paths:
       responses:
         204:
           description: "Trusted Network saved - empty response"
-      x-amazon-apigateway-request-validator: "body"
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}/invocations"
@@ -378,7 +395,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrgSubscribeResponse'
-      x-amazon-apigateway-request-validator: "body"
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}/invocations"
@@ -402,7 +418,6 @@ paths:
       responses:
         204:
           description: Unsubscribe complete
-      x-amazon-apigateway-request-validator: "body"
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}/invocations"
@@ -429,7 +444,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SubscriptionPageResponse'
-      x-amazon-apigateway-request-validator: "body"
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}/invocations"
@@ -643,7 +657,7 @@ components:
         - name
         - source
 
-    OrgSignUpResponse:
+    OrgDetailResponse:
       type: object
       properties:
         email:
@@ -679,6 +693,10 @@ components:
         - address
         - demand_persona
         - supply_persona
+
+    OrgSignUpResponse:
+      allOf:
+        - $ref: '#/components/schemas/OrgDetailResponse'
 
     DemandDetailResponse:
       allOf:
@@ -762,6 +780,7 @@ components:
             - outbox-offers
             - outbox-referrals
             - outbox-visits
+            - outbox-visit-tasks
             - outbox-work-sessions
         protocol:
           type: string

@@ -44,7 +44,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OutboxOfferDetailResponse'
-      x-amazon-apigateway-request-validator: "body"
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}/invocations"
@@ -182,7 +181,6 @@ paths:
       responses:
         204:
           description: "Successfully marked Offer as Cancelled"
-      x-amazon-apigateway-request-validator: "body"
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}/invocations"
@@ -214,7 +212,6 @@ paths:
       responses:
         204:
           description: "Successfully marked Offer as Assigned."
-      x-amazon-apigateway-request-validator: "body"
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}/invocations"
@@ -337,7 +334,6 @@ paths:
       responses:
         204:
           description: "Successfully marked Offer as Declined"
-      x-amazon-apigateway-request-validator: "body"
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}/invocations"
@@ -372,7 +368,6 @@ paths:
       responses:
         204:
           description: "Setting succesfully saved."
-      x-amazon-apigateway-request-validator: "body"
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}/invocations"
@@ -395,7 +390,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OutboxOfferAssignmentSettingUpdateResponse'
-      x-amazon-apigateway-request-validator: "body"
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}/invocations"
@@ -426,7 +420,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OutboxReferralDetailResponse'
-      x-amazon-apigateway-request-validator: "body"
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}/invocations"
@@ -515,7 +508,6 @@ paths:
       responses:
         204:
           description: "Successfully marked Referral as Cancelled"
-      x-amazon-apigateway-request-validator: "body"
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}/invocations"
@@ -630,7 +622,6 @@ paths:
       responses:
         204:
           description: "Successfully marked Referral as Cancelled"
-      x-amazon-apigateway-request-validator: "body"
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}/invocations"
@@ -712,7 +703,38 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InboxVisitScheduleResponse'
-      x-amazon-apigateway-request-validator: "body"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
+  /v1/inbox/visits/{visit_id}/tasks/complete:
+    parameters:
+      - $ref: '#/components/parameters/VisitIdPathParam'
+    post:
+      tags:
+        - visit inbox
+      description: |
+        # Authorization
+        Required role: supply `org_admin`.
+
+        # Description
+        Complete one (or more) visit task for the specified visit.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InboxReferralVisitTaskCompletionRequest'
+      responses:
+        200:
+          description: "Successfully completed visit tasks."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InboxReferralVisitTaskCollectionResponse'
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}/invocations"
@@ -753,7 +775,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OutboxWorkSessionPageResponse'
-      x-amazon-apigateway-request-validator: "body"
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}/invocations"
@@ -786,7 +807,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InboxWorkSessionStartResponse'
-      x-amazon-apigateway-request-validator: "body"
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}/invocations"
@@ -805,7 +825,8 @@ paths:
         # Description
         End a Work Session.
         
-        One of `work_session_id` or `inbox_id` must be provided.
+        * One of `work_session_id` or `inbox_id` must be provided, AND
+        * One of `visit_id` or `visit_inbox_id` must be provided.
       requestBody:
         required: true
         content:
@@ -815,7 +836,6 @@ paths:
       responses:
         204:
           description: "Successfully ended a Work Session."
-      x-amazon-apigateway-request-validator: "body"
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}/invocations"
@@ -856,6 +876,13 @@ components:
         $ref: '#/components/schemas/OfferIdCore'
       required: true
       description: ID of an offer
+    VisitIdPathParam:
+      in: path
+      name: visit_id
+      schema:
+        $ref: '#/components/schemas/VisitIdCore'
+      required: true
+      description: ID of a visit.
     OfferIdQueryParam:
       in: query
       name: offer_id
@@ -933,9 +960,9 @@ components:
         price:
           $ref: '#/components/schemas/OutboxOfferPriceCore'
         client:
-          $ref: '#/components/schemas/ClientOutboxCore'
+          $ref: '#/components/schemas/OutboxClientRequest'
         service:
-          $ref: '#/components/schemas/ServiceOutboxCore'
+          $ref: '#/components/schemas/OutboxServiceRequest'
         visits:
           type: array
           items:
@@ -1044,9 +1071,9 @@ components:
             price:
               $ref: '#/components/schemas/OutboxOfferPriceCore'
             client:
-              $ref: '#/components/schemas/ClientOutboxCore'
+              $ref: '#/components/schemas/OutboxOfferClientResponse'
             service:
-              $ref: '#/components/schemas/ServiceOutboxCore'
+              $ref: '#/components/schemas/OutboxServiceResponse'
             visits:
               type: array
               items:
@@ -1204,6 +1231,8 @@ components:
         - price
         - match
         - demand
+        - client
+        - service
 
     SortByCore:
       type: string
@@ -1423,6 +1452,10 @@ components:
       type: string
       format: uuid
 
+    VisitIdCore:
+      type: string
+      format: uuid
+
     PageNumberCore:
       type: integer
       minimum: 1
@@ -1512,6 +1545,9 @@ components:
     OutboxOfferVisitResponse:
       type: object
       properties:
+        id:
+          type: string
+          format: uuid
         outbox_id:
           type: string
         start_at:
@@ -1527,6 +1563,7 @@ components:
           items:
             $ref: '#/components/schemas/OutboxOfferVisitTaskResponse'
       required:
+        - id
         - outbox_id
         - start_at
         - end_at
@@ -1534,6 +1571,9 @@ components:
     OutboxReferralVisitResponse:
       type: object
       properties:
+        id:
+          type: string
+          format: uuid
         outbox_id:
           type: string
         start_at:
@@ -1549,7 +1589,7 @@ components:
           items:
             $ref: '#/components/schemas/OutboxReferralVisitTaskResponse'
       required:
-        - outbox_id
+        - id
         - start_at
         - end_at
 
@@ -1720,7 +1760,7 @@ components:
                 type: string
           # CCAC service includes priority, some other codes, and nests Frequencies in Service
 
-    ServiceOutboxCore:
+    OutboxServiceRequest:
       allOf:
         - $ref: '#/components/schemas/ServiceCore'
         - type: object
@@ -1730,6 +1770,22 @@ components:
             address:
               $ref: '#/components/schemas/AddressCore'
           required:
+            - outbox_id
+
+    OutboxServiceResponse:
+      allOf:
+        - $ref: '#/components/schemas/ServiceCore'
+        - type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            outbox_id:
+              type: string
+            address:
+              $ref: '#/components/schemas/AddressCore'
+          required:
+            - id
             - outbox_id
 
     ServiceIdCore:
@@ -1862,15 +1918,49 @@ components:
         - demographics
         - address
 
-    ClientOutboxCore:
+    InboxClientResponse:
+      allOf:
+        - $ref: '#/components/schemas/ClientCore'
+        - type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+          required:
+            - id
+
+    OutboxClientRequest:
       allOf:
         - $ref: '#/components/schemas/ClientCore'
         - type: object
           properties:
             outbox_id:
               type: string
-              # format: uuid
           required:
+            - outbox_id
+
+    OutboxOfferClientResponse:
+      allOf:
+        - $ref: '#/components/schemas/ClientCore'
+        - type: object
+          properties:
+            outbox_id:
+              type: string
+          required:
+            - outbox_id
+
+    OutboxReferralClientResponse:
+      allOf:
+        - $ref: '#/components/schemas/ClientCore'
+        - type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            outbox_id:
+              type: string
+          required:
+            - id
             - outbox_id
 
     DemographicLeanCore:
@@ -2006,9 +2096,9 @@ components:
         price:
           $ref: '#/components/schemas/PriceCore'
         client:
-          $ref: '#/components/schemas/ClientOutboxCore'
+          $ref: '#/components/schemas/OutboxClientRequest'
         service:
-          $ref: '#/components/schemas/ServiceOutboxCore'
+          $ref: '#/components/schemas/OutboxServiceRequest'
         visits:
           type: array
           items:
@@ -2094,9 +2184,9 @@ components:
             price:
               $ref: '#/components/schemas/PriceCore'
             client:
-              $ref: '#/components/schemas/ClientOutboxCore'
+              $ref: '#/components/schemas/OutboxReferralClientResponse'
             service:
-              $ref: '#/components/schemas/ServiceOutboxCore'
+              $ref: '#/components/schemas/OutboxServiceResponse'
             visits:
               type: array
               items:
@@ -2176,15 +2266,7 @@ components:
         price:
           $ref: '#/components/schemas/PriceCore'
         client:
-          allOf:
-            - $ref: '#/components/schemas/ClientCore'
-            - type: object
-              properties:
-                id:
-                  type: string
-                  # format: uuid
-              required:
-                - id
+          $ref: '#/components/schemas/InboxClientResponse'
         service:
           allOf:
             - $ref: '#/components/schemas/ServiceCore'
@@ -2254,6 +2336,44 @@ components:
         - visit
         - service
         # - recurrence
+
+    InboxReferralVisitTaskCompletionRequest:
+      type: object
+      properties:
+        tasks:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/InboxReferralVisitTaskCompletionCore'
+      required:
+        - tasks
+
+    InboxReferralVisitTaskCompletionCore:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        is_completed:
+          type: boolean
+        completed_at:
+          type: string
+          format: date-time
+        completion_comment:
+          type: string
+      required:
+        - id
+        - is_completed
+
+    InboxReferralVisitTaskCollectionResponse:
+      type: object
+      properties:
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/InboxReferralVisitTaskResponse'
+      required:
+        - tasks
 
     InboxVisitScheduleRequest:
       type: object
@@ -2393,11 +2513,12 @@ components:
         visit_id:
           type: string
           format: uuid
+        visit_inbox_id:
+          type: string
         inbox_id:
           type: string
       required:
         - end_at
-        - visit_id
 
     OutboxWorkSessionPageResponse:
       type: object
