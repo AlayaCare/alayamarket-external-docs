@@ -13,8 +13,11 @@ This is based on the template
 (workflow to update Swagger UI has been removed).
 
 
-The OpenAPI and AsyncAPI specifications are copied here and can be accessed from 
-[alayacare.github.io/alayamarket-external-docs](https://alayacare.github.io/alayamarket-external-docs/).  
+The OpenAPI and AsyncAPI specifications are copied here from [github.com/AlayaCare/alayamarket](https://github.com/AlayaCare/alayamarket).  
+This is currently done manually, but should be replaced by a GitHub action to keep these files in sync. 
+
+The hosted documentation can be accessed from 
+[alayacare.github.io/alayamarket-external-docs](https://alayacare.github.io/alayamarket-external-docs/)
 
 ### OpenAPI
 OpenAPI specs are displayed using [Swagger UI](https://swagger.io/docs/open-source-tools/swagger-ui/usage/installation/). 
