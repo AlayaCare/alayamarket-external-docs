@@ -24,7 +24,7 @@ OpenAPI specs are displayed using [Swagger UI](https://swagger.io/docs/open-sour
 AsyncAPI specs are displayed by generating html using [AsyncAPI Generator](https://www.asyncapi.com/tools/generator):
 ```shell
 npm install -g @asyncapi/generator
-ag asyncapi.yaml @asyncapi/html-template -o output/
+ag docs/offers/asyncapi.external.offers.yaml @asyncapi/html-template -o docs/offers/asyncapi.external.offers
 ```
 
 ## Next Steps
