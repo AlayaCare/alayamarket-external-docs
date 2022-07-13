@@ -16,9 +16,6 @@ This is based on the template
 The OpenAPI and AsyncAPI specifications are copied here from [github.com/AlayaCare/alayamarket](https://github.com/AlayaCare/alayamarket).  
 This is currently done manually, but should be replaced by a GitHub action to keep these files in sync. 
 
-The hosted documentation can be accessed from 
-[alayacare.github.io/alayamarket-external-docs](https://alayacare.github.io/alayamarket-external-docs/)
-
 ### OpenAPI
 OpenAPI specs are displayed using [Swagger UI](https://swagger.io/docs/open-source-tools/swagger-ui/usage/installation/). 
 
@@ -29,6 +26,13 @@ AsyncAPI specs are displayed by generating html using [AsyncAPI Generator](https
 npm install -g @asyncapi/generator
 ag docs/offers/asyncapi.external.offers.yaml @asyncapi/html-template -o docs/offers/asyncapi.external.offers
 ```
+
+## Documentation 
+
+A user guide is available [here](https://alayacare.github.io/alayamarket-external-docs/user_guide). 
+
+The complete list of documentation can be accessed from 
+[alayacare.github.io/alayamarket-external-docs](https://alayacare.github.io/alayamarket-external-docs/)
 
 ## Next Steps
 
