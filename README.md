@@ -29,7 +29,7 @@ ag docs/offers/asyncapi.external.offers.yaml @asyncapi/html-template -o docs/off
 
 ## Documentation 
 
-A user guide is available [here](https://alayacare.github.io/alayamarket-external-docs/user_guide). 
+A user guide is available [here](https://alayacare.github.io/alayamarket-external-docs/docs/user_guide/). 
 
 The complete list of documentation can be accessed from 
 [alayacare.github.io/alayamarket-external-docs](https://alayacare.github.io/alayamarket-external-docs/)
