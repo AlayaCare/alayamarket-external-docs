@@ -30,7 +30,9 @@ paths:
         Required role: `org_admin`
 
         # Description
-        Create an Offer by the Demand organization.
+        Create an Offer by the Demand organization.  
+        Multiple open or assigned offers with offer_type: `visit` are not permitted for the same visit. This is to prevent conflicting acceptances and assignations.
+
       requestBody:
         required: true
         content:
@@ -73,6 +75,27 @@ paths:
           name: status
           schema:
             $ref: '#/components/schemas/OfferStatusCore'
+        - in: query
+          name: visit_outbox_id
+          schema:
+            type: string
+        - in: query
+          name: is_accepted
+          schema:
+            type: boolean
+            description: Offers accepted by at least one match.
+        - in: query
+          name: expires_after
+          schema:
+            type: string
+            format: date-time
+            description: Offers that expire after this date-time.
+        - in: query
+          name: expires_before
+          schema:
+            type: string
+            format: date-time
+            description: Offers that expire before this date-time.
         - $ref: '#/components/parameters/PageNumberParam'
         - $ref: '#/components/parameters/ItemsPerPageParam'
         - $ref: '#/components/parameters/SortByParam'
@@ -202,7 +225,8 @@ paths:
 
         # Description
         Assign an Offer created by the Demand Organization to a
-        Supply Organization that accepted the Offer.
+        Supply Organization that accepted the Offer.  
+        The offer assignment setting of the Demand organization must be set to `manual`, otherwise this action is forbidden.  
       requestBody:
         required: true
         content:
@@ -498,7 +522,8 @@ paths:
         Required role: `org_admin`
 
         # Description
-        Cancel a Referral created by the Demand Organization.
+        Cancel a Referral created by the Demand Organization.  
+        A Referral can only be Cancelled if the status is `assigned` or `processed`.  
       requestBody:
         required: true
         content:
@@ -612,7 +637,8 @@ paths:
         Required role: `org_admin`
 
         # Description
-        Cancel an Referral after it's assigned to the Supply Organization.
+        Cancel an Referral after it's assigned to the Supply Organization.  
+        A Referral can only be Cancelled if the status is `assigned` or `processed`.  
       requestBody:
         required: true
         content:
@@ -710,6 +736,39 @@ paths:
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
 
+  /v1/inbox/visits/{visit_id}/reschedule:
+    parameters:
+      - $ref: '#/components/parameters/VisitIdPathParam'
+    post:
+      tags:
+        - visit inbox
+      description: |
+        # Authorization
+        Required role: supply `org_admin`.
+
+        # Description
+        Reschedule a visit of a service referral. The supply organization rescheduling
+        the visit must be identical to the one that scheduled the original visit.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InboxVisitRescheduleRequest'
+      responses:
+        200:
+          description: "Successfully rescheduled visit."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InboxVisitRescheduleResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
   /v1/inbox/visits/{visit_id}/tasks/complete:
     parameters:
       - $ref: '#/components/parameters/VisitIdPathParam'
@@ -721,20 +780,21 @@ paths:
         Required role: supply `org_admin`.
 
         # Description
-        Complete one (or more) visit task for the specified visit.
+        Complete one (or more) visit task for the specified visit.<br><br>
+        Subsequent posts for the same task id updates the task.
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/InboxReferralVisitTaskCompletionRequest'
+              $ref: '#/components/schemas/InboxVisitTaskCompletionRequest'
       responses:
         200:
           description: "Successfully completed visit tasks."
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/InboxReferralVisitTaskCollectionResponse'
+                $ref: '#/components/schemas/InboxVisitTaskCollectionResponse'
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}/invocations"
@@ -873,37 +933,43 @@ components:
       in: path
       name: offer_id
       schema:
-        $ref: '#/components/schemas/OfferIdCore'
+        type: string
+        format: uuid
       required: true
       description: ID of an offer
     VisitIdPathParam:
       in: path
       name: visit_id
       schema:
-        $ref: '#/components/schemas/VisitIdCore'
+        type: string
+        format: uuid
       required: true
       description: ID of a visit.
     OfferIdQueryParam:
       in: query
       name: offer_id
       schema:
-        $ref: '#/components/schemas/OfferIdCore'
+        type: string
+        format: uuid
     ReferralIdQueryParam:
       in: query
       name: referral_id
       schema:
-        $ref: '#/components/schemas/ReferralIdCore'
+        type: string
+        format: uuid      
     ReferralIdPathParam:
       in: path
       name: referral_id
       schema:
-        $ref: '#/components/schemas/ReferralIdCore'
+        type: string
+        format: uuid
       required: true
     ServiceIdQueryParam:
       in: query
       name: service_id
       schema:
-        $ref: '#/components/schemas/ServiceIdCore'
+        type: string
+        format: uuid
     ItemsPerPageParam:
       in: query
       name: items_per_page
@@ -1352,6 +1418,7 @@ components:
         - open # wrapper for created + matched + sent + accepted
         - assigned
         - closed
+        - declined_by_all
         - expired
 
     OfferMatchResponseCore:
@@ -1443,18 +1510,6 @@ components:
         - items_per_page
         - total_items
         - total_pages
-
-    OfferIdCore:
-      type: string
-      format: uuid
-
-    ReferralIdCore:
-      type: string
-      format: uuid
-
-    VisitIdCore:
-      type: string
-      format: uuid
 
     PageNumberCore:
       type: integer
@@ -1681,18 +1736,10 @@ components:
           type: string
         is_required:
           type: boolean
-        is_completed:
-          type: boolean
-        completed_at:
-          type: string
-          format: date-time
-        completion_comment:
-          type: string
       required:
         - id
         - name
         - is_required
-        - is_completed
 
     OutboxReferralVisitTaskRequest:
       type: object
@@ -1724,19 +1771,11 @@ components:
           type: string
         is_required:
           type: boolean
-        is_completed:
-          type: boolean
-        completed_at:
-          type: string
-          format: date-time
-        completion_comment:
-          type: string
       required:
         - id
         - outbox_id
         - name
         - is_required
-        - is_completed
 
     ServiceCore:
       allOf:
@@ -1787,10 +1826,6 @@ components:
           required:
             - id
             - outbox_id
-
-    ServiceIdCore:
-      type: string
-      format: uuid
 
     ServiceLeanCore:
       type: object
@@ -2018,6 +2053,20 @@ components:
           type: string
         country:
           type: string
+        approx_latitude:
+          type: number
+          format: double
+          minimum: -90
+          maximum: 90
+        approx_longitude:
+          type: number
+          format: double
+          minimum: -180
+          maximum: 180
+        approx_radius_meters:
+          type: number
+          format: double
+          minimum: 0
       required:
         - city
         - state
@@ -2025,32 +2074,38 @@ components:
         - country
 
     AddressCore:
-      allOf:
-        - $ref: '#/components/schemas/AddressAnonCore'
-        - type: object
-          properties:
-            name:
-              type: string
-            address:
-              type: string
-            address_suite:
-              type: string
-            latitude:
-              type: number
-              format: double
-              minimum: -90
-              maximum: 90
-            longitude:
-              type: number
-              format: double
-              minimum: -180
-              maximum: 180
-          required:
-            - address
-            - city
-            - state
-            - zip
-            - country
+      type: object
+      properties:
+        name:
+          type: string
+        address:
+          type: string
+        address_suite:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zip:
+          type: string
+        country:
+          type: string
+        latitude:
+          type: number
+          format: double
+          minimum: -90
+          maximum: 90
+        longitude:
+          type: number
+          format: double
+          minimum: -180
+          maximum: 180
+      required:
+        - address
+        - city
+        - state
+        - zip
+        - country
 
     OutboxOfferAssignmentSettingUpdateRequest:
       type: object
@@ -2140,7 +2195,8 @@ components:
               type: string
               format: uuid
             offer_id:
-              $ref: '#/components/schemas/OfferIdCore'
+              type: string
+              format: uuid
             care_type:
               $ref: '#/components/schemas/CareTypeCore'
             referral_type:
@@ -2220,7 +2276,8 @@ components:
               type: string
               format: uuid
             offer_id:
-              $ref: '#/components/schemas/OfferIdCore'
+              type: string
+              format: uuid
             care_type:
               $ref: '#/components/schemas/CareTypeCore'
             referral_type:
@@ -2273,7 +2330,8 @@ components:
             - type: object
               properties:
                 id:
-                  $ref: '#/components/schemas/ServiceIdCore'
+                  type: string
+                  format: uuid
                 address:
                   $ref: '#/components/schemas/AddressCore'
               required:
@@ -2337,18 +2395,18 @@ components:
         - service
         # - recurrence
 
-    InboxReferralVisitTaskCompletionRequest:
+    InboxVisitTaskCompletionRequest:
       type: object
       properties:
         tasks:
           type: array
           minItems: 1
           items:
-            $ref: '#/components/schemas/InboxReferralVisitTaskCompletionCore'
+            $ref: '#/components/schemas/InboxVisitTaskCompletionCore'
       required:
         - tasks
 
-    InboxReferralVisitTaskCompletionCore:
+    InboxVisitTaskCompletionCore:
       type: object
       properties:
         id:
@@ -2365,13 +2423,13 @@ components:
         - id
         - is_completed
 
-    InboxReferralVisitTaskCollectionResponse:
+    InboxVisitTaskCollectionResponse:
       type: object
       properties:
         tasks:
           type: array
           items:
-            $ref: '#/components/schemas/InboxReferralVisitTaskResponse'
+            $ref: '#/components/schemas/InboxVisitTaskCompletionCore'
       required:
         - tasks
 
@@ -2387,7 +2445,8 @@ components:
           type: string
           format: date-time
         service_id:
-          $ref: '#/components/schemas/ServiceIdCore'
+          type: string
+          format: uuid
         referral_id:
           type: string
           format: uuid
@@ -2411,7 +2470,8 @@ components:
           type: string
           format: date-time
         service_id:
-          $ref: '#/components/schemas/ServiceIdCore'
+          type: string
+          format: uuid
         referral_id:
           type: string
           format: uuid
@@ -2422,6 +2482,36 @@ components:
         - end_at
         - service_id
         - referral_id
+
+    InboxVisitRescheduleRequest:
+      type: object
+      properties:
+        start_at:
+          type: string
+          format: date-time
+        end_at:
+          type: string
+          format: date-time
+      required:
+        - start_at
+        - end_at
+
+    InboxVisitRescheduleResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        start_at:
+          type: string
+          format: date-time
+        end_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - start_at
+        - end_at
 
     OutboxVisitPageResponse:
       allOf:

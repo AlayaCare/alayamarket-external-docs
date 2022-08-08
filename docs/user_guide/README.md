@@ -39,10 +39,19 @@ To login you will need the `username` and `password` account credentials
 provided during sign up. 
 
 ```shell
-http post $SERVER/auth/v1/login username=<username> password=<password>
+http POST $SERVER/auth/v1/login username=<username> password=<password>
 ```
 
 The response will contain an `IdToken` that will be used for subsequent requests. 
+
+### Authentication Headers
+
+HTTP requests are authenticated using token authentication. 
+To authenticate a http request, include an `Authorization` header referencing the 
+`IdToken` returned during login: 
+```shell
+Authorization:<IdToken>
+```
 
 ### Get your Offers 
 
@@ -50,7 +59,7 @@ The response will contain an `IdToken` that will be used for subsequent requests
 You can see the offers that you have created from the Offers Outbox: 
 
 ```shell
-http get $SERVER/offers/v1/outbox/offers Authorization:<IdToken>
+http GET $SERVER/offers/v1/outbox/offers Authorization:<IdToken>
 ```
 
 #### Supply 
@@ -58,7 +67,7 @@ You can see the offers that you have been matched with
 from the Offers Inbox: 
 
 ```shell
-http get $SERVER/offers/v1/inbox/offers Authorization:<IdToken>
+http GET $SERVER/offers/v1/inbox/offers Authorization:<IdToken>
 ```
 
 ## Documentation 
