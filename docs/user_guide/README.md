@@ -94,6 +94,6 @@ You will need to confirm your subscriptions before they become active.
 For email subscriptions, you will receive an email containing a link 
 that must be clicked to confirm your subscription. 
 For http subscriptions, you will receive a confirmation event 
-containing a `SubscribeURL` that you will need to perform a GET request on
-(for more information, see [here](https://docs.aws.amazon.com/sns/latest/dg/SendMessageToHttp.prepare.html).  
+containing a `SubscribeURL` that you will need to perform a GET request on. 
+For more information, see [here](https://docs.aws.amazon.com/sns/latest/dg/SendMessageToHttp.prepare.html).  
 
