@@ -156,6 +156,7 @@ components:
               - OfferAccepted
               - OfferDeclined
               - OfferDeclinedByAll
+              - OfferExpired
         id:
           type: string
           format: uuid
@@ -312,6 +313,7 @@ components:
             enum:
               - OfferMatched
               - OfferClosed
+              - OfferExpired
               - OfferFulfilled
         id:
           type: string
