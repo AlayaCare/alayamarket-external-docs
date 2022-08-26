@@ -19,7 +19,7 @@ jobs:
       - name: Commit changes
         uses: EndBug/add-and-commit@v9
         with:
-          author_name: Team AlayaMarket
-          author_email: team-alayamarket@alayacare.com
+          author_name: alayamarket-ops
+          author_email: ops-alayamarket@alayacare.com
           message: 'Re-generated async api ui'
           add: 'docs/offers/asyncapi.external.offers'
