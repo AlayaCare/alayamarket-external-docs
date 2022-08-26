@@ -6,6 +6,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref_name }}
       - name: Install Node
         uses: actions/setup-node@v3
         with:
@@ -14,8 +16,6 @@ jobs:
         run: npm install -g @asyncapi/generator
       - name: Generate AsyncAPI UI
         run: ag docs/offers/asyncapi.external.offers.yaml @asyncapi/html-template -o docs/offers/asyncapi.external.offers
-      - name: Branch name
-        run: echo running on branch ${GITHUB_REF##*/}
       - name: Commit changes
         uses: EndBug/add-and-commit@v9
         with:
@@ -23,4 +23,3 @@ jobs:
           author_email: team-alayamarket@alayacare.com
           message: 'Re-generated async api ui'
           add: 'docs/offers/asyncapi.external.offers'
-          push: git push origin HEAD:${GITHUB_REF##*/}
