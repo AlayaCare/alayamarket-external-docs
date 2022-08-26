@@ -161,6 +161,10 @@ components:
           type: string
           format: uuid
           description: ID of the offer
+      required:
+        - event_source
+        - event_name
+        - id
     OutboxReferralEventPayload:
       type: object
       properties:
@@ -179,6 +183,10 @@ components:
           type: string
           format: uuid
           description: ID of the referral
+      required:
+        - event_source
+        - event_name
+        - id
     OutboxVisitEventPayload:
       type: object
       properties:
@@ -214,6 +222,17 @@ components:
             outbox_id:
               type: string
               description: ID of the service in the demand system.
+          required:
+            - id
+            - outbox_id
+      required:
+        - event_source
+        - event_name
+        - id
+        - start_at
+        - end_at
+        - service
+
     OutboxVisitTaskEventPayload:
       type: object
       properties:
@@ -232,7 +251,7 @@ components:
           description: ID of the visit.
         visit_outbox_id:
           type: string
-          description: ID of the visit in the demand system associated with the visit.
+          description: ID of the visit in the demand system associated with the visit. This is available for `visit` type referrals only.
         tasks:
           type: array
           items:
@@ -255,6 +274,15 @@ components:
               completion_comment:
                 type: string
                 description: Comment related to the completion of the visit task.
+            required:
+              - id
+              - outbox_id
+              - is_completed
+      required:
+        - event_source
+        - event_name
+        - id
+        - tasks
     OutboxWorkSessionEventPayload:
       type: object
       properties:
@@ -279,7 +307,7 @@ components:
         visit_outbox_id:
           type: string
           format: uuid
-          description: ID of the visit in the demand system associated to the work session.
+          description: ID of the visit in the demand system associated to the work session. This is available for `visit` type referrals only.
         start_at:
           type: string
           format: date-time
@@ -293,13 +321,19 @@ components:
         end_at:
           type: string
           format: date-time
-          description: End date-time of the work session.
+          description: End date-time of the work session. This is required for `WorkSessionEnded` events only.
         end_latitude:
           type: number
-          description: End latitude of the work session.
+          description: End latitude of the work session. This is available for `WorkSessionEnded` events only.
         end_longitude:
           type: number
-          description: End longitude of the work session.
+          description: End longitude of the work session. This is available for `WorkSessionEnded` events only.
+      required:
+        - event_source
+        - event_name
+        - id
+        - visit_id
+        - start_at
     InboxOfferEventPayload:
       type: object
       properties:
@@ -319,6 +353,10 @@ components:
           type: string
           format: uuid
           description: ID of the offer
+      required:
+        - event_source
+        - event_name
+        - id
     InboxReferralEventPayload:
       type: object
       properties:
@@ -336,4 +374,7 @@ components:
           type: string
           format: uuid
           description: ID of the referral
-            
+      required:
+        - event_source
+        - event_name
+        - id
