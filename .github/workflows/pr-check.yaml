@@ -1,0 +1,23 @@
+name: generate-asyncapi-ui
+on: pull_request
+jobs:
+  generate-ui:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+      - name: Install Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+      - name: Install AsyncAPI Generator
+        run: npm install -g @asyncapi/generator
+      - name: Generate AsyncAPI UI
+        run: ag docs/offers/asyncapi.external.offers.yaml @asyncapi/html-template -o docs/offers/asyncapi.external.offers
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          author_name: Team AlayaMarket
+          author_email: team-alayamarket@alayacare.com
+          message: 'Re-generated async api ui'
+          add: 'docs/offers/asyncapi.external.offers'
