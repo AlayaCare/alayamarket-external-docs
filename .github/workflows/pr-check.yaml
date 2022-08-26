@@ -1,7 +1,7 @@
-name: generate-asyncapi-ui
+name: check-pr
 on: pull_request
 jobs:
-  generate-ui:
+  generate-asyncapi-ui:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
