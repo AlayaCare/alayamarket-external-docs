@@ -21,6 +21,36 @@ servers:
         - com.au
       default: ca
 paths:
+  /v1/outbox/shift/offers:
+    post:
+      tags:
+        - offer outbox ALPHA
+      description: |
+        # Authorization
+        Required role: `org_admin`
+
+        # Description
+        Create a Shift Offer by the Demand organization. 
+        This will generate multiple offers with type: `visit` linked with a common `shift_id`. 
+        Multiple open or assigned offers with offer_type: `visit` are not permitted for the same visit. This is to prevent conflicting acceptances and assignations.
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OutboxShiftOfferCreateRequest'
+      responses:
+        204:
+          description: "Successfully created Offer"
+          # TODO: AM-2278: Add response
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
   /v1/outbox/offers:
     post:
       tags:
@@ -96,6 +126,7 @@ paths:
             type: string
             format: date-time
             description: Offers that expire before this date-time.
+        - $ref: '#/components/parameters/ShiftIdQueryParam'
         - $ref: '#/components/parameters/PageNumberParam'
         - $ref: '#/components/parameters/ItemsPerPageParam'
         - $ref: '#/components/parameters/SortByParam'
@@ -226,7 +257,7 @@ paths:
         # Description
         Assign an Offer created by the Demand Organization to a
         Supply Organization that accepted the Offer.  
-        The offer assignment setting of the Demand organization must be set to `manual`, otherwise this action is forbidden.  
+        The offer assignment setting of the Demand organization must be set to `manual`, otherwise this action is forbidden.
       requestBody:
         required: true
         content:
@@ -260,6 +291,7 @@ paths:
             Filter on an Offer Match status. Filtering on multiple statuses is not supported.
           schema:
             $ref: '#/components/schemas/OfferMatchStatusCore'
+        - $ref: '#/components/parameters/ShiftIdQueryParam'
         - $ref: '#/components/parameters/PageNumberParam'
         - $ref: '#/components/parameters/ItemsPerPageParam'
         - $ref: '#/components/parameters/SortByParam'
@@ -465,6 +497,7 @@ paths:
           name: status
           schema:
             $ref: '#/components/schemas/ReferralStatusCore'
+        - $ref: '#/components/parameters/ShiftIdQueryParam'
         - $ref: '#/components/parameters/OfferIdQueryParam'
         - $ref: '#/components/parameters/PageNumberParam'
         - $ref: '#/components/parameters/ItemsPerPageParam'
@@ -523,7 +556,7 @@ paths:
 
         # Description
         Cancel a Referral created by the Demand Organization.  
-        A Referral can only be Cancelled if the status is `assigned` or `processed`.  
+        A Referral can only be Cancelled if the status is `assigned` or `processed`.
       requestBody:
         required: true
         content:
@@ -556,6 +589,7 @@ paths:
           schema:
             $ref: '#/components/schemas/ReferralStatusCore'
         - $ref: '#/components/parameters/OfferIdQueryParam'
+        - $ref: '#/components/parameters/ShiftIdQueryParam'
         - $ref: '#/components/parameters/PageNumberParam'
         - $ref: '#/components/parameters/ItemsPerPageParam'
         - $ref: '#/components/parameters/SortByParam'
@@ -638,7 +672,7 @@ paths:
 
         # Description
         Cancel an Referral after it's assigned to the Supply Organization.  
-        A Referral can only be Cancelled if the status is `assigned` or `processed`.  
+        A Referral can only be Cancelled if the status is `assigned` or `processed`.
       requestBody:
         required: true
         content:
@@ -982,7 +1016,7 @@ components:
       name: referral_id
       schema:
         type: string
-        format: uuid      
+        format: uuid
     ReferralIdPathParam:
       in: path
       name: referral_id
@@ -993,6 +1027,12 @@ components:
     ServiceIdQueryParam:
       in: query
       name: service_id
+      schema:
+        type: string
+        format: uuid
+    ShiftIdQueryParam:
+      in: query
+      name: shift_id
       schema:
         type: string
         format: uuid
@@ -1065,6 +1105,62 @@ components:
         - client
         - service
 
+    OutboxShiftOfferCore:
+      # Core fields on a shift offer.
+      type: object
+      properties:
+        care_type:
+          $ref: '#/components/schemas/CareTypeCore'
+        expires_at:
+          type: string
+          format: date-time
+        comment:
+          type: string
+      required:
+        - care_type
+        - expires_at
+
+    OutboxShiftOfferItem:
+      # Core fields on an offer that is part of a shift offer.
+      type: object
+      properties:
+        price:
+          $ref: '#/components/schemas/OutboxOfferPriceCore'
+        client:
+          $ref: '#/components/schemas/OutboxClientRequest'
+        service:
+          $ref: '#/components/schemas/OutboxServiceRequest'
+        visits:
+          type: array
+          items:
+            $ref: '#/components/schemas/OutboxOfferVisitRequest'
+      required:
+        - price
+        - client
+        - service
+        - visits
+
+    OutboxShiftOfferCreateRequest:
+      type: object
+      properties:
+        offer:
+          $ref: '#/components/schemas/OutboxShiftOfferCore'
+        direct_supply_persona_ids:
+          description: |
+            Identifiers of one (or more) supply organization for direct-to-supplier
+            matching.
+          type: array
+          items:
+            type: string
+            format: uuid
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OutboxShiftOfferItem'
+      required:
+        - offer
+        - items
+
     OutboxOfferCollectionResponse:
       description: |
         API response of an offer on the outbox API.
@@ -1096,6 +1192,9 @@ components:
         - type: object
           properties:
             id:
+              type: string
+              format: uuid
+            shift_id:
               type: string
               format: uuid
             status:
@@ -1235,6 +1334,9 @@ components:
         - type: object
           properties:
             id:
+              type: string
+              format: uuid
+            shift_id:
               type: string
               format: uuid
             care_type:
@@ -2223,6 +2325,9 @@ components:
             offer_id:
               type: string
               format: uuid
+            shift_id:
+              type: string
+              format: uuid
             care_type:
               $ref: '#/components/schemas/CareTypeCore'
             referral_type:
@@ -2302,6 +2407,9 @@ components:
               type: string
               format: uuid
             offer_id:
+              type: string
+              format: uuid
+            shift_id:
               type: string
               format: uuid
             care_type:
