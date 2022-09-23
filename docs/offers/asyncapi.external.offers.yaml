@@ -204,14 +204,22 @@ components:
           type: string
           format: uuid
           description: ID of the visit
+        referral_id:
+          type: string
+          format: uuid
+          description: ID of the referral
         start_at:
           type: string
           format: date-time
-          description: Start date-time of the visit.
+          description: | 
+            Start date-time of the visit. 
+            This is a mutable property and should be used carefully.
         end_at:
           type: string
           format: date-time
-          description: End date-time of the visit.
+          description: | 
+            End date-time of the visit. 
+            This is a mutable property and should be used carefully.
         service:
           type: object
           properties:
@@ -229,6 +237,7 @@ components:
         - event_source
         - event_name
         - id
+        - referral_id
         - start_at
         - end_at
         - service
