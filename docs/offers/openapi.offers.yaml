@@ -41,9 +41,12 @@ paths:
             schema:
               $ref: '#/components/schemas/OutboxShiftOfferCreateRequest'
       responses:
-        204:
+        201:
           description: "Successfully created Offer"
-          # TODO: AM-2278: Add response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutboxShiftOfferCreateResponse'
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
@@ -446,6 +449,127 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OutboxOfferAssignmentSettingUpdateResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
+  /v1/sys_admin/take_rates/demand_take_rates:
+    get:
+      tags:
+        - take rates
+      description: |
+        # Authorization
+        Required role: `sys_admin`
+
+        # Description
+        Get a collection of take rates specific to demand organizations.
+      parameters:
+        - in: query
+          name: demand_persona_id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: 'Successfully returned demand take rates collection'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DemandTakeRateCollectionResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
+  /v1/sys_admin/take_rates/demand_take_rates/{demand_persona_id}:
+    parameters:
+      - in: path
+        name: demand_persona_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+        description: ID of an organization.
+    post:
+      tags:
+        - take rates
+      description: |
+        # Authorization
+        Required role: `sys_admin`
+
+        # Description
+        Set the take rate specific to a demand organization.
+
+        Note: a null take rate means the system will clear the demand-specific take rate
+        and apply the next available take rate (e.g., the regional take rate).
+
+        A take rate of 0 is a take rate of 0%.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DemandTakeRateCreateRequest'
+      responses:
+        204:
+          description: 'Successfully set the demand-specific take rate.'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
+  /v1/sys_admin/take_rates/regional_take_rate:
+    get:
+      tags:
+        - take rates
+      description: |
+        # Authorization
+        Required role: `sys_admin`
+
+        # Description
+        Get a regional take rate.
+      responses:
+        200:
+          description: 'Successfully returned regional take rate'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegionalTakeRateDetailResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+    post:
+      tags:
+        - take rates
+      description: |
+        # Authorization
+        Required role: `sys_admin`
+
+        # Description
+        Set the regional take rate.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegionalTakeRateUpdateRequest'
+      responses:
+        200:
+          description: 'Successfully returned regional take rate'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegionalTakeRateDetailResponse'
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
@@ -1161,6 +1285,57 @@ components:
         - offer
         - items
 
+    OutboxShiftOfferCreateResponse:
+      type: object
+      properties:
+        shift:
+          title: OutboxShiftOfferCreateShiftResponse
+          description: The `shift` object included in the response when creating a shift offer.
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+          required:
+            - id
+        items:
+          type: array
+          items:
+            title: OutboxShiftOfferCreateItemsResponse
+            description: The `item` objects included in the response when creating a shift offer.
+            type: object
+            properties:
+              offer:
+                title: OutboxShiftOfferCreateItemOfferResponse
+                description: The `offer` object included in the response when creating a shift offer.
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                required:
+                  - id
+              visits:
+                title: OutboxShiftOfferCreateItemVisitsResponse
+                description: The `visits` object included in the response when creating a shift offer.
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                    outbox_id:
+                      type: string
+                  required:
+                    - id
+                    - outbox_id
+            required:
+              - offer
+              - visits
+      required:
+        - shift
+        - items
+
     OutboxOfferCollectionResponse:
       description: |
         API response of an offer on the outbox API.
@@ -1605,7 +1780,7 @@ components:
       properties:
         rate:
           type: number
-          format: float
+          format: decimal
           description: The dollar amount for offer per unit.
           example: 30.00
         unit:
@@ -1653,9 +1828,13 @@ components:
       # sync this with the organization specs
       type: object
       properties:
+        id:
+          type: string
+          format: uuid
         name:
           type: string
       required:
+        - id
         - name
 
     InboxReferralVisitResponse:
@@ -2256,6 +2435,57 @@ components:
             - manual
       required:
         - offer_assignment
+
+    TakeRateCore:
+      type: number
+      format: decimal
+      minimum: 0
+      maximum: 1
+      description: |
+        A percentage of the offer price set by demand, represented by a fraction
+        between 0 and 1. For example, a regional take rate of 0.1 is 10%.
+
+    DemandTakeRateCore:
+      type: object
+      properties:
+        demand_persona_id:
+          type: string
+          format: uuid
+        rate:
+          $ref: '#/components/schemas/TakeRateCore'
+      required:
+        - demand_persona_id
+        - rate
+
+    RegionalTakeRateUpdateRequest:
+      type: object
+      properties:
+        rate:
+          $ref: '#/components/schemas/TakeRateCore'
+      required:
+        - rate
+
+    RegionalTakeRateDetailResponse:
+      type: object
+      properties:
+        rate:
+          $ref: '#/components/schemas/TakeRateCore'
+      required:
+        - rate
+
+    DemandTakeRateCreateRequest:
+      type: object
+      properties:
+        rate:
+          $ref: '#/components/schemas/TakeRateCore'
+
+    DemandTakeRateCollectionResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/DemandTakeRateCore'
 
     OutboxReferralCreateRequest:
       type: object
