@@ -198,6 +198,7 @@ components:
             type: string
             description: Name of the event.
             enum:
+              - VisitSupplyDeleted
               - VisitSupplyScheduled
               - VisitSupplyRescheduled
         id:
