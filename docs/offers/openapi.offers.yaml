@@ -109,6 +109,10 @@ paths:
           schema:
             $ref: '#/components/schemas/OfferStatusCore'
         - in: query
+          name: client_outbox_id
+          schema:
+            type: string
+        - in: query
           name: visit_outbox_id
           schema:
             type: string
@@ -393,6 +397,32 @@ paths:
       responses:
         204:
           description: "Successfully marked Offer as Declined"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
+  /v1/sys_admin/offers/{offer_id}:
+    parameters:
+      - $ref: '#/components/parameters/OfferIdPathParam'
+    get:
+      tags:
+        - offer sys_admin
+      description: |
+        # Authorization
+        Required role: `sys_admin`
+
+        # Description
+        Get the details of an Offer.
+      responses:
+        200:
+          description: 'Successfully returned offer details.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SysAdminOfferDetailResponse'
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
@@ -913,6 +943,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InboxVisitScheduleResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
+  /v1/inbox/visits/{visit_id}/delete:
+    parameters:
+      - $ref: '#/components/parameters/VisitIdPathParam'
+    post:
+      tags:
+        - visit inbox
+      description: |
+        # Authorization
+        Required role: supply `org_admin`.
+
+        # Description
+        Delete a visit of a service referral. The supply organization deleting the visit
+        must be identical to the one that scheduled the original visit.
+      responses:
+        204:
+          description: "Successfully deleted the visit."
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
@@ -2936,6 +2989,11 @@ components:
           format: uuid
         service_outbox_id:
           type: string
+        status:
+          type: string
+          enum:
+            - scheduled
+            - deleted
         start_at:
           type: string
           format: date-time
@@ -2943,6 +3001,7 @@ components:
           type: string
           format: date-time
       required:
+        - status
         - id
         - visit_id
         - referral_id
@@ -3071,6 +3130,287 @@ components:
             description: Work Session ID.
         required:
           - id
+
+    SysAdminOfferDetailResponse:
+      type: object
+      properties:
+        offer:
+          $ref: '#/components/schemas/OutboxOfferExtendedCore'
+        demand:
+          $ref: '#/components/schemas/OrganizationLeanCore'
+        supply:
+          $ref: '#/components/schemas/OrganizationLeanCore'
+        direct_supply_persona_ids:
+          description: |
+            Identifiers of one (or more) supply organization for direct-to-supplier
+            matching.
+          type: array
+          items:
+            type: string
+            format: uuid
+        price:
+          title: SysAdminOfferDetailPriceResponse
+          type: object
+          properties:
+            default:
+              $ref: '#/components/schemas/SysAdminPriceCore'
+            custom:
+              type: array
+              items:
+                title: SysAdminOfferPriceCustomCore
+                allOf:
+                  - $ref: '#/components/schemas/SysAdminPriceCore'
+                  - type: object
+                    properties:
+                      supply_persona_id:
+                        type: string
+                        format: uuid
+                    required:
+                      - supply_persona_id
+          required:
+            - default
+        client:
+          title: SysAdminOfferDetailClientResponse
+          type: object
+          properties:
+            outbox_id:
+              type: string
+            address:
+              $ref: '#/components/schemas/AddressCore'
+            contacts:
+              # separate personal, medical contacts like CCAC?
+              title: SysAdminOfferDetailClientContactResponse
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    # format: uuid
+                  first_name:
+                    type: string
+                  last_name:
+                    type: string
+                  address:
+                    title: SysAdminOfferDetailClientContactAddressResponse
+                    type: object
+                    properties:
+                      city:
+                        type: string
+                      state:
+                        type: string
+                      zip:
+                        type: string
+                      country:
+                        type: string
+                      name:
+                        type: string
+                      address:
+                        type: string
+                      address_suite:
+                        type: string
+                      latitude:
+                        type: number
+                        format: double
+                        minimum: -90
+                        maximum: 90
+                      longitude:
+                        type: number
+                        format: double
+                        minimum: -180
+                        maximum: 180
+                  email:
+                    type: string
+                    format: email
+                  phone_number:
+                    type: string
+                  language:
+                    # should this be enum?
+                    type: string
+                  relationship:
+                    # should this be enum?
+                    type: string
+            demographics:
+              title: SysAdminOfferDetailClientDemographicsResponse
+              type: object
+              properties:
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                phone_number:
+                  type: string
+                date_of_birth:
+                  type: string
+                  format: date
+                gender:
+                  # should this be enum?
+                  type: string
+                language:
+                  # should this be enum?
+                  type: string
+                  # health card, etc?
+              required:
+                - first_name
+                - last_name
+            allergies:
+              title: SysAdminOfferDetailClientAllergiesResponse
+              type: array
+              items:
+                $ref: '#/components/schemas/AllergyCore'
+            risks:
+              title: SysAdminOfferDetailClientRisksResponse
+              type: array
+              items:
+                $ref: '#/components/schemas/RiskCore'
+            diagnoses:
+              title: SysAdminOfferDetailClientDiagnosesResponse
+              type: array
+              items:
+                type: object
+                # Based on AlayaCare: medical_history.health_history.current_medical_history
+                properties:
+                  name:
+                    # AlayaCare calls this diagnosis, combines CCAC code and description
+                    type: string
+                  description:
+                    # AlayaCare doesn't use this for the CCAC
+                    type: string
+                  start_date:
+                    type: string
+                    format: date
+            surgeries:
+              title: SysAdminOfferDetailClientSurgeriesResponse
+              type: array
+              items:
+                # Based on AlayaCare: medical_history.surgery.past_surgery_history
+                type: object
+                properties:
+                  name:
+                    # AlayaCare combines CCAC code and description
+                    type: string
+                  description:
+                    # AlayaCare combines CCAC location and surgeon
+                    type: string
+                  start_date:
+                    type: string
+                    format: date
+          required:
+            - outbox_id
+            - demographics
+            - address
+        service:
+          title: SysAdminOfferDetailServiceResponse
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            outbox_id:
+              type: string
+            name:
+              type: string
+            address:
+              $ref: '#/components/schemas/AddressCore'
+            start_at:
+              type: string
+              format: date-time
+            end_at:
+              type: string
+              format: date-time
+            instructions:
+              # CCAC includes goals and other items in ServiceInstructions
+              type: string
+            skills:
+              # should this live here or at root level or client level?
+              # should this be a string or list of strings or list of objects?
+              type: array
+              items:
+                type: string
+            # CCAC service includes priority, some other codes, and nests Frequencies in Service
+          required:
+            - id
+            - outbox_id
+            - name
+        visits:
+          type: array
+          items:
+            title: SysAdminOfferDetailVisitResponse
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              outbox_id:
+                type: string
+              start_at:
+                type: string
+                format: date-time
+              end_at:
+                type: string
+                format: date-time
+              instructions:
+                type: string
+              tasks:
+                type: array
+                items:
+                  title: SysAdminOfferDetailVisitTaskResponse
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                    outbox_id:
+                      type: string
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    is_required:
+                      type: boolean
+                  required:
+                    - id
+                    - outbox_id
+                    - name
+                    - is_required
+            required:
+              - id
+              - outbox_id
+              - start_at
+              - end_at
+      required:
+        - offer
+        - demand
+        - price
+        - client
+        - service
+
+    SysAdminPriceCore:
+      type: object
+      properties:
+        rate_demand:
+          type: number
+          format: decimal
+          description: The dollar amount for offer per unit.
+          example: 30.00
+        rate_supply:
+          type: number
+          format: decimal
+          description: The dollar amount for offer per unit.
+          example: 30.00
+        unit:
+          type: string
+          description: The unit for the rate.
+          enum:
+            - per_visit
+            - per_hour
+            - amount
+      required:
+        - rate
+        - unit
 
   securitySchemes:
     CognitoAuthorizer:
