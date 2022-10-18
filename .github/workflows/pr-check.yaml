@@ -25,5 +25,5 @@ jobs:
           add: 'docs/offers/asyncapi.external.offers'
       - name: automerge
         uses: "pascalgn/automerge-action@v0.15.5"
-        with:
+        env:
           GITHUB_TOKEN: "${{ secrets.GH_ACTION_SECRET }}"
