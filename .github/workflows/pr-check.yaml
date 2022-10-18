@@ -23,3 +23,7 @@ jobs:
           author_email: ops-alayamarket@alayacare.com
           message: 'Re-generated async api ui'
           add: 'docs/offers/asyncapi.external.offers'
+      - name: automerge
+        uses: "pascalgn/automerge-action@v0.15.5"
+        with:
+          GH_PAT: ${{ secrets.GH_ACTION_SECRET }}
