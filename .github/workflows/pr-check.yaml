@@ -23,7 +23,7 @@ jobs:
           author_email: ops-alayamarket@alayacare.com
           message: 'Re-generated async api ui'
           add: 'docs/offers/asyncapi.external.offers'
-      - name: automerge
+      - name: Auto-merge
         uses: "pascalgn/automerge-action@v0.15.5"
         env:
-          GITHUB_TOKEN: "${{ secrets.GH_ACTION_SECRET }}"
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
