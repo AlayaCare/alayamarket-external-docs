@@ -183,8 +183,10 @@ components:
       properties:
         username:
           type: string
+          minLength: 1
         password:
           type: string
+          minLength: 1
       required:
         - username
         - password
@@ -216,6 +218,7 @@ components:
       properties:
         username:
           type: string
+          minLength: 1
       required:
         - username
     ConfirmForgotPasswordRequest:
@@ -223,10 +226,13 @@ components:
       properties:
         username:
           type: string
+          minLength: 1
         confirmation_code:
           type: string
+          minLength: 1
         new_password:
           type: string
+          minLength: 1
       required:
         - username
         - confirmation_code
@@ -236,10 +242,13 @@ components:
       properties:
         access_token:
           type: string
+          minLength: 1
         old_password:
           type: string
+          minLength: 1
         new_password:
           type: string
+          minLength: 1
       required:
         - access_token
         - old_password
