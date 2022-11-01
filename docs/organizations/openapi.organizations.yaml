@@ -530,20 +530,31 @@ components:
           type: string
         address:
           type: string
+          minLength: 1
         address_suite:
           type: string
         city:
           type: string
+          minLength: 1
         state:
           type: string
+          minLength: 1
         zip:
           type: string
+          minLength: 1
         country:
           type: string
+          minLength: 1
         latitude:
           type: number
+          format: double
+          minimum: -90
+          maximum: 90
         longitude:
           type: number
+          format: double
+          minimum: -180
+          maximum: 180
       required:
         - address
         - city
@@ -586,6 +597,7 @@ components:
         execution_arn:
           description: "State machine execution ARN."
           type: string
+          minLength: 1
       required:
         - execution_arn
 
@@ -594,13 +606,16 @@ components:
       properties:
         email:
           type: string
+          minLength: 1
         name:
           type: string
+          minLength: 1
         source:
           description: | 
             Description of from whom the organization was sourced 
             (e.g. `alayacare`, `procura`, `staffy`, `e2e_tests`, `internal`).
           type: string
+          minLength: 1
         host:
           description: |
             Fully qualified domain name that starts with "https://" without a trailing
@@ -610,8 +625,10 @@ components:
           pattern: '^https:\/\/([A-Za-z0-9-]+\.){2,}([A-Za-z0-9-]+){1}$'
         password:
           type: string
+          minLength: 1
         phone_number:
           type: string
+          minLength: 1
         phone_extension:
           type: string
         address:
@@ -629,11 +646,13 @@ components:
       properties:
         username:
           type: string
+          minLength: 1
         confirmation_code:
           # I originally mapped this as an integer, but it seems the transformation
           # was automatically adding format: int32, which api gateway doesn't support.
           # https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-known-issues.html
           type: string
+          minLength: 1
       required:
         - username
         - confirmation_code
@@ -643,6 +662,7 @@ components:
       properties:
         username:
           type: string
+          minLength: 1
       required:
         - username
 
@@ -654,13 +674,16 @@ components:
       properties:
         email:
           type: string
+          minLength: 1
         id:
           type: string
           format: uuid
         name:
           type: string
+          minLength: 1
         source:
           type: string
+          minLength: 1
       required:
         - email
         - id
@@ -672,13 +695,16 @@ components:
       properties:
         email:
           type: string
+          minLength: 1
         id:
           type: string
           format: uuid
         name:
           type: string
+          minLength: 1
         source:
           type: string
+          minLength: 1
         host:
           type: string
         phone:
@@ -686,6 +712,7 @@ components:
           properties:
             number:
               type: string
+              minLength: 1
             extension:
               type: string
           required:
@@ -731,6 +758,7 @@ components:
             properties:
               name:
                 type: string
+                minLength: 1
               id:
                 type: string
                 format: uuid
@@ -799,6 +827,7 @@ components:
           enum: [ https, email ]
         endpoint:
           type: string
+          minLength: 1
       required:
         - topic
         - protocol
@@ -809,6 +838,7 @@ components:
       properties:
         subscription_arn:
           type: string
+          minLength: 1
       required:
         - subscription_arn
 
@@ -817,6 +847,7 @@ components:
       properties:
         subscription_arn:
           type: string
+          minLength: 1
       required:
         - subscription_arn
 
@@ -825,12 +856,16 @@ components:
       properties:
         subscription_arn:
           type: string
+          minLength: 1
         topic_arn:
           type: string
+          minLength: 1
         protocol:
           type: string
+          minLength: 1
         endpoint:
           type: string
+          minLength: 1
       required:
         - subscription_arn
         - topic_arn
@@ -852,13 +887,16 @@ components:
       properties:
         email:
           type: string
+          minLength: 1
         id:
           type: string
           format: uuid
         name:
           type: string
+          minLength: 1
         source:
           type: string
+          minLength: 1
         host:
           type: string
         demand_persona:
