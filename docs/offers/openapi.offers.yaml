@@ -430,6 +430,30 @@ paths:
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
 
+  /v1/demand_personas/settings/assignment:
+    get:
+      tags:
+        - organization settings
+      description: |
+        # Authorization
+        Required role: `org_admin`
+
+        # Description
+        Get offer assignment setting for an organization.
+      responses:
+        200:
+          description: Offer assignment setting.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutboxOfferAssignmentSettingUpdateResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
   /v1/sys_admin/demand_personas/{demand_persona_id}/settings/assignment:
     parameters:
       - in: path
@@ -441,7 +465,7 @@ paths:
         description: ID of an organization.
     post:
       tags:
-        - organization settings
+        - organization settings sys_admin
       description: |
         # Authorization
         Required role: `sys_admin`
@@ -465,7 +489,7 @@ paths:
         type: "aws_proxy"
     get:
       tags:
-        - organization settings
+        - organization settings sys_admin
       description: |
         # Authorization
         Required role: `sys_admin`
