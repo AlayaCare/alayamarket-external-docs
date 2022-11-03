@@ -431,6 +431,30 @@ paths:
         type: "aws_proxy"
 
   /v1/demand_personas/settings/assignment:
+    post:
+      tags:
+        - organization settings
+      description: |
+        # Authorization
+        Required role: `org_admin`
+
+        # Description
+        Set offer assignment setting for an organization.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OutboxOfferAssignmentSettingUpdateRequest'
+      responses:
+        204:
+          description: "Setting succesfully saved."
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
     get:
       tags:
         - organization settings
