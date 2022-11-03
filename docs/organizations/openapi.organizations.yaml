@@ -815,6 +815,7 @@ components:
         topic:
           type: string
           enum:
+            - demand-organizations
             - inbox-offers
             - inbox-referrals
             - outbox-offers
