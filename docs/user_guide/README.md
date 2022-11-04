@@ -56,6 +56,7 @@ Authorization:<IdToken>
 ### Get your Offers 
 
 #### Demand 
+As a demand participant, you will use the `Outbox` APIs to create and manage your offers. 
 You can see the offers that you have created from the Offers Outbox: 
 
 ```shell
@@ -63,12 +64,25 @@ http GET $SERVER/offers/v1/outbox/offers Authorization:<IdToken>
 ```
 
 #### Supply 
+As a supply participant, you will use the `Inbox` APIs to receive and respond to your offers. 
 You can see the offers that you have been matched with 
 from the Offers Inbox: 
 
 ```shell
 http GET $SERVER/offers/v1/inbox/offers Authorization:<IdToken>
 ```
+
+## Terminology
+  * `offer`: An offer to provide care to a client. This is created by an organization in demand of staff that cannot provide care themselves. The offer may be matched to multiple organizations that can supply their staff to provide the care. 
+  * `referral`: An agreement to provide care to a client. This is automatically created when a demand organization assigns an offer to a supply organization. 
+  * `visit`: A scheduled time for care to be provided. 
+  * `service`: A time period over which care will be provided. This can involve many visits. 
+  * `work_session`: A record of the time that care was provided.
+  * `outbox`: Used by demand organizations to create, view and manage offers, referrals, etc.
+  * `inbox`: Used by supply organizations to view, accept and decline offers, view and manage referrals, etc.
+  * `sys_admin`: Used by internal system administrators to configure settings. 
+  * `care_type`: Describes the type of care that will be provided, e.g. `nursing` will require that a nurse completes the care. Offers are matched to suppliers based on the care they can provide. 
+  * `offer_type`: Describes the type of offer that will be provided, e.g. `visit` indicates that care is required for a single visit at a specified time, whereas `service` indicates that care is to be provided as requiredwithin a given time period.
 
 ## Documentation 
 
@@ -85,8 +99,9 @@ of relevant changes, such as when an offer is matched or accepted.
 * [Offers & Referrals AsyncAPI specs](../offers/asyncapi.external.offers)
 
 #### Subscribing to Async APIs
-Reach out to us to let us know what endpoints you'd like to subscribe 
-to each topic. 
+Reach out to us to let us know what topics you'd like to subscribe to. 
+You can subscribe http endpoints or email addresses to receive notifications 
+for relevant changes to your data. 
 
 #### Confirming your subscriptions 
 Notifications are delivered using AWS SNS. 
