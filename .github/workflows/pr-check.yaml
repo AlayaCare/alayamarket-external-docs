@@ -14,7 +14,9 @@ jobs:
           node-version: '14'
       - name: Install AsyncAPI Generator
         run: npm install -g @asyncapi/generator
-      - name: Generate AsyncAPI UI
+      - name: Generate Organization AsyncAPI UI
+        run: ag docs/organizations/asyncapi.external.organizations.yaml @asyncapi/html-template -o docs/organizations/asyncapi.external.organizations
+      - name: Generate Offer AsyncAPI UI
         run: ag docs/offers/asyncapi.external.offers.yaml @asyncapi/html-template -o docs/offers/asyncapi.external.offers
       - name: Commit changes
         uses: EndBug/add-and-commit@v9
@@ -22,7 +24,7 @@ jobs:
           author_name: alayamarket-ops
           author_email: ops-alayamarket@alayacare.com
           message: 'Re-generated async api ui'
-          add: 'docs/offers/asyncapi.external.offers'
+          add: 'docs'
       - name: Auto-merge
         uses: "pascalgn/automerge-action@v0.15.5"
         env:
