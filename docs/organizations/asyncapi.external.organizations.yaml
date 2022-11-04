@@ -1,0 +1,99 @@
+asyncapi: 2.4.0
+info:
+  title: AlayaMarket Organizations External Events API
+  version: 1.0.0
+  description: |
+    Async API for external Organizations events using AWS SNS as a broker. 
+    
+    Generally, subscriptions are expected to be https endpoints. 
+    In such cases, the messages described in this document will be 
+    stringified json data within the `Message` of the payload. 
+    
+    For more information see https://docs.aws.amazon.com/sns/latest/dg/SendMessageToHttp.prepare.html
+servers:
+  live:
+    url: https://api.{env}.alayamarket.{region}
+    description: Sandbox server
+    protocol: https
+    variables:
+      env:
+        description: Server environment
+        default: prod
+        enum:
+          - staging
+          - sandbox
+          - prod
+      region:
+        description: Server region
+        default: ca
+        enum:
+          - ca
+          - com
+          - com.au
+
+defaultContentType: application/json
+
+channels:
+  # channels will represent topics in SNS.
+  # channels that the application publishes to, and consumers can subscribe to, should use the `subscribe` keyword.
+  # channels that the application consumes to, and other applications can publish to, should use the `publish` keyword.
+  demand-organizations:
+    subscribe:
+      operationId: sub_demand_organization
+      description: |
+        Subscribe demand participants to demand organizations events published by the service.
+      message:
+        $ref: '#/components/messages/DemandOrganizationEventMessage'
+
+components:
+  messages:
+    DemandOrganizationEventMessage:
+      messageId: message_demand_organization
+      name: DemandOrganizationEvent
+      title: Demand organization state change event
+      summary: Inform relevant demand participants about a change to the organization state
+      payload:
+        $ref: '#/components/schemas/DemandOrganizationEventPayload'
+
+  schemas:
+    DemandOrganizationEventPayload:
+      type: object
+      properties:
+        event_source:
+          type: string
+          description: Source of the event.
+          const: alayamarket.organizations
+        event_name:
+          type: string
+          description: Name of the event.
+          enum:
+            - OrgTrustedNetworkUpdated
+        id:
+          type: string
+          format: uuid
+          description: ID of the event
+        organization_id:
+          type: string
+          format: uuid
+          description: ID of the demand organization
+        trusted_network:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+                description: ID of the supply organization in the trusted network.
+              name:
+                type: string
+                description: Name of the supply organization in the trusted network.
+            required:
+              - id
+              - name
+      required:
+        - event_source
+        - event_name
+        - id
+        - organization_id
+        - trusted_network
