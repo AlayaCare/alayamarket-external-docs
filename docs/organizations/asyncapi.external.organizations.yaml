@@ -78,6 +78,10 @@ components:
           description: ID of the demand organization
         trusted_network:
           type: array
+          description: | 
+            The trusted network of the demand organization. 
+
+            **This is a mutable property and should be used carefully.**
           items:
             type: object
             properties:
