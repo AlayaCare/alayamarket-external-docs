@@ -127,6 +127,14 @@ paths:
         Required role: `sys_admin`
       parameters:
         - in: query
+          name: is_demand
+          schema:
+            type: boolean
+        - in: query
+          name: is_supply
+          schema:
+            type: boolean
+        - in: query
           name: email
           schema:
             type: string
@@ -138,6 +146,14 @@ paths:
             format: uuid
         - in: query
           name: name
+          schema:
+            type: string
+        - in: query
+          name: source_includes
+          schema:
+            type: string
+        - in: query
+          name: source_excludes
           schema:
             type: string
         - $ref: '#/components/parameters/PageNumberParam'
