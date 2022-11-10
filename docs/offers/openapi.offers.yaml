@@ -404,6 +404,83 @@ paths:
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
 
+  /v1/sys_admin/offers:
+    get:
+      tags:
+        - offer sys_admin
+      description: |
+        # Authorization
+        Required role: `sys_admin`
+
+        # Description
+        Get a collection of Offers.
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: demand_persona_id
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: care_type
+          schema:
+            $ref: '#/components/schemas/CareTypeCore'
+        - in: query
+          name: offer_type
+          schema:
+            $ref: '#/components/schemas/OfferTypeCore'
+        - in: query
+          name: status
+          schema:
+            $ref: '#/components/schemas/OfferStatusCore'
+        - in: query
+          name: client_outbox_id
+          schema:
+            type: string
+        - in: query
+          name: visit_outbox_id
+          schema:
+            type: string
+        - in: query
+          name: is_accepted
+          schema:
+            type: boolean
+            description: Offers accepted by at least one match.
+        - in: query
+          name: expires_after
+          schema:
+            type: string
+            format: date-time
+            description: Offers that expire after this date-time.
+        - in: query
+          name: expires_before
+          schema:
+            type: string
+            format: date-time
+            description: Offers that expire before this date-time.
+        - $ref: '#/components/parameters/ShiftIdQueryParam'
+        - $ref: '#/components/parameters/PageNumberParam'
+        - $ref: '#/components/parameters/ItemsPerPageParam'
+        - $ref: '#/components/parameters/SortByParam'
+        - $ref: '#/components/parameters/SortOrderParam'
+      responses:
+        200:
+          description: 'Successfully returned Offer Collection'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutboxOfferPageResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
   /v1/sys_admin/offers/{offer_id}:
     parameters:
       - $ref: '#/components/parameters/OfferIdPathParam'
@@ -2318,6 +2395,7 @@ components:
                 type: string
         demographics:
           allOf:
+            - $ref: '#/components/schemas/CustomFieldCollectionCore'
             - $ref: '#/components/schemas/DemographicLeanCore'
             - type: object
               properties:
@@ -3314,32 +3392,34 @@ components:
                     type: string
             demographics:
               title: SysAdminOfferDetailClientDemographicsResponse
-              type: object
-              properties:
-                first_name:
-                  type: string
-                  minLength: 1
-                last_name:
-                  type: string
-                  minLength: 1
-                email:
-                  type: string
-                  format: email
-                phone_number:
-                  type: string
-                date_of_birth:
-                  type: string
-                  format: date
-                gender:
-                  # should this be enum?
-                  type: string
-                language:
-                  # should this be enum?
-                  type: string
-                  # health card, etc?
-              required:
-                - first_name
-                - last_name
+              allOf:
+                - $ref: '#/components/schemas/CustomFieldCollectionCore'
+                - type: object
+                  properties:
+                    first_name:
+                      type: string
+                      minLength: 1
+                    last_name:
+                      type: string
+                      minLength: 1
+                    email:
+                      type: string
+                      format: email
+                    phone_number:
+                      type: string
+                    date_of_birth:
+                      type: string
+                      format: date
+                    gender:
+                      # should this be enum?
+                      type: string
+                    language:
+                      # should this be enum?
+                      type: string
+                      # health card, etc?
+                  required:
+                    - first_name
+                    - last_name
             allergies:
               title: SysAdminOfferDetailClientAllergiesResponse
               type: array
@@ -3501,6 +3581,25 @@ components:
         - rate_demand
         - rate_supply
         - unit
+
+    CustomFieldCollectionCore:
+      type: object
+      properties:
+        custom_fields:
+          type: array
+          items:
+            title: CustomFieldCore
+            type: object
+            properties:
+              name:
+                type: string
+              type:
+                type: string
+              value:
+                type: string
+            required:
+              - name
+              - value
 
   securitySchemes:
     CognitoAuthorizer:
