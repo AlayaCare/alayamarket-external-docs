@@ -388,6 +388,56 @@ paths:
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
+  /v1/sys_admin/{organization_id}/demand_persona/trusted_network/add:
+    post:
+      tags:
+        - organizations (sys_admin)
+      parameters:
+        - $ref: '#/components/parameters/OrgIdPathParam'
+      description: |
+        Adds supply personas to the trusted network of the demand persona.
+        # Authorization
+        Required role: `sys_admin`
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DemandUpdateTrustedNetworkRequest'
+      responses:
+        204:
+          description: "Added to the Trusted Network - empty response"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+  /v1/sys_admin/{organization_id}/demand_persona/trusted_network/remove:
+    post:
+      tags:
+        - organizations (sys_admin)
+      parameters:
+        - $ref: '#/components/parameters/OrgIdPathParam'
+      description: |
+        Removes supply personas from the trusted network of the demand persona.
+        # Authorization
+        Required role: `sys_admin`
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DemandUpdateTrustedNetworkRequest'
+      responses:
+        204:
+          description: "Removed from the Trusted Network - empty response"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
   /v1/sys_admin/{organization_id}/subscribe:
     post:
       tags:
