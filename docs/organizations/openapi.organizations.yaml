@@ -646,7 +646,18 @@ components:
               - auto
               - manual
         supply_configuration:
-          $ref: "#/components/schemas/SupplyUpdateCareTypesRequest"
+          allOf:
+            - $ref: "#/components/schemas/SupplyUpdateCareTypesRequest"
+            - type: object
+              description: |
+                For each demand persona ID, the supply persona will be added to the
+                trusted network of the corresponding demand persona.
+              properties:
+                trusted_demand_personas:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
         subscriptions:
           type: array
           items:
