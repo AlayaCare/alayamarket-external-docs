@@ -149,6 +149,10 @@ paths:
           schema:
             type: string
         - in: query
+          name: host
+          schema:
+            type: string
+        - in: query
           name: source_includes
           schema:
             type: string
