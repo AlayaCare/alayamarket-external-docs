@@ -158,6 +158,19 @@ components:
               - OfferDeclinedByAll
               - OfferExpired
         id:
+          deprecated: true
+          type: string
+          format: uuid
+          description: ID of the offer
+        event_id:
+          type: string
+          format: uuid
+          description: ID of the event
+        timestamp:
+          type: string
+          format: datetime
+          description: Timestamp of the event
+        offer_id:
           type: string
           format: uuid
           description: ID of the offer
@@ -165,6 +178,9 @@ components:
         - event_source
         - event_name
         - id
+        - event_id
+        - timestamp
+        - offer_id
     OutboxReferralEventPayload:
       type: object
       properties:
@@ -180,13 +196,73 @@ components:
               - ReferralProcessed
               - ReferralSupplyCancelled
         id:
+          deprecated: true
           type: string
           format: uuid
           description: ID of the referral
+        event_id:
+          type: string
+          format: uuid
+          description: ID of the event
+        timestamp:
+          type: string
+          format: datetime
+          description: Timestamp of the event
+        referral_id:
+          type: string
+          format: uuid
+          description: ID of the offer
+        client:
+          type: object
+          properties:
+            outbox_id:
+              type: string
+              description: ID of the client in the demand system
+            id:
+              type: string
+              format: UUID
+              description: ID of the client
+          required:
+            - outbox_id
+            - id
+        demand:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Name of the demand organization
+            source:
+              type: string
+              description: |
+                From whom the organization was sourced
+                (e.g. `alayacare`, `procura`, `staffy`, `e2e_tests`, `internal`)
+          required:
+            - name
+            - source
+        supply:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Name of the demand organization
+            source:
+              type: string
+              description: |
+                From whom the organization was sourced
+                (e.g. `alayacare`, `procura`, `staffy`, `e2e_tests`, `internal`)
+          required:
+            - name
+            - source
       required:
         - event_source
         - event_name
         - id
+        - event_id
+        - timestamp
+        - referral_id
+        - client
+        - demand
+        - supply
     OutboxVisitEventPayload:
       type: object
       properties:
@@ -202,6 +278,19 @@ components:
               - VisitSupplyScheduled
               - VisitSupplyRescheduled
         id:
+          deprecated: true
+          type: string
+          format: uuid
+          description: ID of the visit
+        event_id:
+          type: string
+          format: uuid
+          description: ID of the event
+        timestamp:
+          type: string
+          format: datetime
+          description: Timestamp of the event
+        visit_id:
           type: string
           format: uuid
           description: ID of the visit
@@ -240,6 +329,9 @@ components:
         - event_source
         - event_name
         - id
+        - event_id
+        - timestamp
+        - visit_id
         - referral_id
         - start_at
         - end_at
@@ -258,9 +350,22 @@ components:
             enum:
               - VisitTasksCompleted
         id:
+          deprecated: true
           type: string
           format: uuid
           description: ID of the visit.
+        event_id:
+          type: string
+          format: uuid
+          description: ID of the event
+        timestamp:
+          type: string
+          format: datetime
+          description: Timestamp of the event
+        visit_id:
+          type: string
+          format: uuid
+          description: ID of the visit
         visit_outbox_id:
           type: string
           description: ID of the visit in the demand system associated with the visit. This is available for `visit` type referrals only.
@@ -294,6 +399,9 @@ components:
         - event_source
         - event_name
         - id
+        - event_id
+        - timestamp
+        - visit_id
         - tasks
     OutboxWorkSessionEventPayload:
       type: object
@@ -309,6 +417,19 @@ components:
               - WorkSessionStarted
               - WorkSessionEnded
         id:
+          deprecated: true
+          type: string
+          format: uuid
+          description: ID of the work session.
+        event_id:
+          type: string
+          format: uuid
+          description: ID of the event.
+        timestamp:
+          type: string
+          format: datetime
+          description: Timestamp of the event.
+        work_session_id:
           type: string
           format: uuid
           description: ID of the work session.
@@ -344,6 +465,9 @@ components:
         - event_source
         - event_name
         - id
+        - event_id
+        - timestamp
+        - work_session_id
         - visit_id
         - start_at
     InboxOfferEventPayload:
@@ -362,6 +486,19 @@ components:
               - OfferExpired
               - OfferFulfilled
         id:
+          deprecated: true
+          type: string
+          format: uuid
+          description: ID of the offer
+        event_id:
+          type: string
+          format: uuid
+          description: ID of the event
+        timestamp:
+          type: string
+          format: datetime
+          description: Timestamp of the event
+        offer_id:
           type: string
           format: uuid
           description: ID of the offer
@@ -369,6 +506,9 @@ components:
         - event_source
         - event_name
         - id
+        - event_id
+        - timestamp
+        - offer_id
     InboxReferralEventPayload:
       type: object
       properties:
@@ -383,10 +523,70 @@ components:
               - ReferralCreated
               - ReferralDemandCancelled
         id:
+          deprecated: true
           type: string
           format: uuid
           description: ID of the referral
+        event_id:
+          type: string
+          format: uuid
+          description: ID of the event
+        timestamp:
+          type: string
+          format: datetime
+          description: Timestamp of the event
+        referral_id:
+          type: string
+          format: uuid
+          description: ID of the offer
+        client:
+          type: object
+          properties:
+            outbox_id:
+              type: string
+              description: ID of the client in the demand system
+            id:
+              type: string
+              format: UUID
+              description: ID of the client
+          required:
+            - outbox_id
+            - id
+        demand:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Name of the demand organization
+            source:
+              type: string
+              description: |
+                From whom the organization was sourced
+                (e.g. `alayacare`, `procura`, `staffy`, `e2e_tests`, `internal`)
+          required:
+            - name
+            - source
+        supply:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Name of the demand organization
+            source:
+              type: string
+              description:
+                From whom the organization was sourced
+                (e.g. `alayacare`, `procura`, `staffy`, `e2e_tests`, `internal`)
+          required:
+            - name
+            - source
       required:
         - event_source
         - event_name
         - id
+        - event_id
+        - timestamp
+        - referral_id
+        - client
+        - demand
+        - supply
