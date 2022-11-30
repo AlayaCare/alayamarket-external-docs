@@ -69,9 +69,18 @@ components:
           enum:
             - OrgTrustedNetworkUpdated
         id:
+          deprecated: true
           type: string
           format: uuid
           description: ID of the event
+        event_id:
+          type: string
+          format: uuid
+          description: ID of the event
+        timestamp:
+          type: string
+          format: datetime
+          description: Timestamp of the event
         organization_id:
           type: string
           format: uuid
@@ -99,5 +108,7 @@ components:
         - event_source
         - event_name
         - id
+        - event_id
+        - timestamp
         - organization_id
         - trusted_network
