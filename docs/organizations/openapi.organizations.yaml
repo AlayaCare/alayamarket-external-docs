@@ -762,6 +762,8 @@ components:
         name:
           type: string
           minLength: 1
+        host:
+          type: string
         source:
           type: string
           minLength: 1
