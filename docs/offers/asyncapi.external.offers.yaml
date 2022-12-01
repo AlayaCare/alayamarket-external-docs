@@ -231,6 +231,13 @@ components:
             name:
               type: string
               description: Name of the demand organization
+            host:
+              type: string
+              description: |
+                The host of the demand organization - a fully qualified domain name that
+                starts with "https://" without a trailing slash
+                (e.g. https://org.alayacare.com).
+              example: https://org.alayacare.com
             source:
               type: string
               description: |
@@ -245,6 +252,13 @@ components:
             name:
               type: string
               description: Name of the demand organization
+            host:
+              type: string
+              description: |
+                The host of the supply organization - a fully qualified domain name that
+                starts with "https://" without a trailing slash
+                (e.g. https://org.alayacare.com).
+              example: https://org.alayacare.com
             source:
               type: string
               description: |
@@ -558,6 +572,13 @@ components:
             name:
               type: string
               description: Name of the demand organization
+            host:
+              type: string
+              description: |
+                The host of the demand organization - a fully qualified domain name that
+                starts with "https://" without a trailing slash
+                (e.g. https://org.alayacare.com).
+              example: https://org.alayacare.com
             source:
               type: string
               description: |
@@ -572,6 +593,13 @@ components:
             name:
               type: string
               description: Name of the demand organization
+            host:
+              type: string
+              description: |
+                The host of the supply organization - a fully qualified domain name that
+                starts with "https://" without a trailing slash
+                (e.g. https://org.alayacare.com).
+              example: https://org.alayacare.com
             source:
               type: string
               description:
