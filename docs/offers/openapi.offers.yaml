@@ -1164,6 +1164,101 @@ paths:
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
 
+  /v1/sys_admin/visits:
+    get:
+      tags:
+        - visit sys_admin
+      description: |
+        # Authorization
+        Required role: `sys_admin`.
+
+        # Description
+        Get a collection of Visits.
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: inbox_id
+          schema:
+            type: string
+        - in: query
+          name: outbox_id
+          schema:
+            type: string
+        - in: query
+          name: demand_persona_id
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: supply_persona_id
+          schema:
+            type: string
+            format: uuid
+        - $ref: '#/components/parameters/ReferralIdQueryParam'
+          required: false
+        - $ref: '#/components/parameters/ServiceIdQueryParam'
+          required: false
+        - in: query
+          name: service_outbox_id
+          schema:
+            type: string
+          description: ID of a service in the demand system.
+          required: false
+        - $ref: '#/components/parameters/PageNumberParam'
+        - $ref: '#/components/parameters/ItemsPerPageParam'
+        - in: query
+          name: sort_by
+          schema:
+            type: string
+            enum:
+              - last_modified
+              - start_at
+            default: start_at
+        - $ref: '#/components/parameters/SortOrderParam'
+      responses:
+        200:
+          description: "Successfully retrieved a collection of Visits."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SysAdminVisitPageResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
+  /v1/sys_admin/visits/{visit_id}:
+    parameters:
+      - $ref: '#/components/parameters/VisitIdPathParam'
+    get:
+      tags:
+        - visit sys_admin
+      description: |
+        # Authorization
+        Required role: `sys_admin`.
+
+        # Description
+        Get the details of a Visit.
+      responses:
+        200:
+          description: 'Successfully returned visit details.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SysAdminVisitDetailResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
   /v1/outbox/work_sessions:
     parameters:
       - in: query
@@ -3098,6 +3193,83 @@ components:
               items:
                 $ref: '#/components/schemas/OutboxVisitCollectionResponse'
 
+    SysAdminVisitPageResponse:
+      allOf:
+        - $ref: '#/components/schemas/PageCore'
+        - type: object
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/SysAdminVisitCollectionResponse'
+
+    SysAdminVisitDetailResponse:
+      type: object
+      properties:
+        visit:
+          title: SysAdminVisitDetailCore
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            outbox_id:
+              type: string
+            inbox_id:
+              type: string
+            referral_id:
+              type: string
+              format: uuid
+            service_id:
+              type: string
+              format: uuid
+            service_outbox_id:
+              type: string
+              minLength: 1
+            status:
+              type: string
+              enum:
+                - scheduled
+                - deleted
+            start_at:
+              type: string
+              format: date-time
+            end_at:
+              type: string
+              format: date-time
+          required:
+            - status
+            - id
+            - referral_id
+            - service_id
+            - service_outbox_id
+            - start_at
+            - end_at
+        tasks:
+          title: SysAdminVisitTaskResponse
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              outbox_id:
+                type: string
+              is_completed:
+                type: boolean
+              completed_at:
+                type: string
+                format: date-time
+              completion_comment:
+                type: string
+            required:
+              - id
+              - is_completed
+      required:
+        - visit
+        - tasks
+
     OutboxVisitDetailResponse:
       type: object
       properties:
@@ -3126,6 +3298,45 @@ components:
       required:
         - visit
         - tasks
+
+    SysAdminVisitCollectionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        outbox_id:
+          type: string
+        inbox_id:
+          type: string
+        referral_id:
+          type: string
+          format: uuid
+        service_id:
+          type: string
+          format: uuid
+        service_outbox_id:
+          type: string
+          minLength: 1
+        status:
+          type: string
+          enum:
+            - scheduled
+            - deleted
+        start_at:
+          type: string
+          format: date-time
+        end_at:
+          type: string
+          format: date-time
+      required:
+        - status
+        - id
+        - referral_id
+        - service_id
+        - service_outbox_id
+        - start_at
+        - end_at
 
     OutboxVisitCollectionResponse:
       allOf:
