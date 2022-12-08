@@ -1620,12 +1620,25 @@ components:
         client:
           type: object
           properties:
+            outbox_id:
+              type: string
             demographics:
               $ref: '#/components/schemas/DemographicLeanCore'
           required:
             - demographics
+            - outbox_id
         service:
-          $ref: '#/components/schemas/ServiceLeanCore'
+          title: OutboxOfferServiceLeanResponse
+          type: object
+          properties:
+            outbox_id:
+              type: string
+            name:
+              type: string
+              minLength: 1
+          required:
+            - name
+            - outbox_id
         response_counts:
           $ref: '#/components/schemas/OfferResponseCountsCore'
       required:
