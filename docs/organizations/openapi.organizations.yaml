@@ -282,13 +282,24 @@ paths:
         Retrieves the trusted network of an organization.
         # Authorization
         Required role: `org_admin`
+      parameters:
+        - $ref: '#/components/parameters/PageNumberParam'
+        - $ref: '#/components/parameters/ItemsPerPageParam'
+        - in: query
+          name: sort_by
+          schema:
+            type: string
+            enum:
+              - name
+            default: name
+        - $ref: '#/components/parameters/SortOrderParam'
       responses:
         200:
           description: Trusted network
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DemandTrustedNetworkResponse'
+                $ref: '#/components/schemas/DemandTrustedNetworkPageResponse'
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
@@ -564,6 +575,15 @@ components:
       name: page
       schema:
         $ref: '#/components/schemas/PageNumberCore'
+    SortOrderParam:
+      in: query
+      name: sort_order
+      schema:
+        type: string
+        enum:
+          - asc
+          - desc
+        default: desc
 
   schemas:
     ItemsPerPageCore:
@@ -830,6 +850,33 @@ components:
               enum: [ active, disabled ]
           required:
             - status
+
+    DemandTrustedNetworkPageResponse:
+      allOf:
+        - $ref: '#/components/schemas/PageCore'
+        - type: object
+          properties:
+            items:
+              type: array
+              items:
+                title: "DemandTrustedNetworkItemResponse"
+                type: object
+                properties:
+                  name:
+                    type: string
+                    minLength: 1
+                  id:
+                    type: string
+                    format: uuid
+                required:
+                  - name
+                  - id
+          required:
+            - page
+            - items_per_page
+            - total_items
+            - total_pages
+            - items
 
     DemandTrustedNetworkResponse:
       type: object
