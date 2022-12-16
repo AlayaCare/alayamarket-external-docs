@@ -292,7 +292,15 @@ paths:
             enum:
               - name
             default: name
-        - $ref: '#/components/parameters/SortOrderParam'
+        - in: query
+          name: sort_order
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+            # default: asc makes more sense since default sort_by == name.
+            default: asc
       responses:
         200:
           description: Trusted network
@@ -378,6 +386,46 @@ paths:
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
   /v1/sys_admin/{organization_id}/demand_persona/trusted_network:
+    get:
+      tags:
+        - organizations (sys_admin)
+      description: |
+        Retrieves the trusted network of a demand organization.
+        # Authorization
+        Required role: `sys_admin`
+      parameters:
+        - $ref: '#/components/parameters/OrgIdPathParam'
+        - $ref: '#/components/parameters/PageNumberParam'
+        - $ref: '#/components/parameters/ItemsPerPageParam'
+        - in: query
+          name: sort_by
+          schema:
+            type: string
+            enum:
+              - name
+            default: name
+        - in: query
+          name: sort_order
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+            # default: asc makes more sense since default sort_by == name.
+            default: asc
+      responses:
+        200:
+          description: Trusted network
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DemandTrustedNetworkPageResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
     post:
       tags:
         - organizations (sys_admin)
@@ -841,15 +889,13 @@ components:
         - $ref: '#/components/schemas/OrgDetailResponse'
 
     DemandDetailResponse:
-      allOf:
-        - $ref: '#/components/schemas/DemandTrustedNetworkResponse'
-        - type: object
-          properties:
-            status:
-              type: string
-              enum: [ active, disabled ]
-          required:
-            - status
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [ active, disabled ]
+      required:
+        - status
 
     DemandTrustedNetworkPageResponse:
       allOf:
@@ -877,26 +923,6 @@ components:
             - total_items
             - total_pages
             - items
-
-    DemandTrustedNetworkResponse:
-      type: object
-      properties:
-        trusted_network:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-                minLength: 1
-              id:
-                type: string
-                format: uuid
-            required:
-              - name
-              - id
-      required:
-        - trusted_network
 
     SupplyDetailResponse:
       type: object
