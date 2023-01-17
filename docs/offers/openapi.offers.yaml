@@ -134,6 +134,12 @@ paths:
             format: date-time
             description: Offers that expire before this date-time.
         - $ref: '#/components/parameters/ShiftIdQueryParam'
+        - in: query
+          name: demand_label
+          schema:
+            type: string
+            description: Offers associated with any given label set by the demand
+              organization.
         - $ref: '#/components/parameters/PageNumberParam'
         - $ref: '#/components/parameters/ItemsPerPageParam'
         - $ref: '#/components/parameters/SortByParam'
@@ -1468,6 +1474,11 @@ components:
           format: date-time
         comment:
           type: string
+        demand_labels:
+          type: array
+          items:
+            type: string
+          minItems: 1
       required:
         - care_type
         - offer_type
@@ -1513,6 +1524,11 @@ components:
           format: date-time
         comment:
           type: string
+        demand_labels:
+          type: array
+          items:
+            type: string
+          minItems: 1
       required:
         - care_type
         - expires_at
@@ -2817,6 +2833,11 @@ components:
               $ref: '#/components/schemas/ReferralTypeCore'
             comment:
               type: string
+            demand_labels:
+              type: array
+              items:
+                type: string
+              minItems: 1
           required:
             - care_type
             - referral_type
@@ -2882,6 +2903,11 @@ components:
               $ref: '#/components/schemas/ReferralTypeCore'
             comment:
               type: string
+            demand_labels:
+              type: array
+              items:
+                type: string
+              minItems: 1
             status:
               $ref: '#/components/schemas/ReferralStatusCore'
             start_at:
