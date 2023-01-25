@@ -513,6 +513,45 @@ paths:
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
 
+  /v1/sys_admin/offers/{offer_id}/matches:
+    parameters:
+    - $ref: '#/components/parameters/OfferIdPathParam'
+    get:
+      tags:
+        - offer sys_admin
+      description: |
+        # Authorization
+
+        Required role: `sys_admin`
+
+        # Description
+        Get the Offer Matches of an Offer.
+      parameters:
+        - in: query
+          name: response
+          schema:
+            $ref: '#/components/schemas/OfferMatchResponseCore'
+          description: |
+            Response of an Offer Match to filter on.
+            Multiple values are supported (in an `OR` fashion).
+        - $ref: '#/components/parameters/PageNumberParam'
+        - $ref: '#/components/parameters/ItemsPerPageParam'
+        - $ref: '#/components/parameters/SortByParam'
+        - $ref: '#/components/parameters/SortOrderParam'
+      responses:
+        200:
+          description: 'Successfully returned Offer Matches.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutboxOfferMatchPageResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
   /v1/demand_personas/settings/assignment:
     post:
       tags:
@@ -967,6 +1006,32 @@ paths:
       responses:
         204:
           description: "Successfully marked Referral as Cancelled"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
+  /v1/sys_admin/referrals/{referral_id}:
+    parameters:
+      - $ref: '#/components/parameters/ReferralIdPathParam'
+    get:
+      tags:
+        - referral sys_admin
+      description: |
+        # Authorization
+        Required role: `sys_admin`
+
+        # Description
+        Get the details of a Referral.
+      responses:
+        200:
+          description: 'Successfully returned referral details.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SysAdminReferralDetailResponse'
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
@@ -2932,6 +2997,34 @@ components:
             - start_at
             - end_at
             - created_at
+
+    SysAdminReferralDetailResponse:
+      allOf:
+        - type: object
+          properties:
+            referral:
+              $ref: '#/components/schemas/OutboxReferralCore'
+            demand:
+              $ref: '#/components/schemas/OrganizationLeanCore'
+            supply:
+              $ref: '#/components/schemas/OrganizationLeanCore'
+            price:
+              $ref: '#/components/schemas/PriceCore'
+            client:
+              $ref: '#/components/schemas/OutboxReferralClientResponse'
+            service:
+              $ref: '#/components/schemas/OutboxServiceResponse'
+            visits:
+              type: array
+              items:
+                $ref: '#/components/schemas/OutboxReferralVisitResponse'
+          required:
+            - referral
+            - demand
+            - supply
+            - price
+            - client
+            - service
 
     OutboxReferralDetailResponse:
       # Full blown representation of an referral, with related/nested entities
