@@ -823,6 +823,24 @@ paths:
             $ref: '#/components/schemas/ReferralStatusCore'
         - $ref: '#/components/parameters/ShiftIdQueryParam'
         - $ref: '#/components/parameters/OfferIdQueryParam'
+        - in: query
+          name: care_type
+          schema:
+            $ref: '#/components/schemas/CareTypeCore'
+        - in: query
+          name: referral_type
+          schema:
+            $ref: '#/components/schemas/ReferralTypeCore'
+        - in: query
+          name: client_outbox_id
+          schema:
+            type: string
+        - in: query
+          name: demand_label
+          schema:
+            type: string
+            description: Referrals associated with any given label set by the demand
+              organization.
         - $ref: '#/components/parameters/PageNumberParam'
         - $ref: '#/components/parameters/ItemsPerPageParam'
         - $ref: '#/components/parameters/SortByParam'
