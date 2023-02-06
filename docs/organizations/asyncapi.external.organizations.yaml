@@ -85,25 +85,6 @@ components:
           type: string
           format: uuid
           description: ID of the demand organization
-        trusted_network:
-          type: array
-          description: | 
-            The trusted network of the demand organization. 
-
-            **This is a mutable property and should be used carefully.**
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uuid
-                description: ID of the supply organization in the trusted network.
-              name:
-                type: string
-                description: Name of the supply organization in the trusted network.
-            required:
-              - id
-              - name
       required:
         - event_source
         - event_name
@@ -111,4 +92,3 @@ components:
         - event_id
         - timestamp
         - organization_id
-        - trusted_network
