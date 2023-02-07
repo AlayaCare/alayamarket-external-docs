@@ -72,6 +72,12 @@ from the Offers Inbox:
 http GET $SERVER/offers/v1/inbox/offers Authorization:<IdToken>
 ```
 
+For the complete HTTP API specifications, see [Documentation](#documentation). 
+
+### Get your Events 
+Rather than polling our APIs, you can subscribe to our events to be alerted when something changes. For more details, see [Documentation](#documentation). 
+
+
 ## Terminology
   * `offer`: An offer to provide care to a client. This is created by an organization in demand of staff that cannot provide care themselves. The offer may be matched to multiple organizations that can supply their staff to provide the care. 
   * `referral`: An agreement to provide care to a client. This is automatically created when a demand organization assigns an offer to a supply organization. 
@@ -94,21 +100,26 @@ and offers and referrals:
 * [Offers & Referrals OpenAPI specs](../offers/openapi.offers)
 
 ### Async APIs
-It also supports event driven communication using Async APIs to notify you 
+The Marketplace supports event driven communication using Async APIs to notify you 
 of relevant changes, such as when an offer is matched or accepted.
+* [Organization AsyncAPI specs](../organizations/asyncapi.external.organizations)
 * [Offers & Referrals AsyncAPI specs](../offers/asyncapi.external.offers)
 
 #### Subscribing to Async APIs
-Reach out to us to let us know what topics you'd like to subscribe to. 
-You can subscribe http endpoints or email addresses to receive notifications 
-for relevant changes to your data. 
+We do not support self-serve subscribing. Please reach out to us on [team-alayamarket@alayacare.com](mailto:team-alayamarket@alayacare.com) with the endpoints or email addresses you would like to subscribe. 
 
 #### Confirming your subscriptions 
 Notifications are delivered using AWS SNS. 
 You will need to confirm your subscriptions before they become active. 
+
 For email subscriptions, you will receive an email containing a link 
 that must be clicked to confirm your subscription. 
+
 For http subscriptions, you will receive a confirmation event 
 containing a `SubscribeURL` that you will need to perform a GET request on. 
-For more information, see [here](https://docs.aws.amazon.com/sns/latest/dg/SendMessageToHttp.prepare.html).  
+Subscription events have a payload containing 
+`"Type" : "SubscriptionConfirmation"`. For more information, see [here](https://docs.aws.amazon.com/sns/latest/dg/SendMessageToHttp.prepare.html). 
 
+#### Consuming your events
+Once your endpoints are confirmed, you can start to receive notification events. 
+These events have a payload containing `"Type" : "Notification"` and a `"Message"` containing the data described in the Async API specs. For more information, see [here](https://docs.aws.amazon.com/sns/latest/dg/SendMessageToHttp.prepare.html). 
