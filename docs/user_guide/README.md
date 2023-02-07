@@ -77,6 +77,11 @@ For the complete HTTP API specifications, see [Documentation](#documentation).
 ### Get your Events 
 Rather than polling our APIs, you can subscribe to our events to be alerted when something changes. For more details, see [Documentation](#documentation). 
 
+#### Demand 
+As a demand participant, you will use the `Outbox` topics to receive events like an offer was accepted or declined, see e.g [here](https://alayacare.github.io/alayamarket-external-docs/docs/offers/asyncapi.external.offers/#operation-subscribe-outbox-offers). 
+
+#### Supply 
+As a supply participant, you will use the `Inbox` topics to receive events like an offer was matched or closed, see e.g [here](https://alayacare.github.io/alayamarket-external-docs/docs/offers/asyncapi.external.offers/#operation-subscribe-inbox-offers). 
 
 ## Terminology
   * `offer`: An offer to provide care to a client. This is created by an organization in demand of staff that cannot provide care themselves. The offer may be matched to multiple organizations that can supply their staff to provide the care. 
