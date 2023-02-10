@@ -818,6 +818,11 @@ paths:
         Get a collection of Referrals created by the Demand organization.
       parameters:
         - in: query
+          name: supply_persona_id
+          schema:
+            type: string
+            format: uuid
+        - in: query
           name: status
           schema:
             $ref: '#/components/schemas/ReferralStatusCore'
@@ -2952,6 +2957,8 @@ components:
       properties:
         referral:
           $ref: '#/components/schemas/OutboxReferralCore'
+        supply:
+          $ref: '#/components/schemas/OrganizationLeanCore'
         client:
           type: object
           properties:
@@ -2963,6 +2970,7 @@ components:
           $ref: '#/components/schemas/ServiceLeanCore'
       required:
         - referral
+        - supply
         - client
         - service
 
