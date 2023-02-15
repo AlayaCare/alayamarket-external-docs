@@ -1724,6 +1724,7 @@ components:
         offer:
           $ref: '#/components/schemas/OutboxOfferExtendedCore'
         client:
+          title: OutboxOfferCollectionClientResponse
           type: object
           properties:
             outbox_id:
@@ -1956,6 +1957,7 @@ components:
         price:
           $ref: '#/components/schemas/PriceCore'
         client:
+          title: InboxOfferDetailClientResponse
           type: object
           properties:
             address:
@@ -1971,6 +1973,7 @@ components:
           required:
             - address
         service:
+          title: InboxOfferDetailServiceResponse
           allOf:
             - $ref: '#/components/schemas/ServiceCore'
             - type: object
@@ -2495,26 +2498,29 @@ components:
         - is_required
 
     ServiceCore:
-      allOf:
-        - $ref: '#/components/schemas/ServiceLeanCore'
-        - type: object
-          properties:
-            start_at:
-              type: string
-              format: date-time
-            end_at:
-              type: string
-              format: date-time
-            instructions:
-              # CCAC includes goals and other items in ServiceInstructions
-              type: string
-            skills:
-              # should this live here or at root level or client level?
-              # should this be a string or list of strings or list of objects?
-              type: array
-              items:
-                type: string
-          # CCAC service includes priority, some other codes, and nests Frequencies in Service
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+        start_at:
+          type: string
+          format: date-time
+        end_at:
+          type: string
+          format: date-time
+        instructions:
+          # CCAC includes goals and other items in ServiceInstructions
+          type: string
+        skills:
+          # should this live here or at root level or client level?
+          # should this be a string or list of strings or list of objects?
+          type: array
+          items:
+            type: string
+      # CCAC service includes priority, some other codes, and nests Frequencies in Service
+      required:
+        - name
 
     OutboxServiceRequest:
       allOf:
@@ -2545,15 +2551,6 @@ components:
           required:
             - id
             - outbox_id
-
-    ServiceLeanCore:
-      type: object
-      properties:
-        name:
-          type: string
-          minLength: 1
-      required:
-        - name
 
     ClientCore:
       type: object
@@ -2968,14 +2965,28 @@ components:
         supply:
           $ref: '#/components/schemas/OrganizationLeanCore'
         client:
+          title: OutboxReferralCollectionClientResponse
           type: object
           properties:
+            outbox_id:
+              type: string
             demographics:
               $ref: '#/components/schemas/DemographicLeanCore'
           required:
+            - outbox_id
             - demographics
         service:
-          $ref: '#/components/schemas/ServiceLeanCore'
+          title: OutboxReferralCollectionServiceResponse
+          type: object
+          properties:
+            outbox_id:
+              type: string
+            name:
+              type: string
+              minLength: 1
+          required:
+            - name
+            - outbox_id
       required:
         - referral
         - supply
@@ -3165,6 +3176,7 @@ components:
         client:
           $ref: '#/components/schemas/InboxClientResponse'
         service:
+          title: InboxReferralDetailServiceResponse
           allOf:
             - $ref: '#/components/schemas/ServiceCore'
             - type: object
