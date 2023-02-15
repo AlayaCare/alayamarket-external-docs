@@ -1577,6 +1577,8 @@ components:
       properties:
         offer:
           $ref: '#/components/schemas/OutboxOfferCore'
+        alayacare:
+          $ref: '#/components/schemas/AlayaCareCore'
         direct_supply_persona_ids:
           description: |
             Identifiers of one (or more) supply organization for direct-to-supplier
@@ -1817,6 +1819,8 @@ components:
               $ref: '#/components/schemas/OrganizationLeanCore'
             supply:
               $ref: '#/components/schemas/OrganizationLeanCore'
+            alayacare:
+              $ref: '#/components/schemas/AlayaCareCore'
             direct_supply_persona_ids:
               description: |
                 Identifiers of one (or more) supply organization for direct-to-supplier
@@ -1947,6 +1951,8 @@ components:
       properties:
         offer:
           $ref: '#/components/schemas/InboxOfferCore'
+        alayacare:
+          $ref: '#/components/schemas/AlayaCareCore'
         price:
           $ref: '#/components/schemas/PriceCore'
         client:
@@ -2933,6 +2939,8 @@ components:
           type: string
           format: uuid
           description: The supply organization to which the referral is destined.
+        alayacare:
+          $ref: '#/components/schemas/AlayaCareCore'
         price:
           $ref: '#/components/schemas/PriceCore'
         client:
@@ -3034,6 +3042,8 @@ components:
               $ref: '#/components/schemas/OrganizationLeanCore'
             supply:
               $ref: '#/components/schemas/OrganizationLeanCore'
+            alayacare:
+              $ref: '#/components/schemas/AlayaCareCore'
             price:
               $ref: '#/components/schemas/PriceCore'
             client:
@@ -3061,6 +3071,8 @@ components:
               $ref: '#/components/schemas/OutboxReferralCore'
             supply:
               $ref: '#/components/schemas/OrganizationLeanCore'
+            alayacare:
+              $ref: '#/components/schemas/AlayaCareCore'
             price:
               $ref: '#/components/schemas/PriceCore'
             client:
@@ -3146,6 +3158,8 @@ components:
         demand:
           # better to call sender (CCAC)? or demand_persona?
           $ref: '#/components/schemas/OrganizationLeanCore'
+        alayacare:
+          $ref: '#/components/schemas/AlayaCareCore'
         price:
           $ref: '#/components/schemas/PriceCore'
         client:
@@ -3668,6 +3682,8 @@ components:
           $ref: '#/components/schemas/OrganizationLeanCore'
         supply:
           $ref: '#/components/schemas/OrganizationLeanCore'
+        alayacare:
+          $ref: '#/components/schemas/AlayaCareCore'
         direct_supply_persona_ids:
           description: |
             Identifiers of one (or more) supply organization for direct-to-supplier
@@ -3969,6 +3985,12 @@ components:
             required:
               - name
               - value
+
+    AlayaCareCore:
+      type: object
+      properties:
+        authorization:
+          type: object
 
   securitySchemes:
     CognitoAuthorizer:
