@@ -206,13 +206,20 @@ components:
     CurrentIdentityDetailResponse:
       type: object
       properties:
-        organization_email:
+        email:
           type: string
+        name:
+          type: string
+        groups:
+          type: array
+          items:
+            type: string            
         organization_id:
           type: string
           format: uuid
-        organization_name:
-          type: string
+      required:
+        - email
+        - groups
     ForgotPasswordRequest:
       type: object
       properties:
