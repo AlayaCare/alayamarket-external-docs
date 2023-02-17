@@ -137,17 +137,23 @@ paths:
         - in: query
           name: email
           schema:
-            type: string
-            format: email
+            type: array
+            items:
+              type: string
+              format: email
         - in: query
           name: id
           schema:
-            type: string
-            format: uuid
+            type: array
+            items:
+              type: string
+              format: uuid
         - in: query
           name: name
           schema:
-            type: string
+            type: array
+            items:
+              type: string
         - in: query
           name: host
           schema:
@@ -155,11 +161,15 @@ paths:
         - in: query
           name: source_includes
           schema:
-            type: string
+            type: array
+            items:
+              type: string
         - in: query
           name: source_excludes
           schema:
-            type: string
+            type: array
+            items:
+              type: string
         - $ref: '#/components/parameters/PageNumberParam'
         - $ref: '#/components/parameters/ItemsPerPageParam'
       responses:
@@ -283,6 +293,34 @@ paths:
         # Authorization
         Required role: `org_admin`
       parameters:
+        - in: query
+          name: supply_persona_id
+          schema:
+            type: array
+            items:
+              type: string
+              format: UUID
+        - in: query
+          name: name
+          description: |
+            The name of the supply organization to filter in. This filter supports
+            case-insensitive, partial matching.
+          schema:
+            type: string
+        - in: query
+          name: source_includes
+          description: Return supply organizations with a source in this list.
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: source_excludes
+          description: Return supply organizations with a source not in this list.
+          schema:
+            type: array
+            items:
+              type: string
         - $ref: '#/components/parameters/PageNumberParam'
         - $ref: '#/components/parameters/ItemsPerPageParam'
         - in: query
@@ -437,6 +475,40 @@ paths:
         Required role: `sys_admin`
       parameters:
         - $ref: '#/components/parameters/OrgIdPathParam'
+        - in: query
+          name: supply_persona_id
+          schema:
+            type: array
+            items:
+              type: string
+              format: UUID
+        - in: query
+          name: name
+          description: |
+            The name of the supply organization to filter in. This filter supports
+            case-insensitive, partial matching.
+          schema:
+            type: string
+        - in: query
+          name: source_includes
+          description: Return supply organizations with a source in this list.
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: source_excludes
+          description: Return supply organizations with a source not in this list.
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: status
+          description: Return supply organizations with this status.
+          schema:
+            type: string
+            enum: [ active, disabled ]
         - $ref: '#/components/parameters/PageNumberParam'
         - $ref: '#/components/parameters/ItemsPerPageParam'
         - in: query
