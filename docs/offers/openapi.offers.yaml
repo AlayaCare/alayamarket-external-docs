@@ -846,6 +846,10 @@ paths:
             type: string
             description: Referrals associated with any given label set by the demand
               organization.
+        - in: query
+          name: has_alayacare_authorization
+          schema:
+            type: boolean
         - $ref: '#/components/parameters/PageNumberParam'
         - $ref: '#/components/parameters/ItemsPerPageParam'
         - $ref: '#/components/parameters/SortByParam'
