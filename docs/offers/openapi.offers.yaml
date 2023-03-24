@@ -1583,6 +1583,8 @@ components:
           $ref: '#/components/schemas/OutboxOfferCore'
         alayacare:
           $ref: '#/components/schemas/AlayaCareCore'
+        case_manager:
+          $ref: '#/components/schemas/CaseManagerCore'
         direct_supply_persona_ids:
           description: |
             Identifiers of one (or more) supply organization for direct-to-supplier
@@ -1660,6 +1662,8 @@ components:
           items:
             type: string
             format: uuid
+        case_manager:
+          $ref: '#/components/schemas/CaseManagerCore'
         items:
           type: array
           items:
@@ -1826,6 +1830,8 @@ components:
               $ref: '#/components/schemas/OrganizationLeanCore'
             alayacare:
               $ref: '#/components/schemas/AlayaCareCore'
+            case_manager:
+              $ref: '#/components/schemas/CaseManagerCore'
             direct_supply_persona_ids:
               description: |
                 Identifiers of one (or more) supply organization for direct-to-supplier
@@ -1958,6 +1964,8 @@ components:
           $ref: '#/components/schemas/InboxOfferCore'
         alayacare:
           $ref: '#/components/schemas/AlayaCareCore'
+        case_manager:
+          $ref: '#/components/schemas/CaseManagerCore'
         price:
           $ref: '#/components/schemas/PriceCore'
         client:
@@ -2942,6 +2950,8 @@ components:
           description: The supply organization to which the referral is destined.
         alayacare:
           $ref: '#/components/schemas/AlayaCareCore'
+        case_manager:
+          $ref: '#/components/schemas/CaseManagerCore'
         price:
           $ref: '#/components/schemas/PriceCore'
         client:
@@ -3059,6 +3069,8 @@ components:
               $ref: '#/components/schemas/OrganizationLeanCore'
             alayacare:
               $ref: '#/components/schemas/AlayaCareCore'
+            case_manager:
+              $ref: '#/components/schemas/CaseManagerCore'
             price:
               $ref: '#/components/schemas/PriceCore'
             client:
@@ -3088,6 +3100,8 @@ components:
               $ref: '#/components/schemas/OrganizationLeanCore'
             alayacare:
               $ref: '#/components/schemas/AlayaCareCore'
+            case_manager:
+              $ref: '#/components/schemas/CaseManagerCore'
             price:
               $ref: '#/components/schemas/PriceCore'
             client:
@@ -3175,6 +3189,8 @@ components:
           $ref: '#/components/schemas/OrganizationLeanCore'
         alayacare:
           $ref: '#/components/schemas/AlayaCareCore'
+        case_manager:
+          $ref: '#/components/schemas/CaseManagerCore'
         price:
           $ref: '#/components/schemas/PriceCore'
         client:
@@ -3700,6 +3716,8 @@ components:
           $ref: '#/components/schemas/OrganizationLeanCore'
         alayacare:
           $ref: '#/components/schemas/AlayaCareCore'
+        case_manager:
+          $ref: '#/components/schemas/CaseManagerCore'
         direct_supply_persona_ids:
           description: |
             Identifiers of one (or more) supply organization for direct-to-supplier
@@ -4007,6 +4025,18 @@ components:
       properties:
         authorization:
           type: object
+
+    CaseManagerCore:
+      type: object
+      properties:
+        name:
+          type: string
+        phone_number:
+          type: string
+        fax_number:
+          type: string
+        email:
+          type: string
 
   securitySchemes:
     CognitoAuthorizer:
