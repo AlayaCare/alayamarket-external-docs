@@ -2957,7 +2957,36 @@ components:
         client:
           $ref: '#/components/schemas/OutboxClientRequest'
         service:
-          $ref: '#/components/schemas/OutboxServiceRequest'
+          title: OutboxReferralServiceCreateRequest
+          type: object
+          properties:
+            outbox_id:
+              type: string
+              minLength: 1
+            address:
+              $ref: '#/components/schemas/AddressCore'
+            name:
+              type: string
+              minLength: 1
+            start_at:
+              type: string
+              format: date-time
+            end_at:
+              type: string
+              format: date-time
+            instructions:
+              type: string
+            skills:
+              type: array
+              items:
+                type: string
+            custom_fields:
+              type: array
+              items:
+                $ref: '#/components/schemas/CustomFieldCore'
+          required:
+            - outbox_id
+            - name
         visits:
           type: array
           items:
@@ -3076,7 +3105,40 @@ components:
             client:
               $ref: '#/components/schemas/OutboxReferralClientResponse'
             service:
-              $ref: '#/components/schemas/OutboxServiceResponse'
+              title: SysAdminReferralServiceDetailResponse
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                outbox_id:
+                  type: string
+                  minLength: 1
+                address:
+                  $ref: '#/components/schemas/AddressCore'
+                name:
+                  type: string
+                  minLength: 1
+                start_at:
+                  type: string
+                  format: date-time
+                end_at:
+                  type: string
+                  format: date-time
+                instructions:
+                  type: string
+                skills:
+                  type: array
+                  items:
+                    type: string
+                custom_fields:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/CustomFieldCore'
+              required:
+                - id
+                - outbox_id
+                - name
             visits:
               type: array
               items:
@@ -3107,7 +3169,40 @@ components:
             client:
               $ref: '#/components/schemas/OutboxReferralClientResponse'
             service:
-              $ref: '#/components/schemas/OutboxServiceResponse'
+              title: OutboxReferralServiceDetailResponse
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                outbox_id:
+                  type: string
+                  minLength: 1
+                address:
+                  $ref: '#/components/schemas/AddressCore'
+                name:
+                  type: string
+                  minLength: 1
+                start_at:
+                  type: string
+                  format: date-time
+                end_at:
+                  type: string
+                  format: date-time
+                instructions:
+                  type: string
+                skills:
+                  type: array
+                  items:
+                    type: string
+                custom_fields:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/CustomFieldCore'
+              required:
+                - id
+                - outbox_id
+                - name
             visits:
               type: array
               items:
@@ -3197,17 +3292,35 @@ components:
           $ref: '#/components/schemas/InboxClientResponse'
         service:
           title: InboxReferralDetailServiceResponse
-          allOf:
-            - $ref: '#/components/schemas/ServiceCore'
-            - type: object
-              properties:
-                id:
-                  type: string
-                  format: uuid
-                address:
-                  $ref: '#/components/schemas/AddressCore'
-              required:
-                - id
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            address:
+              $ref: '#/components/schemas/AddressCore'
+            name:
+              type: string
+              minLength: 1
+            start_at:
+              type: string
+              format: date-time
+            end_at:
+              type: string
+              format: date-time
+            instructions:
+              type: string
+            skills:
+              type: array
+              items:
+                type: string
+            custom_fields:
+              type: array
+              items:
+                $ref: '#/components/schemas/CustomFieldCore'
+          required:
+            - id
+            - name
         visits:
           type: array
           items:
@@ -4001,24 +4114,26 @@ components:
         - rate_supply
         - unit
 
+    CustomFieldCore:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+        value:
+          type: string
+      required:
+        - name
+        - value
+
     CustomFieldCollectionCore:
       type: object
       properties:
         custom_fields:
           type: array
           items:
-            title: CustomFieldCore
-            type: object
-            properties:
-              name:
-                type: string
-              type:
-                type: string
-              value:
-                type: string
-            required:
-              - name
-              - value
+            $ref: '#/components/schemas/CustomFieldCore'
 
     AlayaCareCore:
       type: object
