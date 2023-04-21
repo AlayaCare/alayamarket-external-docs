@@ -1596,7 +1596,7 @@ components:
         price:
           $ref: '#/components/schemas/OutboxOfferPriceCore'
         client:
-          $ref: '#/components/schemas/OutboxClientRequest'
+          $ref: '#/components/schemas/OutboxOfferClientRequest'
         service:
           $ref: '#/components/schemas/OutboxServiceRequest'
         visits:
@@ -1636,7 +1636,7 @@ components:
         price:
           $ref: '#/components/schemas/OutboxOfferPriceCore'
         client:
-          $ref: '#/components/schemas/OutboxClientRequest'
+          $ref: '#/components/schemas/OutboxOfferClientRequest'
         service:
           $ref: '#/components/schemas/OutboxServiceRequest'
         visits:
@@ -1982,6 +1982,10 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/RiskCore'
+            custom_fields:
+              type: array
+              items:
+                $ref: '#/components/schemas/CustomFieldCore'
           required:
             - address
         service:
@@ -2530,6 +2534,10 @@ components:
           type: array
           items:
             type: string
+        custom_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomFieldCore'
       # CCAC service includes priority, some other codes, and nests Frequencies in Service
       required:
         - name
@@ -2544,6 +2552,10 @@ components:
               minLength: 1
             address:
               $ref: '#/components/schemas/AddressCore'
+            referral_only_custom_fields:
+              type: array
+              items:
+                $ref: '#/components/schemas/CustomFieldCore'
           required:
             - outbox_id
 
@@ -2560,6 +2572,10 @@ components:
               minLength: 1
             address:
               $ref: '#/components/schemas/AddressCore'
+            referral_only_custom_fields:
+              type: array
+              items:
+                $ref: '#/components/schemas/CustomFieldCore'
           required:
             - id
             - outbox_id
@@ -2621,26 +2637,32 @@ components:
                 # should this be enum?
                 type: string
         demographics:
-          allOf:
-            - $ref: '#/components/schemas/CustomFieldCollectionCore'
-            - $ref: '#/components/schemas/DemographicLeanCore'
-            - type: object
-              properties:
-                email:
-                  type: string
-                  format: email
-                phone_number:
-                  type: string
-                date_of_birth:
-                  type: string
-                  format: date
-                gender:
-                  # should this be enum?
-                  type: string
-                language:
-                  # should this be enum?
-                  type: string
-                  # health card, etc?
+          type: object
+          properties:
+            first_name:
+              type: string
+              minLength: 1
+            last_name:
+              type: string
+              minLength: 1
+            email:
+              type: string
+              format: email
+            phone_number:
+              type: string
+            date_of_birth:
+              type: string
+              format: date
+            gender:
+              # should this be enum?
+              type: string
+            language:
+              # should this be enum?
+              type: string
+              # health card, etc?
+          required:
+            - first_name
+            - last_name
         allergies:
           type: array
           items:
@@ -2679,6 +2701,10 @@ components:
               start_date:
                 type: string
                 format: date
+        custom_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomFieldCore'
       required:
         - demographics
         - address
@@ -2694,7 +2720,22 @@ components:
           required:
             - id
 
-    OutboxClientRequest:
+    OutboxOfferClientRequest:
+      allOf:
+        - $ref: '#/components/schemas/ClientCore'
+        - type: object
+          properties:
+            outbox_id:
+              type: string
+              minLength: 1
+            referral_only_custom_fields:
+              type: array
+              items:
+                $ref: '#/components/schemas/CustomFieldCore'
+          required:
+            - outbox_id
+
+    OutboxReferralClientRequest:
       allOf:
         - $ref: '#/components/schemas/ClientCore'
         - type: object
@@ -2713,6 +2754,10 @@ components:
             outbox_id:
               type: string
               minLength: 1
+            referral_only_custom_fields:
+              type: array
+              items:
+                $ref: '#/components/schemas/CustomFieldCore'
           required:
             - outbox_id
 
@@ -2955,7 +3000,7 @@ components:
         price:
           $ref: '#/components/schemas/PriceCore'
         client:
-          $ref: '#/components/schemas/OutboxClientRequest'
+          $ref: '#/components/schemas/OutboxReferralClientRequest'
         service:
           title: OutboxReferralServiceCreateRequest
           type: object
@@ -3924,34 +3969,32 @@ components:
                     type: string
             demographics:
               title: SysAdminOfferDetailClientDemographicsResponse
-              allOf:
-                - $ref: '#/components/schemas/CustomFieldCollectionCore'
-                - type: object
-                  properties:
-                    first_name:
-                      type: string
-                      minLength: 1
-                    last_name:
-                      type: string
-                      minLength: 1
-                    email:
-                      type: string
-                      format: email
-                    phone_number:
-                      type: string
-                    date_of_birth:
-                      type: string
-                      format: date
-                    gender:
-                      # should this be enum?
-                      type: string
-                    language:
-                      # should this be enum?
-                      type: string
-                      # health card, etc?
-                  required:
-                    - first_name
-                    - last_name
+              type: object
+              properties:
+                first_name:
+                  type: string
+                  minLength: 1
+                last_name:
+                  type: string
+                  minLength: 1
+                email:
+                  type: string
+                  format: email
+                phone_number:
+                  type: string
+                date_of_birth:
+                  type: string
+                  format: date
+                gender:
+                  # should this be enum?
+                  type: string
+                language:
+                  # should this be enum?
+                  type: string
+                  # health card, etc?
+              required:
+                - first_name
+                - last_name
             allergies:
               title: SysAdminOfferDetailClientAllergiesResponse
               type: array
@@ -3994,6 +4037,14 @@ components:
                   start_date:
                     type: string
                     format: date
+            custom_fields:
+              type: array
+              items:
+                $ref: '#/components/schemas/CustomFieldCore'
+            referral_only_custom_fields:
+              type: array
+              items:
+                $ref: '#/components/schemas/CustomFieldCore'
           required:
             - outbox_id
             - demographics
@@ -4028,6 +4079,14 @@ components:
               type: array
               items:
                 type: string
+            custom_fields:
+              type: array
+              items:
+                $ref: '#/components/schemas/CustomFieldCore'
+            referral_only_custom_fields:
+              type: array
+              items:
+                $ref: '#/components/schemas/CustomFieldCore'
             # CCAC service includes priority, some other codes, and nests Frequencies in Service
           required:
             - id
