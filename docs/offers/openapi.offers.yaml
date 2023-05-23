@@ -850,6 +850,11 @@ paths:
           name: has_alayacare_authorization
           schema:
             type: boolean
+        - in: query
+          name: is_latest_revision
+          schema:
+            type: boolean
+            default: true
         - $ref: '#/components/parameters/PageNumberParam'
         - $ref: '#/components/parameters/ItemsPerPageParam'
         - $ref: '#/components/parameters/SortByParam'
@@ -941,6 +946,11 @@ paths:
             $ref: '#/components/schemas/ReferralStatusCore'
         - $ref: '#/components/parameters/OfferIdQueryParam'
         - $ref: '#/components/parameters/ShiftIdQueryParam'
+        - in: query
+          name: is_latest_revision
+          schema:
+            type: boolean
+            default: true
         - $ref: '#/components/parameters/PageNumberParam'
         - $ref: '#/components/parameters/ItemsPerPageParam'
         - $ref: '#/components/parameters/SortByParam'
@@ -1905,6 +1915,22 @@ components:
       properties:
         referral:
           $ref: '#/components/schemas/InboxReferralCore'
+        revision:
+          title: InboxReferralCollectionRevisionResponse
+          type: object
+          properties:
+            revision_group_id:
+              type: string
+              format: uuid
+            revision_number:
+              type: integer
+              minimum: 1
+          required:
+            - revision_group_id
+            - revision_number
+      required:
+        - referral
+        - revision
 
     InboxOfferCore:
       description: |
@@ -3075,11 +3101,25 @@ components:
           required:
             - name
             - outbox_id
+        revision:
+          title: OutboxReferralCollectionRevisionResponse
+          type: object
+          properties:
+            revision_group_id:
+              type: string
+              format: uuid
+            revision_number:
+              type: integer
+              minimum: 1
+          required:
+            - revision_group_id
+            - revision_number
       required:
         - referral
         - supply
         - client
         - service
+        - revision
 
     OutboxReferralCore:
       allOf:
@@ -3188,6 +3228,8 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/OutboxReferralVisitResponse'
+            revision:
+                $ref: '#/components/schemas/ReferralRevisionResponse'
           required:
             - referral
             - demand
@@ -3195,6 +3237,7 @@ components:
             - price
             - client
             - service
+            - revision
 
     OutboxReferralDetailResponse:
       # Full blown representation of an referral, with related/nested entities
@@ -3252,12 +3295,15 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/OutboxReferralVisitResponse'
+            revision:
+              $ref: '#/components/schemas/ReferralRevisionResponse'
           required:
             - referral
             - supply
             - price
             - client
             - service
+            - revision
 
     OutboxReferralPageResponse:
       allOf:
@@ -3370,12 +3416,15 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/InboxReferralVisitResponse'
+        revision:
+            $ref: '#/components/schemas/ReferralRevisionResponse'
       required:
         - referral
         - demand
         - price
         - service
         - client
+        - revision
 
     InboxReferralPageResponse:
       allOf:
@@ -4194,11 +4243,83 @@ components:
           items:
             $ref: '#/components/schemas/CustomFieldCore'
 
+    ReferralRevisionResponse:
+      type: object
+      properties:
+        revision_group_id:
+          type: string
+          format: uuid
+        revision_number:
+          type: integer
+          minimum: 1
+        revision_reasons:
+          type: array
+          items:
+            type: string
+        revision_comment:
+          type: string
+        is_latest_revision:
+          type: boolean
+      required:
+        - revision_group_id
+        - revision_number
+        - is_latest_revision
+
     AlayaCareCore:
       type: object
       properties:
         authorization:
           type: object
+          title: AuthorizationCore
+          properties:
+            authorization_number:
+              type: string
+            authorization_status:
+              type: string
+            end_date:
+              type: string
+            first_day_of_week:
+              type: integer
+            id:
+              type: integer
+            import_id:
+              type: string
+            is_over_utilized:
+              type: boolean
+            member_number:
+              type: string
+            methodology:
+              type: string
+            notes:
+              type: string
+            program_id:
+              type: string
+            rule_type:
+              type: string
+            rule_daily:
+              type: string
+            rule_weekly:
+              type: string
+            rule_monthly:
+              type: string
+            rule_period:
+              type: string
+            rule_monday:
+              type: string
+            rule_tuesday:
+              type: string
+            rule_wednesday:
+              type: string
+            rule_thursday:
+              type: string
+            rule_friday:
+              type: string
+            rule_saturday:
+              type: string
+            rule_sunday:
+              type: string
+            start_date:
+              type: string
 
     CaseManagerCore:
       type: object
