@@ -929,6 +929,43 @@ paths:
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
 
+  /v1/outbox/referrals/{referral_id}/update:
+    parameters:
+      - $ref: '#/components/parameters/ReferralIdPathParam'
+    post:
+      tags:
+        - referral outbox
+      description: |
+        # Authorization
+        Required role: `org_admin`
+
+        # Description
+        Update a Referral created by the Demand Organization.
+
+        A Referral can only be updated if
+        * It's of type: `service`, and
+        * It's the latest revision, and
+        * Its status is `assigned` or `processed`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OutboxReferralUpdateRequest'
+      responses:
+        201:
+          description: "Successfully updated Referral"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutboxReferralDetailResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
   /v1/inbox/referrals:
     get:
       tags:
@@ -3068,6 +3105,96 @@ components:
         - price
         - client
         - service
+
+    OutboxReferralUpdateRequest:
+      properties:
+        referral:
+          title: OutboxReferralUpdateReferralRequest
+          type: object
+          properties:
+            care_type:
+              $ref: '#/components/schemas/CareTypeCore'
+            referral_type:
+              type: string
+              enum:
+                # For now, only service referrals may be updated.
+                - service
+            comment:
+              type: string
+            demand_labels:
+              type: array
+              items:
+                type: string
+              minItems: 1
+          required:
+            - care_type
+            - referral_type
+        supply_persona_id:
+          type: string
+          format: uuid
+          description: The supply organization to which the referral is destined.
+        alayacare:
+          $ref: '#/components/schemas/AlayaCareCore'
+        case_manager:
+          $ref: '#/components/schemas/CaseManagerCore'
+        price:
+          $ref: '#/components/schemas/PriceCore'
+        client:
+          $ref: '#/components/schemas/OutboxReferralClientRequest'
+        service:
+          title: OutboxReferralUpdateServiceRequest
+          type: object
+          properties:
+            outbox_id:
+              type: string
+              minLength: 1
+            address:
+              $ref: '#/components/schemas/AddressCore'
+            name:
+              type: string
+              minLength: 1
+            start_at:
+              type: string
+              format: date-time
+            end_at:
+              type: string
+              format: date-time
+            instructions:
+              type: string
+            skills:
+              type: array
+              items:
+                type: string
+            custom_fields:
+              type: array
+              items:
+                $ref: '#/components/schemas/CustomFieldCore'
+          required:
+            - outbox_id
+            - name
+        visits:
+          type: array
+          items:
+            $ref: '#/components/schemas/OutboxReferralVisitRequest'
+        revision:
+          title: OutboxReferralUpdateRevisionRequest
+          type: object
+          properties:
+            reasons:
+              type: array
+              items:
+                type: string
+            comment:
+              type: string
+          required:
+            - reasons
+      required:
+        - referral
+        - supply_persona_id
+        - price
+        - client
+        - service
+        - revision
 
     OutboxReferralCollectionResponse:
       description: |
