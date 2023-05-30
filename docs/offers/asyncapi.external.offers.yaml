@@ -195,6 +195,7 @@ components:
               - ReferralCreated
               - ReferralProcessed
               - ReferralSupplyCancelled
+              - ReferralUpdated
         id:
           deprecated: true
           type: string
@@ -536,6 +537,7 @@ components:
             enum:
               - ReferralCreated
               - ReferralDemandCancelled
+              - ReferralUpdated
         id:
           deprecated: true
           type: string
