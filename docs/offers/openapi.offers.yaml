@@ -850,14 +850,22 @@ paths:
           name: has_alayacare_authorization
           schema:
             type: boolean
+        - $ref: '#/components/parameters/RevisionsQueryParam'
         - in: query
-          name: is_latest_revision
+          name: revision_group_id
           schema:
-            type: boolean
-            default: true
+            type: string
+            format: uuid
         - $ref: '#/components/parameters/PageNumberParam'
         - $ref: '#/components/parameters/ItemsPerPageParam'
-        - $ref: '#/components/parameters/SortByParam'
+        - in: query
+          name: sort_by
+          schema:
+            type: string
+            enum:
+              - last_modified
+              - revision_number
+            default: last_modified
         - $ref: '#/components/parameters/SortOrderParam'
       responses:
         200:
@@ -885,7 +893,7 @@ paths:
         Required role: `org_admin`
 
         # Description
-        Get the details of an Referral created by the Demand organization.
+        Get the details of a Referral created by the Demand organization.
       responses:
         200:
           description: 'Successfully returned Referral Outbox Scalar'
@@ -983,11 +991,7 @@ paths:
             $ref: '#/components/schemas/ReferralStatusCore'
         - $ref: '#/components/parameters/OfferIdQueryParam'
         - $ref: '#/components/parameters/ShiftIdQueryParam'
-        - in: query
-          name: is_latest_revision
-          schema:
-            type: boolean
-            default: true
+        - $ref: '#/components/parameters/RevisionsQueryParam'
         - $ref: '#/components/parameters/PageNumberParam'
         - $ref: '#/components/parameters/ItemsPerPageParam'
         - $ref: '#/components/parameters/SortByParam'
@@ -1578,6 +1582,18 @@ components:
       schema:
         type: string
         format: uuid
+    RevisionsQueryParam:
+      in: query
+      name: revisions
+      schema:
+        type: string
+        description: Filter in all revisions for a given referral, or only the latest
+          revision, or only the archived revision(s).
+        enum:
+          - all
+          - latest
+          - archived
+        default: latest
     ItemsPerPageParam:
       in: query
       name: items_per_page
@@ -3238,6 +3254,12 @@ components:
             revision_number:
               type: integer
               minimum: 1
+            revision_reasons:
+              type: array
+              items:
+                type: string
+            revision_comment:
+              type: string
           required:
             - revision_group_id
             - revision_number
