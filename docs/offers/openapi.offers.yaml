@@ -4427,6 +4427,7 @@ components:
               type: string
             end_date:
               type: string
+              format: date
             first_day_of_week:
               type: integer
             id:
@@ -4446,29 +4447,30 @@ components:
             rule_type:
               type: string
             rule_daily:
-              type: string
+              type: integer
             rule_weekly:
-              type: string
+              type: integer
             rule_monthly:
-              type: string
+              type: integer
             rule_period:
-              type: string
+              type: integer
             rule_monday:
-              type: string
+              type: integer
             rule_tuesday:
-              type: string
+              type: integer
             rule_wednesday:
-              type: string
+              type: integer
             rule_thursday:
-              type: string
+              type: integer
             rule_friday:
-              type: string
+              type: integer
             rule_saturday:
-              type: string
+              type: integer
             rule_sunday:
-              type: string
+              type: integer
             start_date:
               type: string
+              format: date
 
     CaseManagerCore:
       type: object
