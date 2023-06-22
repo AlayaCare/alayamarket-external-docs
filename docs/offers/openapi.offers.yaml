@@ -21,6 +21,26 @@ servers:
         - com.au
       default: ca
 paths:
+  /v1/status/healthz:
+    get:
+      tags:
+        - offer status
+      responses:
+        200:
+          description: Current healthz status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusHealthzResponse'
+      # This endpoint does not require authentication
+      security:
+        - NONE: [ ]
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
   /v1/outbox/shift/offers:
     post:
       tags:
@@ -1616,6 +1636,14 @@ components:
         $ref: '#/components/schemas/SortOrderCore'
 
   schemas:
+    StatusHealthzResponse:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+
     OutboxOfferCore:
       # Core fields on an offer expected to be present on requests and responses.
       type: object
