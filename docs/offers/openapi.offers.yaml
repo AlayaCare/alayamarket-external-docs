@@ -4475,27 +4475,38 @@ components:
             rule_type:
               type: string
             rule_daily:
-              type: integer
+              type: number
+              format: decimal
             rule_weekly:
-              type: integer
+              type: number
+              format: decimal
             rule_monthly:
-              type: integer
+              type: number
+              format: decimal
             rule_period:
-              type: integer
+              type: number
+              format: decimal
             rule_monday:
-              type: integer
+              type: number
+              format: decimal
             rule_tuesday:
-              type: integer
+              type: number
+              format: decimal
             rule_wednesday:
-              type: integer
+              type: number
+              format: decimal
             rule_thursday:
-              type: integer
+              type: number
+              format: decimal
             rule_friday:
-              type: integer
+              type: number
+              format: decimal
             rule_saturday:
-              type: integer
+              type: number
+              format: decimal
             rule_sunday:
-              type: integer
+              type: number
+              format: decimal
             start_date:
               type: string
               format: date
