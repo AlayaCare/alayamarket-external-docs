@@ -1244,6 +1244,34 @@ paths:
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
 
+  /v1/inbox/visits/{visit_id}/assign:
+    parameters:
+      - $ref: '#/components/parameters/VisitIdPathParam'
+    post:
+      tags:
+        - visit inbox
+      description: |
+        # Authorization
+        Required role: supply `org_admin`.
+
+        # Description
+        Assign an employee to a visit.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InboxVisitAssignRequest'
+      responses:
+        204:
+          description: "Successfully assigned an employee to the visit."
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
   /v1/inbox/visits/{visit_id}/delete:
     parameters:
       - $ref: '#/components/parameters/VisitIdPathParam'
@@ -3650,6 +3678,27 @@ components:
         - visit
         - service
         # - recurrence
+
+    InboxVisitAssignRequest:
+      type: object
+      properties:
+        employee_id:
+          type: integer
+        first_name:
+          type: string
+        last_name:
+          type: string
+        ssn:
+          type: string
+        date_of_birth:
+          type: string
+          format: date
+        data:
+          type: object
+      required:
+        - employee_id
+        - first_name
+        - last_name
 
     InboxVisitTaskCompletionRequest:
       type: object
