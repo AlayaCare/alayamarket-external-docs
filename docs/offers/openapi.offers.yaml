@@ -1272,6 +1272,28 @@ paths:
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
 
+  /v1/inbox/visits/{visit_id}/unassign:
+    parameters:
+      - $ref: '#/components/parameters/VisitIdPathParam'
+    post:
+      tags:
+        - visit inbox
+      description: |
+        # Authorization
+        Required role: supply `org_admin`.
+
+        # Description
+        Unassign an employee from a visit.
+      responses:
+        204:
+          description: "Successfully unassigned the employee from the visit."
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
   /v1/inbox/visits/{visit_id}/delete:
     parameters:
       - $ref: '#/components/parameters/VisitIdPathParam'
