@@ -3903,6 +3903,27 @@ components:
             - service_outbox_id
             - start_at
             - end_at
+        supply_employee:
+          title: SysAdminVisitDetailSupplyEmployeeResponse
+          type: object
+          properties:
+            supply_persona_id:
+              type: string
+              format: uuid
+            ssn_placeholder:
+              type: string
+            inbox_employee_id:
+              type: integer
+            first_name:
+              type: string
+            last_name:
+              type: string
+          required:
+            - supply_persona_id
+            - ssn_placeholder
+            - inbox_employee_id
+            - first_name
+            - last_name
         tasks:
           title: SysAdminVisitTaskResponse
           type: array
@@ -3933,6 +3954,24 @@ components:
       properties:
         visit:
           $ref: '#/components/schemas/OutboxVisitCore'
+        supply_employee:
+          title: OutboxVisitDetailSupplyEmployeeResponse
+          type: object
+          properties:
+            supply_persona_id:
+              type: string
+              format: uuid
+            ssn_placeholder:
+              type: string
+            first_name:
+              type: string
+            last_name:
+              type: string
+          required:
+            - supply_persona_id
+            - ssn_placeholder
+            - first_name
+            - last_name
         tasks:
           type: array
           items:
