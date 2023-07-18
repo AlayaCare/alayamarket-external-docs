@@ -4554,71 +4554,87 @@ components:
     AlayaCareCore:
       type: object
       properties:
+        authorizations:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuthorizationCore'
+        # TODO AM-3222: Remove support for single authorization
         authorization:
-          type: object
-          title: AuthorizationCore
-          properties:
-            authorization_number:
-              type: string
-            authorization_status:
-              type: string
-            end_date:
-              type: string
-              format: date
-            first_day_of_week:
-              type: integer
-            id:
-              type: integer
-            import_id:
-              type: string
-            is_over_utilized:
-              type: boolean
-            member_number:
-              type: string
-            methodology:
-              type: string
-            notes:
-              type: string
-            program_id:
-              type: string
-            rule_type:
-              type: string
-            rule_daily:
-              type: number
-              format: decimal
-            rule_weekly:
-              type: number
-              format: decimal
-            rule_monthly:
-              type: number
-              format: decimal
-            rule_period:
-              type: number
-              format: decimal
-            rule_monday:
-              type: number
-              format: decimal
-            rule_tuesday:
-              type: number
-              format: decimal
-            rule_wednesday:
-              type: number
-              format: decimal
-            rule_thursday:
-              type: number
-              format: decimal
-            rule_friday:
-              type: number
-              format: decimal
-            rule_saturday:
-              type: number
-              format: decimal
-            rule_sunday:
-              type: number
-              format: decimal
-            start_date:
-              type: string
-              format: date
+          allOf:
+            - type: object
+              deprecated: true
+            - $ref: '#/components/schemas/AuthorizationCore'
+
+    AuthorizationCore:
+      type: object
+      properties:
+        authorization_number:
+          type: string
+        authorization_status:
+          type: string
+        end_date:
+          type: string
+          format: date
+        first_day_of_week:
+          type: integer
+        id:
+          type: integer
+        import_id:
+          type: string
+        is_over_utilized:
+          type: boolean
+        member_number:
+          type: string
+        methodology:
+          type: string
+        notes:
+          type: string
+        program_id:
+          type: string
+        rule_type:
+          type: string
+        rule_daily:
+          type: number
+          format: decimal
+        rule_weekly:
+          type: number
+          format: decimal
+        rule_monthly:
+          type: number
+          format: decimal
+        rule_period:
+          type: number
+          format: decimal
+        rule_monday:
+          type: number
+          format: decimal
+        rule_tuesday:
+          type: number
+          format: decimal
+        rule_wednesday:
+          type: number
+          format: decimal
+        rule_thursday:
+          type: number
+          format: decimal
+        rule_friday:
+          type: number
+          format: decimal
+        rule_saturday:
+          type: number
+          format: decimal
+        rule_sunday:
+          type: number
+          format: decimal
+        start_date:
+          type: string
+          format: date
+      required:
+        - authorization_status
+        - first_day_of_week
+        - methodology
+        - rule_type
+        - start_date
 
     CaseManagerCore:
       type: object
