@@ -3206,15 +3206,6 @@ components:
           title: OutboxReferralUpdateReferralRequest
           type: object
           properties:
-            care_type:
-              # TODO (AM-3208): Deprecated. Remove from API.
-              $ref: '#/components/schemas/CareTypeCore'
-            referral_type:
-              # TODO (AM-3208): Deprecated. Remove from API.
-              type: string
-              enum:
-                # For now, only service referrals may be updated.
-                - service
             comment:
               type: string
             demand_labels:
