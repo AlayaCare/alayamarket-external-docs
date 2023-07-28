@@ -3898,6 +3898,9 @@ components:
           title: SysAdminVisitDetailSupplyEmployeeResponse
           type: object
           properties:
+            id:
+              type: string
+              format: uuid
             supply_persona_id:
               type: string
               format: uuid
@@ -3909,7 +3912,13 @@ components:
               type: string
             last_name:
               type: string
+            date_of_birth:
+              type: string
+              format: date
+            data:
+              type: object
           required:
+            - id
             - supply_persona_id
             - ssn_placeholder
             - inbox_employee_id
@@ -3949,6 +3958,9 @@ components:
           title: OutboxVisitDetailSupplyEmployeeResponse
           type: object
           properties:
+            id:
+              type: string
+              format: uuid
             supply_persona_id:
               type: string
               format: uuid
@@ -3958,7 +3970,13 @@ components:
               type: string
             last_name:
               type: string
+            date_of_birth:
+              type: string
+              format: date
+            data:
+              type: object
           required:
+            - id
             - supply_persona_id
             - ssn_placeholder
             - first_name
