@@ -2154,6 +2154,8 @@ components:
                 id:
                   type: string
                   format: uuid
+                use_client_address:
+                  type: boolean
                 address:
                   $ref: '#/components/schemas/AddressAnonCore'
               required:
@@ -2707,6 +2709,19 @@ components:
             outbox_id:
               type: string
               minLength: 1
+            use_client_address:
+              type: boolean
+              description: |
+                For informational purposes only. This is an explicit indicator to the
+                supply organization whether the client address should be used as the
+                service address.
+
+                Setting to `true` means the client address should be used for the
+                service address. So, if a service address is also provided in the
+                request, it can safely be ignored.
+
+                Not providing this or setting to `false` means the specified
+                service address should be used instead.
             address:
               $ref: '#/components/schemas/AddressCore'
             referral_only_custom_fields:
@@ -2727,6 +2742,8 @@ components:
             outbox_id:
               type: string
               minLength: 1
+            use_client_address:
+              type: boolean
             address:
               $ref: '#/components/schemas/AddressCore'
             referral_only_custom_fields:
@@ -3165,6 +3182,19 @@ components:
             outbox_id:
               type: string
               minLength: 1
+            use_client_address:
+              type: boolean
+              description: |
+                For informational purposes only. This is an explicit indicator to the
+                supply organization whether the client address should be used as the
+                service address.
+
+                Setting to `true` means the client address should be used for the
+                service address. So, if a service address is also provided in the
+                request, it can safely be ignored.
+
+                Not providing this or setting to `false` means the specified
+                service address should be used instead.
             address:
               $ref: '#/components/schemas/AddressCore'
             name:
@@ -3232,6 +3262,19 @@ components:
             outbox_id:
               type: string
               minLength: 1
+            use_client_address:
+              type: boolean
+              description: |
+                For informational purposes only. This is an explicit indicator to the
+                supply organization whether the client address should be used as the
+                service address.
+
+                Setting to `true` means the client address should be used for the
+                service address. So, if a service address is also provided in the
+                request, it can safely be ignored.
+
+                Not providing this or setting to `false` means the specified
+                service address should be used instead.
             address:
               $ref: '#/components/schemas/AddressCore'
             name:
@@ -3416,6 +3459,8 @@ components:
                 outbox_id:
                   type: string
                   minLength: 1
+                use_client_address:
+                  type: boolean
                 address:
                   $ref: '#/components/schemas/AddressCore'
                 name:
@@ -3483,6 +3528,8 @@ components:
                 outbox_id:
                   type: string
                   minLength: 1
+                use_client_address:
+                  type: boolean
                 address:
                   $ref: '#/components/schemas/AddressCore'
                 name:
@@ -3605,6 +3652,8 @@ components:
             id:
               type: string
               format: uuid
+            use_client_address:
+              type: boolean
             address:
               $ref: '#/components/schemas/AddressCore'
             name:
@@ -4406,6 +4455,8 @@ components:
             name:
               type: string
               minLength: 1
+            use_client_address:
+              type: boolean
             address:
               $ref: '#/components/schemas/AddressCore'
             start_at:
