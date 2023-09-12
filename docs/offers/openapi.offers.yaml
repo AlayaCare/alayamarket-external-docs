@@ -4641,11 +4641,7 @@ components:
           type: integer
         import_id:
           type: string
-        is_over_utilized:
-          type: boolean
         member_number:
-          type: string
-        methodology:
           type: string
         notes:
           type: string
@@ -4692,7 +4688,6 @@ components:
       required:
         - authorization_status
         - first_day_of_week
-        - methodology
         - rule_type
         - start_date
 
