@@ -1041,7 +1041,7 @@ paths:
         Required role: `org_admin`
 
         # Description
-        Get the anonamyzed details of Referrals matched to the Supply
+        Get the anonymized details of Referrals matched to the Supply
         organization. This must contain no PHI.
       responses:
         200:
@@ -1723,7 +1723,7 @@ components:
         offer:
           $ref: '#/components/schemas/OutboxOfferCore'
         alayacare:
-          $ref: '#/components/schemas/AlayaCareCore'
+          $ref: '#/components/schemas/OutboxAlayaCareCore'
         case_manager:
           $ref: '#/components/schemas/CaseManagerCore'
         direct_supply_persona_ids:
@@ -1970,7 +1970,7 @@ components:
             supply:
               $ref: '#/components/schemas/OrganizationLeanCore'
             alayacare:
-              $ref: '#/components/schemas/AlayaCareCore'
+              $ref: '#/components/schemas/OutboxAlayaCareCore'
             case_manager:
               $ref: '#/components/schemas/CaseManagerCore'
             direct_supply_persona_ids:
@@ -2120,7 +2120,7 @@ components:
         offer:
           $ref: '#/components/schemas/InboxOfferCore'
         alayacare:
-          $ref: '#/components/schemas/AlayaCareCore'
+          $ref: '#/components/schemas/InboxOfferAlayaCareResponse'
         case_manager:
           $ref: '#/components/schemas/CaseManagerCore'
         price:
@@ -3168,7 +3168,7 @@ components:
           format: uuid
           description: The supply organization to which the referral is destined.
         alayacare:
-          $ref: '#/components/schemas/AlayaCareCore'
+          $ref: '#/components/schemas/OutboxAlayaCareCore'
         case_manager:
           $ref: '#/components/schemas/CaseManagerCore'
         price:
@@ -3248,7 +3248,7 @@ components:
           format: uuid
           description: The supply organization to which the referral is destined.
         alayacare:
-          $ref: '#/components/schemas/AlayaCareCore'
+          $ref: '#/components/schemas/OutboxAlayaCareCore'
         case_manager:
           $ref: '#/components/schemas/CaseManagerCore'
         price:
@@ -3442,7 +3442,7 @@ components:
             supply:
               $ref: '#/components/schemas/OrganizationLeanCore'
             alayacare:
-              $ref: '#/components/schemas/AlayaCareCore'
+              $ref: '#/components/schemas/OutboxAlayaCareCore'
             case_manager:
               $ref: '#/components/schemas/CaseManagerCore'
             price:
@@ -3511,7 +3511,7 @@ components:
             supply:
               $ref: '#/components/schemas/OrganizationLeanCore'
             alayacare:
-              $ref: '#/components/schemas/AlayaCareCore'
+              $ref: '#/components/schemas/OutboxAlayaCareCore'
             case_manager:
               $ref: '#/components/schemas/CaseManagerCore'
             price:
@@ -3638,7 +3638,7 @@ components:
           # better to call sender (CCAC)? or demand_persona?
           $ref: '#/components/schemas/OrganizationLeanCore'
         alayacare:
-          $ref: '#/components/schemas/AlayaCareCore'
+          $ref: '#/components/schemas/InboxReferralAlayaCareResponse'
         case_manager:
           $ref: '#/components/schemas/CaseManagerCore'
         price:
@@ -4266,7 +4266,7 @@ components:
         supply:
           $ref: '#/components/schemas/OrganizationLeanCore'
         alayacare:
-          $ref: '#/components/schemas/AlayaCareCore'
+          $ref: '#/components/schemas/OutboxAlayaCareCore'
         case_manager:
           $ref: '#/components/schemas/CaseManagerCore'
         direct_supply_persona_ids:
@@ -4611,7 +4611,7 @@ components:
         - revision_number
         - is_latest_revision
 
-    AlayaCareCore:
+    OutboxAlayaCareCore:
       type: object
       properties:
         authorizations:
@@ -4624,6 +4624,40 @@ components:
             - type: object
               deprecated: true
             - $ref: '#/components/schemas/AuthorizationCore'
+        care_plan:
+          $ref: '#/components/schemas/OutboxCarePlanCore'
+
+    InboxOfferAlayaCareResponse:
+      type: object
+      properties:
+        authorizations:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuthorizationCore'
+        # TODO AM-3222: Remove support for single authorization
+        authorization:
+          allOf:
+            - type: object
+              deprecated: true
+            - $ref: '#/components/schemas/AuthorizationCore'
+        care_plan:
+          $ref: '#/components/schemas/InboxOfferCarePlanResponse'
+
+    InboxReferralAlayaCareResponse:
+      type: object
+      properties:
+        authorizations:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuthorizationCore'
+        # TODO AM-3222: Remove support for single authorization
+        authorization:
+          allOf:
+            - type: object
+              deprecated: true
+            - $ref: '#/components/schemas/AuthorizationCore'
+        care_plan:
+          $ref: '#/components/schemas/InboxReferralCarePlanResponse'
 
     AuthorizationCore:
       type: object
@@ -4702,6 +4736,335 @@ components:
           type: string
         email:
           type: string
+
+    OutboxCarePlanDiagnosisCore:
+      allOf:
+        - $ref: '#/components/schemas/CarePlanDiagnosisCore'
+        - type: object
+          properties:
+            outbox_id:
+              type: integer
+          required:
+            - outbox_id
+
+    CarePlanDiagnosisCore:
+      type: object
+      properties:
+        description:
+          type: string
+        end_date:
+          type: string
+          format: date
+        is_from_library:
+          type: boolean
+        is_primary:
+          type: boolean
+        name:
+          type: string
+        rank:
+          type: integer
+        start_date:
+          type: string
+          format: date
+        status:
+          type: string
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - name
+        - start_date
+        - is_primary
+
+    CarePlanGoalCore:
+      type: object
+      properties:
+        description:
+          type: string
+        end_date:
+          type: string
+          format: date
+        is_from_library:
+          type: boolean
+        is_primary:
+          type: boolean
+        last_updated_progress:
+          title: GoalLastUpdatedProgressCore
+          type: object
+          properties:
+            comment:
+              type: string
+            percentage:
+              type: integer
+            completed:
+              type: boolean
+        name:
+          type: string
+        progress_type:
+          type: string
+        rank:
+          type: integer
+        start_date:
+          type: string
+          format: date
+        status:
+          type: string
+        type:
+          type: string
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - name
+        - start_date
+        - is_primary
+        - type
+        - progress_type
+
+    OutboxCarePlanGoalCore:
+      allOf:
+        - $ref: '#/components/schemas/CarePlanGoalCore'
+        - type: object
+          properties:
+            outbox_id:
+              type: integer
+            diagnoses:
+              type: array
+              items:
+                title: OutboxCarePlanGoalDiagnosisCore
+                type: object
+                properties:
+                  outbox_id:
+                    type: integer
+                  name:
+                    type: string
+                required:
+                  - outbox_id
+                  - name
+          required:
+            - outbox_id
+
+    InboxCarePlanGoalResponse:
+      allOf:
+        - $ref: '#/components/schemas/CarePlanGoalCore'
+        - type: object
+          properties:
+            diagnoses:
+              type: array
+              items:
+                title: InboxCarePlanGoalDiagnosisCore
+                type: object
+                properties:
+                  name:
+                    type: string
+                required:
+                  - name
+
+    CarePlanInterventionCore:
+      type: object
+      properties:
+        description:
+          type: string
+        end_date:
+          type: string
+          format: date
+        external_link:
+          title: CarePlanInterventionExternalLinkCore
+          type: object
+          properties:
+            label:
+              type: string
+            url:
+              type: string
+          required:
+            - label
+            - url
+        has_duration:
+          type: boolean
+        is_from_library:
+          type: boolean
+        is_required:
+          type: boolean
+        name:
+          type: string
+        rank:
+          type: integer
+        recurrence:
+          title: CarePlanInterventionRecurrenceCore
+          type: object
+          properties:
+            count:
+              type: integer
+            frequency:
+              type: string
+            interval:
+              type: integer
+            weekdays:
+              type: array
+              items:
+                type: string
+            monthday:
+              type: integer
+            available_from:
+              type: string
+            available_to:
+              type: string
+          required:
+            - frequency
+            - interval
+        recurrence_type:
+          type: string
+        start_date:
+          type: string
+          format: date
+        status:
+          type: string
+        timezone:
+          type: string
+        type:
+          type: string
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - has_duration
+        - is_required
+        - name
+        - rank
+        - recurrence_type
+        - start_date
+        - status
+        - type
+
+    OutboxCarePlanInterventionCore:
+      allOf:
+        - $ref: '#/components/schemas/CarePlanInterventionCore'
+        - type: object
+          properties:
+            goals:
+              type: array
+              items:
+                title: OutboxCarePlanInterventionGoalCore
+                type: object
+                properties:
+                  outbox_id:
+                    type: integer
+                  name:
+                    type: string
+                required:
+                  - outbox_id
+                  - name
+            outbox_id:
+              type: integer
+          required:
+            - outbox_id
+
+    InboxReferralCarePlanInterventionResponse:
+      allOf:
+        - $ref: '#/components/schemas/CarePlanInterventionCore'
+        - type: object
+          properties:
+            goals:
+              type: array
+              items:
+                title: InboxCarePlanInterventionGoalCore
+                type: object
+                properties:
+                  name:
+                    type: string
+                required:
+                  - name
+
+    OutboxCarePlanCore:
+      type: object
+      properties:
+        outbox_id:
+          type: integer
+        name:
+          type: string
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        status:
+          type: string
+        diagnoses:
+          type: array
+          items:
+            $ref: '#/components/schemas/OutboxCarePlanDiagnosisCore'
+        goals:
+          type: array
+          items:
+            $ref: '#/components/schemas/OutboxCarePlanGoalCore'
+        interventions:
+          type: array
+          items:
+            $ref: '#/components/schemas/OutboxCarePlanInterventionCore'
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - name
+        - outbox_id
+        - start_date
+
+    InboxOfferCarePlanResponse:
+      type: object
+      properties:
+        name:
+          type: string
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        status:
+          type: string
+        interventions:
+          type: array
+          items:
+            $ref: '#/components/schemas/CarePlanInterventionCore'
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - name
+        - start_date
+
+    InboxReferralCarePlanResponse:
+      type: object
+      properties:
+        name:
+          type: string
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        status:
+          type: string
+        diagnoses:
+          type: array
+          items:
+            $ref: '#/components/schemas/CarePlanDiagnosisCore'
+        goals:
+          type: array
+          items:
+            $ref: '#/components/schemas/InboxCarePlanGoalResponse'
+        interventions:
+          type: array
+          items:
+            $ref: '#/components/schemas/InboxReferralCarePlanInterventionResponse'
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - name
+        - start_date
 
   securitySchemes:
     CognitoAuthorizer:
