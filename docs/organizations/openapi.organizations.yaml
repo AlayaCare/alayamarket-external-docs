@@ -376,6 +376,23 @@ paths:
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
+  /v1/demand_persona/activate:
+    post:
+      tags:
+        - organizations (org_admin)
+      description: |
+        Activates the organization as a demand organization.
+        # Authorization
+        Required role: `org_admin`
+      responses:
+        204:
+          description: "Demand activated."
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
   /v1/demand_persona/trusted_network:
     get:
       tags:
@@ -438,6 +455,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DemandTrustedNetworkPageResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+  /v1/demand_persona/deactivate:
+    post:
+      tags:
+        - organizations (org_admin)
+      description: |
+        Deactivates the organization as a demand organization.
+        # Authorization
+        Required role: `org_admin`
+      responses:
+        204:
+          description: "Demand deactivated."
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+  /v1/supply_persona/activate:
+    post:
+      tags:
+        - organizations (org_admin)
+      description: |
+        Activates the organization as a supplier.
+        # Authorization
+        Required role: `org_admin`
+      responses:
+        204:
+          description: "Supply activated."
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+  /v1/supply_persona/deactivate:
+    post:
+      tags:
+        - organizations (org_admin)
+      description: |
+        Deactivates the organization as a supplier.
+        # Authorization
+        Required role: `org_admin`
+      responses:
+        204:
+          description: "Supply deactivated."
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
