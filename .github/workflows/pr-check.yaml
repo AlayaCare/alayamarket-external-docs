@@ -33,7 +33,7 @@ jobs:
           message: 'Re-generated offer async api ui'
           add: 'docs/offers/asyncapi.external.offers'
       - name: Auto-merge
-        uses: "pascalgn/automerge-action@v0.15.5"
+        uses: "pascalgn/automerge-action@v0.15.6"
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           MERGE_LABELS: "sync"
