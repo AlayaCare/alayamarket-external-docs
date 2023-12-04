@@ -11,12 +11,161 @@
     </head>
   
     <body>
-      <div id="root"></div>
+      <div id="root"><section class="aui-root"><div class="container:xl relative md:flex bg-white leading-normal"><div class="burger-menu rounded-full h-16 w-16 bg-white fixed bottom-16 right-8 flex items-center justify-center z-30 cursor-pointer shadow-md bg-teal-500" data-lol="false"><svg viewBox="0 0 100 70" width="40" height="30" class="fill-current text-gray-200"><rect width="100" height="10"></rect><rect y="30" width="100" height="10"></rect><rect y="60" width="100" height="10"></rect></svg></div><div class="hidden sidebar relative w-64 max-h-screen h-full bg-gray-200 shadow z-20"><div class=" block fixed max-h-screen h-full font-sans px-4 pt-8 pb-16 overflow-y-auto bg-gray-200"><div class="sidebar--content"><div><h1 class="text-2xl font-light">AlayaMarket Organizations External Events API<!-- --> <!-- -->1.0.0</h1></div><ul class="text-sm mt-10 relative"><li class="mb-3"><a class="text-gray-700 no-underline hover:text-gray-900" href="#introduction">Introduction</a></li><li class="mb-3 mt-9"><a class="text-xs uppercase text-gray-700 mt-10 mb-4 font-thin hover:text-gray-900" href="#servers">Servers</a><ul class="text-sm mt-2"><li><a class="flex no-underline text-gray-700 mb-2 hover:text-gray-900" href="#server-live"><span class="break-all inline-block">live</span></a></li></ul></li><li class="mb-3 mt-9"><a class="text-xs uppercase text-gray-700 mt-10 mb-4 font-thin hover:text-gray-900" href="#operations">Operations</a><ul class="text-sm mt-2"><li><a class="flex no-underline text-gray-700 mb-2 hover:text-gray-900" href="#operation-publish-demand-organizations"><span class="bg-blue-600 font-bold h-6 no-underline text-white uppercase p-1 mr-2 rounded text-xs" title="Publish">PUB</span><span class="break-all inline-block">demand-organizations</span></a></li></ul></li><li class="mb-3 mt-9"><a class="text-xs uppercase text-gray-700 mt-10 mb-4 font-thin hover:text-gray-900" href="#messages">Messages</a><ul class="text-sm mt-2"><li><a class="flex break-words no-underline text-gray-700 mt-2 hover:text-gray-900" href="#message-DemandOrganizationEvent"><div class="break-all inline-block">message_demand_organization</div></a></li></ul></li><li class="mb-3 mt-9"><a class="text-xs uppercase text-gray-700 mt-10 mb-4 font-thin hover:text-gray-900" href="#schemas">Schemas</a><ul class="text-sm mt-2"><li><a class="flex break-words no-underline text-gray-700 mt-2 hover:text-gray-900" href="#schema-DemandOrganizationEventPayload"><div class="break-all inline-block">DemandOrganizationEventPayload</div></a></li></ul></li></ul></div></div></div><div class="panel--center relative py-8 flex-1"><div class="relative z-10"><div class="panel-item"><div class="panel-item--center px-8 text-left" id="introduction"><div class="text-4xl">AlayaMarket Organizations External Events API<!-- --> <!-- -->1.0.0</div><ul class="flex flex-wrap mt-2 leading-normal"><li class="inline-block mt-2 mr-2"><a href="https://www.iana.org/assignments/media-types/application/json" class="border border-solid border-orange-300 hover:bg-orange-300 hover:text-orange-600 text-orange-500 font-bold no-underline text-xs uppercase rounded px-3 py-1" target="_blank" rel="nofollow noopener noreferrer"><span>application/json</span></a></li></ul><div class="mt-4"><div class="prose max-w-none text-sm"><p>Async API for external Organizations events using AWS SNS as a broker. </p>
+<p>Generally, subscriptions are expected to be https endpoints. 
+In such cases, the messages described in this document will be 
+stringified json data within the <code>Message</code> of the payload. </p>
+<p>For more information see <a href="https://docs.aws.amazon.com/sns/latest/dg/SendMessageToHttp.prepare.html">https://docs.aws.amazon.com/sns/latest/dg/SendMessageToHttp.prepare.html</a></p>
+</div></div></div><div class="panel-item--right"></div></div><section id="servers" class="mt-16"><h2 class="2xl:w-7/12 text-3xl font-light mb-4 px-8">Servers</h2><ul><li class="mb-4" id="server-live"><div class="panel-item"><div class="panel-item--center px-8"><div class="shadow rounded bg-gray-200 p-4 border bg-gray-100"><div><span class="font-mono text-base">https://api.{env}.alayamarket.{region}</span><span class="bg-teal-500 font-bold no-underline text-white uppercase rounded mx-2 px-2 py-1 text-sm">https</span><span class="bg-blue-500 font-bold no-underline text-white uppercase rounded px-2 py-1 text-sm">live</span></div><div class="mt-2"><div class="prose max-w-none text-sm"><p>Sandbox server</p>
+</div></div><div class="mt-2" id="server-live-url-variables"><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><button class="focus:outline-none undefined" type="button"><div class="inline-block"><span class="break-anywhere text-sm ">URL Variables</span></div><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" class="inline-block align-baseline cursor-pointer ml-0.5 -mb-1 w-5 h-5 transform transition-transform duration-150 ease-linear -rotate-90 "><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg></button><button type="button" class="ml-1 text-sm text-gray-500">Expand all</button></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">object</div><div class="inline-block"></div></div></div></div><div class="rounded p-4 py-2 border bg-gray-100  block"><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">env</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"></div><div><div class="prose max-w-none text-sm"><p>Server environment</p>
+</div></div><div class="text-xs">Default value:<span class="border inline-block text-orange-600 rounded ml-1 py-0 px-2">&quot;prod&quot;</span></div><ul class="text-xs">Allowed values:<!-- --> <li class="border inline-block text-orange-600 rounded ml-1 py-0 px-2"><span>&quot;staging&quot;</span></li><li class="border inline-block text-orange-600 rounded ml-1 py-0 px-2"><span>&quot;sandbox&quot;</span></li><li class="border inline-block text-orange-600 rounded ml-1 py-0 px-2"><span>&quot;prod&quot;</span></li></ul></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">region</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"></div><div><div class="prose max-w-none text-sm"><p>Server region</p>
+</div></div><div class="text-xs">Default value:<span class="border inline-block text-orange-600 rounded ml-1 py-0 px-2">&quot;ca&quot;</span></div><ul class="text-xs">Allowed values:<!-- --> <li class="border inline-block text-orange-600 rounded ml-1 py-0 px-2"><span>&quot;ca&quot;</span></li><li class="border inline-block text-orange-600 rounded ml-1 py-0 px-2"><span>&quot;com&quot;</span></li><li class="border inline-block text-orange-600 rounded ml-1 py-0 px-2"><span>&quot;com.au&quot;</span></li></ul></div></div></div></div></div></div></div><div id="server-live-security"></div><div class="mt-2"></div></div></div><div class="panel-item--right"></div></div></li></ul></section><section id="operations" class="mt-16"><h2 class="2xl:w-7/12 text-3xl font-light mb-4 px-8">Operations</h2><ul><li class="mb-12" id="operation-send-sub_demand_organization"><div><div class="panel-item--center px-8"><div class="mb-4"><h3><span class="font-mono border uppercase p-1 rounded mr-2 border-blue-600 text-blue-500" title="send">SUB</span> <span class="font-mono text-base">demand-organizations</span></h3></div><div class="mt-2"><div class="prose max-w-none text-sm"><p>Subscribe demand participants to demand organizations events published by the service.</p>
+</div></div><div class="border bg-gray-100 rounded px-4 py-2 mt-2"><div class="text-sm text-gray-700">Operation ID<span class="border text-orange-600 rounded text-xs ml-2 py-0 px-2">sub_demand_organization</span></div></div><div class="mt-2 text-sm"><p>Available only on servers:</p><ul class="flex flex-wrap leading-normal"><li class="inline-block mt-2 mr-2"><a href="#server-live" class="border border-solid border-blue-300 hover:bg-blue-300 hover:text-blue-600 text-blue-500 font-bold no-underline text-xs rounded px-3 py-1 cursor-pointer"><span class="underline">live</span></a></li></ul></div><div class="mt-2" id="operation-send-demand-organizations-security"></div><div class="mt-2"></div><div class="mt-2"></div><div class="mt-2"></div></div><div class="w-full mt-4" id="operation-send-demand-organizations-message"><div class="mt-2"><p class="px-8">Accepts the following message:</p><div class="mt-2"><div class="panel-item"><div class="panel-item--center px-8"><div class="shadow rounded bg-gray-200 p-4 border"><div><span class="text-gray-700 mr-2">Demand organization state change event</span><span class="border text-orange-600 rounded text-xs py-0 px-2">message_demand_organization</span></div><p class="text-gray-600 text-sm">Inform relevant demand participants about a change to the organization state</p><ul class="leading-normal mt-2 mb-4 space-x-2 space-y-2"><li class="inline-block"><a href="https://www.iana.org/assignments/media-types/application/json" class="border border-solid border-orange-300 hover:bg-orange-300 hover:text-orange-600 text-orange-500 font-bold no-underline text-xs uppercase rounded px-3 py-1" target="_blank" rel="nofollow noopener noreferrer"><span>application/json</span></a></li></ul><div class="border bg-gray-100 rounded px-4 py-2 mt-2"><div class="text-sm text-gray-700">Message ID<span class="border text-orange-600 rounded text-xs ml-2 py-0 px-2">message_demand_organization</span></div></div><div class="mt-2"><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><button class="focus:outline-none undefined" type="button"><div class="inline-block"><span class="break-anywhere text-sm ">Payload</span></div><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" class="inline-block align-baseline cursor-pointer ml-0.5 -mb-1 w-5 h-5 transform transition-transform duration-150 ease-linear  "><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg></button><button type="button" class="ml-1 text-sm text-gray-500">Expand all</button></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">object</div><div class="inline-block"></div></div></div></div><div class="rounded p-4 py-2 border bg-gray-100  hidden"><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">event_source</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"></div><div><div class="prose max-w-none text-sm"><p>Source of the event.</p>
+</div></div><div class="text-xs">Const:<span class="border inline-block text-orange-600 rounded ml-1 py-0 px-2">&quot;alayamarket.organizations&quot;</span></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">event_name</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"></div><div><div class="prose max-w-none text-sm"><p>Name of the event.</p>
+</div></div><ul class="text-xs">Allowed values:<!-- --> <li class="border inline-block text-orange-600 rounded ml-1 py-0 px-2"><span>&quot;OrgTrustedNetworkUpdated&quot;</span></li></ul></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">id</span><div class="text-red-600 text-xs">required</div><div class="text-red-600 text-xs">deprecated</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->uuid</span></div><div><div class="prose max-w-none text-sm"><p>ID of the event</p>
+</div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">event_id</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->uuid</span></div><div><div class="prose max-w-none text-sm"><p>ID of the event</p>
+</div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">timestamp</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->datetime</span></div><div><div class="prose max-w-none text-sm"><p>Timestamp of the event</p>
+</div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">organization_id</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->uuid</span></div><div><div class="prose max-w-none text-sm"><p>ID of the demand organization</p>
+</div></div></div></div></div></div><p class="mt-2 text-xs text-gray-700">Additional properties are allowed.</p></div></div></div></div></div><div class="panel-item--right px-8"><div class="bg-gray-800 px-8 py-4 mt-4 -mx-8 2xl:mx-0 2xl:px-4 2xl:rounded examples"><h4 class="text-white text-lg">Examples</h4><div class="mt-4"><div><button class="focus:outline-none undefined" type="button"><div class="inline-block"><span class="inline-block w-20 py-0.5 mr-1 text-gray-200 text-sm border text-center rounded focus:outline-none">Payload</span></div><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" class="inline-block align-baseline cursor-pointer ml-0.5 -mb-1 w-5 h-5 transform transition-transform duration-150 ease-linear  fill-current text-gray-200"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg></button></div><div class="hidden"><div class="mt-4"><div class="prose max-w-none text-sm"><pre><code class="hljs language-json">{
+  <span class="hljs-attr">"event_source"</span>: <span class="hljs-string">"alayamarket.organizations"</span>,
+  <span class="hljs-attr">"event_name"</span>: <span class="hljs-string">"OrgTrustedNetworkUpdated"</span>,
+  <span class="hljs-attr">"id"</span>: <span class="hljs-string">"497f6eca-6276-4993-bfeb-53cbbbba6f08"</span>,
+  <span class="hljs-attr">"event_id"</span>: <span class="hljs-string">"a7a26ff2-e851-45b6-9634-d595f45458b7"</span>,
+  <span class="hljs-attr">"timestamp"</span>: <span class="hljs-string">"string"</span>,
+  <span class="hljs-attr">"organization_id"</span>: <span class="hljs-string">"7c60d51f-b44e-4682-87d6-449835ea4de6"</span>
+}
+</code></pre>
+</div><h6 class="text-xs font-bold text-gray-600 italic mt-2">This example has been generated automatically.</h6></div></div></div></div></div></div></div></div></div></div></li></ul></section><section id="messages" class="mt-16"><h2 class="2xl:w-7/12 text-3xl font-light mb-4 px-8">Messages</h2><ul><li class="mb-4" id="message-message_demand_organization"><div class="panel-item"><div class="panel-item--center px-8"><div class="shadow rounded bg-gray-200 p-4 border"><div><span class="text-gray-700 font-bold mr-2">#<!-- -->1</span><span class="text-gray-700 mr-2">Demand organization state change event</span><span class="border text-orange-600 rounded text-xs py-0 px-2">message_demand_organization</span></div><p class="text-gray-600 text-sm">Inform relevant demand participants about a change to the organization state</p><ul class="leading-normal mt-2 mb-4 space-x-2 space-y-2"><li class="inline-block"><a href="https://www.iana.org/assignments/media-types/application/json" class="border border-solid border-orange-300 hover:bg-orange-300 hover:text-orange-600 text-orange-500 font-bold no-underline text-xs uppercase rounded px-3 py-1" target="_blank" rel="nofollow noopener noreferrer"><span>application/json</span></a></li></ul><div class="border bg-gray-100 rounded px-4 py-2 mt-2"><div class="text-sm text-gray-700">Message ID<span class="border text-orange-600 rounded text-xs ml-2 py-0 px-2">message_demand_organization</span></div></div><div class="mt-2" id="message-message_demand_organization-payload"><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><button class="focus:outline-none undefined" type="button"><div class="inline-block"><span class="break-anywhere text-sm ">Payload</span></div><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" class="inline-block align-baseline cursor-pointer ml-0.5 -mb-1 w-5 h-5 transform transition-transform duration-150 ease-linear  "><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg></button><button type="button" class="ml-1 text-sm text-gray-500">Expand all</button></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">object</div><div class="inline-block"></div></div></div></div><div class="rounded p-4 py-2 border bg-gray-100  hidden"><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">event_source</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"></div><div><div class="prose max-w-none text-sm"><p>Source of the event.</p>
+</div></div><div class="text-xs">Const:<span class="border inline-block text-orange-600 rounded ml-1 py-0 px-2">&quot;alayamarket.organizations&quot;</span></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">event_name</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"></div><div><div class="prose max-w-none text-sm"><p>Name of the event.</p>
+</div></div><ul class="text-xs">Allowed values:<!-- --> <li class="border inline-block text-orange-600 rounded ml-1 py-0 px-2"><span>&quot;OrgTrustedNetworkUpdated&quot;</span></li></ul></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">id</span><div class="text-red-600 text-xs">required</div><div class="text-red-600 text-xs">deprecated</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->uuid</span></div><div><div class="prose max-w-none text-sm"><p>ID of the event</p>
+</div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">event_id</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->uuid</span></div><div><div class="prose max-w-none text-sm"><p>ID of the event</p>
+</div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">timestamp</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->datetime</span></div><div><div class="prose max-w-none text-sm"><p>Timestamp of the event</p>
+</div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">organization_id</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->uuid</span></div><div><div class="prose max-w-none text-sm"><p>ID of the demand organization</p>
+</div></div></div></div></div></div><p class="mt-2 text-xs text-gray-700">Additional properties are allowed.</p></div></div></div></div></div></div></li></ul></section><section id="schemas" class="mt-16"><h2 class="2xl:w-7/12 text-3xl font-light mb-4 px-8">Schemas</h2><ul><li class="mb-4" id="schema-DemandOrganizationEventPayload"><div><div class="panel-item--center px-8"><div class="shadow rounded px-4 py-2 border bg-gray-200"><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><button class="focus:outline-none undefined" type="button"><div class="inline-block"><span class="break-anywhere text-sm ">DemandOrganizationEventPayload</span></div><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" class="inline-block align-baseline cursor-pointer ml-0.5 -mb-1 w-5 h-5 transform transition-transform duration-150 ease-linear  "><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg></button><button type="button" class="ml-1 text-sm text-gray-500">Expand all</button></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">object</div><div class="inline-block"></div></div></div></div><div class="rounded p-4 py-2 border bg-gray-100  hidden"><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">event_source</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"></div><div><div class="prose max-w-none text-sm"><p>Source of the event.</p>
+</div></div><div class="text-xs">Const:<span class="border inline-block text-orange-600 rounded ml-1 py-0 px-2">&quot;alayamarket.organizations&quot;</span></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">event_name</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"></div><div><div class="prose max-w-none text-sm"><p>Name of the event.</p>
+</div></div><ul class="text-xs">Allowed values:<!-- --> <li class="border inline-block text-orange-600 rounded ml-1 py-0 px-2"><span>&quot;OrgTrustedNetworkUpdated&quot;</span></li></ul></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">id</span><div class="text-red-600 text-xs">required</div><div class="text-red-600 text-xs">deprecated</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->uuid</span></div><div><div class="prose max-w-none text-sm"><p>ID of the event</p>
+</div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">event_id</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->uuid</span></div><div><div class="prose max-w-none text-sm"><p>ID of the event</p>
+</div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">timestamp</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->datetime</span></div><div><div class="prose max-w-none text-sm"><p>Timestamp of the event</p>
+</div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">organization_id</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->uuid</span></div><div><div class="prose max-w-none text-sm"><p>ID of the demand organization</p>
+</div></div></div></div></div></div><p class="mt-2 text-xs text-gray-700">Additional properties are allowed.</p></div></div></div></div><div class="w-full mt-4"></div></div></li></ul></section></div><div class="panel--right absolute top-0 right-0 h-full bg-gray-800"></div></div></div></section></div>
   
       <script src="js/asyncapi-ui.min.js" type="application/javascript"></script>
   
       <script>
-        const schema = undefined;
+        const schema = {
+  "asyncapi": "2.4.0",
+  "info": {
+    "title": "AlayaMarket Organizations External Events API",
+    "version": "1.0.0",
+    "description": "Async API for external Organizations events using AWS SNS as a broker. \n\nGenerally, subscriptions are expected to be https endpoints. \nIn such cases, the messages described in this document will be \nstringified json data within the `Message` of the payload. \n\nFor more information see https://docs.aws.amazon.com/sns/latest/dg/SendMessageToHttp.prepare.html\n"
+  },
+  "servers": {
+    "live": {
+      "url": "https://api.{env}.alayamarket.{region}",
+      "description": "Sandbox server",
+      "protocol": "https",
+      "variables": {
+        "env": {
+          "description": "Server environment",
+          "default": "prod",
+          "enum": [
+            "staging",
+            "sandbox",
+            "prod"
+          ]
+        },
+        "region": {
+          "description": "Server region",
+          "default": "ca",
+          "enum": [
+            "ca",
+            "com",
+            "com.au"
+          ]
+        }
+      }
+    }
+  },
+  "defaultContentType": "application/json",
+  "channels": {
+    "demand-organizations": {
+      "subscribe": {
+        "operationId": "sub_demand_organization",
+        "description": "Subscribe demand participants to demand organizations events published by the service.\n",
+        "message": {
+          "messageId": "message_demand_organization",
+          "name": "DemandOrganizationEvent",
+          "title": "Demand organization state change event",
+          "summary": "Inform relevant demand participants about a change to the organization state",
+          "payload": {
+            "type": "object",
+            "properties": {
+              "event_source": {
+                "type": "string",
+                "description": "Source of the event.",
+                "const": "alayamarket.organizations",
+                "x-parser-schema-id": "<anonymous-schema-1>"
+              },
+              "event_name": {
+                "type": "string",
+                "description": "Name of the event.",
+                "enum": [
+                  "OrgTrustedNetworkUpdated"
+                ],
+                "x-parser-schema-id": "<anonymous-schema-2>"
+              },
+              "id": {
+                "deprecated": true,
+                "type": "string",
+                "format": "uuid",
+                "description": "ID of the event",
+                "x-parser-schema-id": "<anonymous-schema-3>"
+              },
+              "event_id": {
+                "type": "string",
+                "format": "uuid",
+                "description": "ID of the event",
+                "x-parser-schema-id": "<anonymous-schema-4>"
+              },
+              "timestamp": {
+                "type": "string",
+                "format": "datetime",
+                "description": "Timestamp of the event",
+                "x-parser-schema-id": "<anonymous-schema-5>"
+              },
+              "organization_id": {
+                "type": "string",
+                "format": "uuid",
+                "description": "ID of the demand organization",
+                "x-parser-schema-id": "<anonymous-schema-6>"
+              }
+            },
+            "required": [
+              "event_source",
+              "event_name",
+              "id",
+              "event_id",
+              "timestamp",
+              "organization_id"
+            ],
+            "x-parser-schema-id": "DemandOrganizationEventPayload"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "messages": {
+      "DemandOrganizationEventMessage": "$ref:$.channels.demand-organizations.subscribe.message"
+    },
+    "schemas": {
+      "DemandOrganizationEventPayload": "$ref:$.channels.demand-organizations.subscribe.message.payload"
+    }
+  },
+  "x-parser-spec-parsed": true,
+  "x-parser-api-version": 3,
+  "x-parser-spec-stringified": true
+};
         const config = {"show":{"sidebar":true},"sidebar":{"showOperations":"byDefault"}};
         AsyncApiStandalone.hydrate({ schema, config }, document.getElementById("root"));
       </script>
