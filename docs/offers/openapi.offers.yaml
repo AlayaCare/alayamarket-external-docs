@@ -1211,6 +1211,105 @@ paths:
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
 
+  /v1/inbox/visits:
+    get:
+      tags:
+        - visit inbox
+      description: |
+        # Authorization
+        Required role: supply `org_admin` who was assigned the associated referral or service.
+
+        # Description
+        Get a collection of Visits for a given referral or service.
+
+        One of `referral_id` or `service_id` must be provided.
+      parameters:
+        - $ref: '#/components/parameters/ReferralIdQueryParam'
+          required: false
+        - $ref: '#/components/parameters/ServiceIdQueryParam'
+          required: false
+        - $ref: '#/components/parameters/PageNumberParam'
+        - $ref: '#/components/parameters/ItemsPerPageParam'
+        - in: query
+          name: sort_by
+          schema:
+            type: string
+            enum:
+              - last_modified
+              - start_at
+            default: start_at
+        - $ref: '#/components/parameters/SortOrderParam'
+      responses:
+        200:
+          description: "Successfully retrieved a collection of Visits."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InboxVisitPageResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
+  /v1/inbox/visits/{visit_id}:
+    get:
+      tags:
+        - visit inbox
+      description: |
+        # Authorization
+        Required role: supply `org_admin` who created or was assigned the visit.
+
+        # Description
+        Get the details of a Visit for a given Visit ID.
+      parameters:
+        - $ref: '#/components/parameters/VisitIdPathParam'
+      responses:
+        200:
+          description: "Successfully retrieved a Visit."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InboxVisitDetailResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
+  /v1/inbox/visits/by_inbox_id/{visit_inbox_id}:
+    get:
+      tags:
+        - visit inbox
+      description: |
+        # Authorization
+        Required role: supply `org_admin` who created or was assigned the visit.
+
+        # Description
+        Get the details of a Visit for a given inbox Visit ID.
+      parameters:
+        - in: path
+          name: visit_inbox_id
+          schema:
+            type: string
+          description: ID of a visit in the supply system.      
+          required: true  
+      responses:
+        200:
+          description: "Successfully retrieved a Visit."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InboxVisitDetailResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
   /v1/inbox/visits/schedule:
     post:
       tags:
@@ -3891,6 +3990,16 @@ components:
               items:
                 $ref: '#/components/schemas/OutboxVisitCollectionResponse'
 
+    InboxVisitPageResponse:
+      allOf:
+        - $ref: '#/components/schemas/PageCore'
+        - type: object
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/InboxVisitCollectionResponse'
+
     SysAdminVisitPageResponse:
       allOf:
         - $ref: '#/components/schemas/PageCore'
@@ -3998,6 +4107,66 @@ components:
         - visit
         - tasks
 
+    InboxVisitDetailResponse:
+      type: object
+      properties:
+        visit:
+          $ref: '#/components/schemas/InboxVisitCore'
+        supply_employee:
+          title: InboxVisitDetailSupplyEmployeeResponse
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            supply_persona_id:
+              type: string
+              format: uuid
+            ssn_placeholder:
+              type: string
+            inbox_employee_id:
+              type: integer            
+            first_name:
+              type: string
+            last_name:
+              type: string
+            date_of_birth:
+              type: string
+              format: date
+            data:
+              type: object
+          required:
+            - id
+            - supply_persona_id
+            - ssn_placeholder
+            - inbox_employee_id
+            - first_name
+            - last_name
+        tasks:
+          type: array
+          items:
+            title: InboxVisitDetailVisitTaskResponse
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              outbox_id:
+                type: string
+              is_completed:
+                type: boolean
+              completed_at:
+                type: string
+                format: date-time
+              completion_comment:
+                type: string
+            required:
+              - id
+              - is_completed
+      required:
+        - visit
+        - tasks
+
     OutboxVisitDetailResponse:
       type: object
       properties:
@@ -4033,6 +4202,7 @@ components:
         tasks:
           type: array
           items:
+            title: OutboxVisitDetailVisitTaskResponse                    
             type: object
             properties:
               id:
@@ -4097,23 +4267,22 @@ components:
       allOf:
         - $ref: '#/components/schemas/OutboxVisitCore'
 
-    OutboxVisitCore:
+    InboxVisitCollectionResponse:
+      allOf:
+        - $ref: '#/components/schemas/InboxVisitCore'
+
+    VisitCore:
       type: object
       properties:
         id:
           type: string
           format: uuid
-        visit_outbox_id:
-          type: string
         referral_id:
           type: string
           format: uuid
         service_id:
           type: string
           format: uuid
-        service_outbox_id:
-          type: string
-          minLength: 1
         status:
           type: string
           enum:
@@ -4130,9 +4299,31 @@ components:
         - id
         - referral_id
         - service_id
-        - service_outbox_id
         - start_at
         - end_at
+
+    InboxVisitCore:
+      allOf:
+        - $ref: '#/components/schemas/VisitCore'
+        - type: object
+          properties:
+            inbox_id:
+              type: string
+
+    OutboxVisitCore:
+      allOf:
+        - $ref: '#/components/schemas/VisitCore'
+        - type: object
+          properties:
+            # TODO: This should be `outbox_id` to be aligned with SysAdminVisitDetailResponse
+            #   - consider renaming/deprecating
+            visit_outbox_id:
+              type: string
+            service_outbox_id:
+              type: string
+              minLength: 1
+          required:
+            - service_outbox_id
 
     InboxWorkSessionStartRequest:
       type: object
