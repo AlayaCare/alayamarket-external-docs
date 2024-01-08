@@ -336,6 +336,10 @@ paths:
             case-insensitive, partial matching.
           schema:
             type: string
+        - in: query
+          name: host
+          schema:
+            type: string
         - $ref: '#/components/parameters/PageNumberParam'
         - $ref: '#/components/parameters/ItemsPerPageParam'
       responses:
