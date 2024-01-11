@@ -344,11 +344,67 @@ paths:
         - $ref: '#/components/parameters/ItemsPerPageParam'
       responses:
         200:
-          description: "List of organizations"
+          description: "A list of organizations."
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrgPageResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+    post:
+      tags:
+        - organizations (public)
+      description: |
+        Get a list of organizations sorted by name ascending.
+      parameters:
+        - in: query
+          name: is_demand
+          schema:
+            type: boolean
+        - in: query
+          name: is_supply
+          schema:
+            type: boolean
+        - in: query
+          name: id
+          schema:
+            type: array
+            items:
+              type: string
+              format: uuid
+        - in: query
+          name: name
+          description: |
+            The name of the organization to filter in. This filter supports
+            case-insensitive, partial matching.
+          schema:
+            type: string
+        - in: query
+          name: host
+          schema:
+            type: string
+        - $ref: '#/components/parameters/PageNumberParam'
+        - $ref: '#/components/parameters/ItemsPerPageParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnonOrgGetOrgsRequest'
+      responses:
+        200:
+          description: "A list of organizations."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrgPageResponse'
+      # This endpoint does not require authentication
+      security:
+        - NONE: [ ]
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
@@ -1192,6 +1248,14 @@ components:
           minLength: 1
       required:
         - execution_arn
+
+    AnonOrgGetOrgsRequest:
+      type: object
+      properties:
+        approval_id:
+          type: string
+      required:
+        - approval_id
 
     OrgSignUpRequest:
       type: object
