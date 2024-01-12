@@ -438,6 +438,34 @@ paths:
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
+  /v1/subscribe:
+    post:
+      tags:
+        - organizations (org_admin)
+      description: |
+        Subscribe an organization to the notifications for specified topics.
+
+        # Authorization
+        Required role: `org_admin`
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrgAdminOrgSubscribeRequest'
+      responses:
+        200:
+          description: Subscribe complete.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrgAdminOrgSubscribeCollectionResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
   /v1/demand_persona:
     get:
       tags:
@@ -1008,14 +1036,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OrgSubscribeRequest'
+              $ref: '#/components/schemas/SysAdminOrgSubscribeRequest'
       responses:
         200:
           description: Subscribe complete
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrgSubscribeResponse'
+                $ref: '#/components/schemas/SysAdminOrgSubscribeResponse'
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
@@ -1232,7 +1260,7 @@ components:
         subscriptions:
           type: array
           items:
-            $ref: '#/components/schemas/OrgSubscribeRequest'
+            $ref: '#/components/schemas/SysAdminOrgSubscribeRequest'
         auto_confirm:
           type: boolean
       required:
@@ -1580,7 +1608,17 @@ components:
         type: string
         format: uuid
 
-    OrgSubscribeRequest:
+    OrgAdminOrgSubscribeRequest:
+      type: object
+      properties:
+        subscriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SysAdminOrgSubscribeRequest'
+      required:
+        - subscriptions
+
+    SysAdminOrgSubscribeRequest:
       type: object
       properties:
         topic:
@@ -1605,7 +1643,20 @@ components:
         - protocol
         - endpoint
 
-    OrgSubscribeResponse:
+    OrgAdminOrgSubscribeCollectionResponse:
+      type: object
+      properties:
+        subscriptions:
+          type: array
+          items:
+            title: OrgAdminOrgSubscribeItemResponse
+            allOf:
+              - $ref: '#/components/schemas/SysAdminOrgSubscribeRequest'
+              - $ref: '#/components/schemas/SysAdminOrgSubscribeResponse'
+      required:
+        - subscriptions
+
+    SysAdminOrgSubscribeResponse:
       type: object
       properties:
         subscription_arn:
