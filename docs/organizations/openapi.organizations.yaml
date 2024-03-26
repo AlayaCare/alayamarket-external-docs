@@ -155,6 +155,13 @@ paths:
           schema:
             type: boolean
         - in: query
+          name: username
+          schema:
+            type: array
+            items:
+              type: string
+              format: username
+        - in: query
           name: email
           schema:
             type: array
@@ -1262,7 +1269,9 @@ components:
           items:
             $ref: '#/components/schemas/SysAdminOrgSubscribeRequest'
         auto_confirm:
+          deprecated: true
           type: boolean
+          description: (Deprecated) All sign-ups are now confirmed automatically.
       required:
         - organization
         - auto_confirm
@@ -1291,9 +1300,12 @@ components:
         approval_id:
           type: string
         username:
-          description: |
-            This is the email used by the org admin to sign-up and login. Contact email
-            is not currently stored.
+          description: This is the email used by the org admin to sign-up and login.
+          type: string
+          format: email
+          minLength: 1
+        email:
+          description: The organization's contact email.
           type: string
           format: email
           minLength: 1
@@ -1333,6 +1345,7 @@ components:
       required:
         - approval_id
         - username
+        - email
         - name
         - password
         - source
@@ -1342,6 +1355,9 @@ components:
     SysAdminOrgSignUpRequest:
       type: object
       properties:
+        username:
+          type: string
+          minLength: 1
         email:
           type: string
           minLength: 1
@@ -1379,6 +1395,7 @@ components:
         address:
           $ref: '#/components/schemas/AddressCore'
       required:
+        - username
         - email
         - name
         - password
@@ -1417,6 +1434,9 @@ components:
       # schema is imported and used by the service layer.
       type: object
       properties:
+        username:
+          type: string
+          minLength: 1
         email:
           type: string
           minLength: 1
@@ -1432,6 +1452,7 @@ components:
           type: string
           minLength: 1
       required:
+        - username
         - email
         - id
         - name
@@ -1440,6 +1461,9 @@ components:
     OrgDetailResponse:
       type: object
       properties:
+        username:
+          type: string
+          minLength: 1
         email:
           type: string
           minLength: 1
@@ -1473,6 +1497,7 @@ components:
         supply_persona:
           $ref: '#/components/schemas/SupplyDetailResponse'
       required:
+        - username
         - email
         - id
         - name
@@ -1741,6 +1766,9 @@ components:
     SysAdminOrgCollectionResponse:
       type: object
       properties:
+        username:
+          type: string
+          minLength: 1
         email:
           type: string
           minLength: 1
@@ -1776,6 +1804,7 @@ components:
           required:
             - status
       required:
+        - username
         - email
         - id
         - name
