@@ -13,7 +13,7 @@ jobs:
         with:
           node-version: '20'
       - name: Install AsyncAPI Generator
-        run: npm install -g @asyncapi/generator
+        run: npm install -g @asyncapi/generator@1.17.25
       - name: Generate Organization AsyncAPI UI
         run: ag docs/organizations/asyncapi.external.organizations.yaml @asyncapi/html-template -o docs/organizations/asyncapi.external.organizations
       - name: Commit Organization AsyncAPI changes
