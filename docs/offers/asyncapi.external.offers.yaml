@@ -37,6 +37,13 @@ channels:
   # channels will represent topics in SNS.
   # channels that the application publishes to, and consumers can subscribe to, should use the `subscribe` keyword.
   # channels that the application consumes to, and other applications can publish to, should use the `publish` keyword.
+  outbox-messages:
+    subscribe:
+      operationId: sub_outbox_messages
+      description: |
+        Subscribe demand participants to outbox message events published by the service.
+      message:
+        $ref: '#/components/messages/OutboxMessageEventMessage'
   outbox-offers:
     subscribe:
       operationId: sub_outbox_offers
@@ -73,23 +80,37 @@ channels:
         Subscribe demand participants to outbox work session events published by the service.
       message:
         $ref: '#/components/messages/OutboxWorkSessionEventMessage'
+  inbox-messages:
+    subscribe:
+      operationId: sub_inbox_messages
+      description: |
+        Subscribe supply participants to inbox message events published by the service.
+      message:
+        $ref: '#/components/messages/InboxMessageEventMessage'
   inbox-offers:
     subscribe:
       operationId: sub_inbox_offers
       description: |
-        Subscribe demand participants to inbox offer events published by the service.
+        Subscribe supply participants to inbox offer events published by the service.
       message:
         $ref: '#/components/messages/InboxOfferEventMessage'
   inbox-referrals:
     subscribe:
       operationId: sub_inbox_referrals
       description: |
-        Subscribe demand participants to inbox referral events published by the service.
+        Subscribe supply participants to inbox referral events published by the service.
       message:
         $ref: '#/components/messages/InboxReferralEventMessage'
 
 components:
   messages:
+    OutboxMessageEventMessage:
+      messageId: message_outbox_message
+      name: OutboxMessageEvent
+      title: Outbox message received event
+      summary: Inform relevant demand participants about a message received
+      payload:
+        $ref: '#/components/schemas/OutboxMessageEventPayload'
     OutboxOfferEventMessage:
       messageId: message_outbox_offer
       name: OutboxOfferEvent
@@ -126,6 +147,13 @@ components:
       summary: Inform relevant demand participants about a change to the work session state
       payload:
         $ref: '#/components/schemas/OutboxWorkSessionEventPayload'
+    InboxMessageEventMessage:
+      messageId: message_inbox_message
+      name: InboxMessageEvent
+      title: Inbox message received event
+      summary: Inform relevant supply participants about a message received
+      payload:
+        $ref: '#/components/schemas/InboxMessageEventPayload'
     InboxOfferEventMessage:
       messageId: message_inbox_offer_event
       name: InboxOfferEvent
@@ -142,6 +170,102 @@ components:
           $ref: '#/components/schemas/InboxReferralEventPayload'
 
   schemas:
+    MessageEventPayloadCore:
+      type: object
+      properties:
+        event_source:
+          type: string
+          description: Source of the event.
+          const: alayamarket.messages
+        id:
+          deprecated: true
+          type: string
+          format: uuid
+          description: ID of the event
+        event_id:
+          type: string
+          format: uuid
+          description: ID of the event
+        timestamp:
+          type: string
+          format: datetime
+          description: Timestamp of the event
+        message_id:
+          type: string
+          format: uuid
+          description: ID of the message
+        sender:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              description: ID of the sender
+            name:
+              type: string
+              description: Name of the sender
+          required:
+            - id
+            - name
+        category:
+          type: string
+          description: Category of the message.
+          enum:
+            - client_attachment
+        referral_id:
+          type: string
+          format: uuid
+          description: ID of the related referral
+        sequence_id:
+          type: string
+          format: uuid
+          description: ID of the related sequence
+        file:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              description: ID of the attached file
+            name:
+              type: string
+              description: Name of the attached file
+          required:
+            - id
+            - name
+      required:
+        - event_source
+        - event_id
+        - timestamp
+        - message_id
+        - sender
+        - category
+        - referral_id
+        - sequence_id
+    InboxMessageEventPayload:
+      allOf:
+        - $ref: '#/components/schemas/MessageEventPayloadCore'
+        - type: object
+          properties:
+            event_name:
+              type: string
+              description: Name of the event.
+              enum:
+                - MessageDemandSent
+          required:
+            - event_name
+    OutboxMessageEventPayload:
+      allOf:
+        - $ref: '#/components/schemas/MessageEventPayloadCore'
+        - type: object
+          properties:
+            event_name:
+              type: string
+              description: Name of the event.
+              enum:
+                - MessageSupplySent
+          required:
+            - event_name
     OutboxOfferEventPayload:
       type: object
       properties:
