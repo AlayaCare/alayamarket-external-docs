@@ -155,6 +155,13 @@ paths:
           schema:
             type: boolean
         - in: query
+          name: username
+          schema:
+            type: array
+            items:
+              type: string
+              format: username
+        - in: query
           name: email
           schema:
             type: array
@@ -223,6 +230,32 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrgDetailResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+  /v1/sys_admin/{organization_id}/api_keys:
+    post:
+      tags:
+        - organizations (sys_admin)
+      parameters:
+        - $ref: '#/components/parameters/OrgIdPathParam'
+      description: |
+        # Authorization
+        Required role: `sys_admin`
+
+        Save the API keys of an organization.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrgSaveApiKeyRequest'
+      responses:
+        204:
+          description: "API keys saved successfully."
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
@@ -432,6 +465,26 @@ paths:
       # This endpoint does not require authentication
       security:
         - NONE: [ ]
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+  /v1/api_keys:
+    post:
+      tags:
+        - organizations (org_admin)
+      description: Save the API keys of an organization.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrgSaveApiKeyRequest'
+      responses:
+        204:
+          description: "API keys saved successfully."
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
@@ -1262,7 +1315,9 @@ components:
           items:
             $ref: '#/components/schemas/SysAdminOrgSubscribeRequest'
         auto_confirm:
+          deprecated: true
           type: boolean
+          description: (Deprecated) All sign-ups are now confirmed automatically.
       required:
         - organization
         - auto_confirm
@@ -1285,15 +1340,31 @@ components:
       required:
         - approval_id
 
+    OrgSaveApiKeyRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          minLength: 1
+        password:
+          type: string
+          minLength: 1
+      required:
+        - username
+        - password
+
     OrgSignUpRequest:
       type: object
       properties:
         approval_id:
           type: string
         username:
-          description: |
-            This is the email used by the org admin to sign-up and login. Contact email
-            is not currently stored.
+          description: This is the email used by the org admin to sign-up and login.
+          type: string
+          format: email
+          minLength: 1
+        email:
+          description: The organization's contact email.
           type: string
           format: email
           minLength: 1
@@ -1333,6 +1404,7 @@ components:
       required:
         - approval_id
         - username
+        - email
         - name
         - password
         - source
@@ -1342,6 +1414,9 @@ components:
     SysAdminOrgSignUpRequest:
       type: object
       properties:
+        username:
+          type: string
+          minLength: 1
         email:
           type: string
           minLength: 1
@@ -1379,6 +1454,7 @@ components:
         address:
           $ref: '#/components/schemas/AddressCore'
       required:
+        - username
         - email
         - name
         - password
@@ -1417,6 +1493,9 @@ components:
       # schema is imported and used by the service layer.
       type: object
       properties:
+        username:
+          type: string
+          minLength: 1
         email:
           type: string
           minLength: 1
@@ -1432,6 +1511,7 @@ components:
           type: string
           minLength: 1
       required:
+        - username
         - email
         - id
         - name
@@ -1440,6 +1520,9 @@ components:
     OrgDetailResponse:
       type: object
       properties:
+        username:
+          type: string
+          minLength: 1
         email:
           type: string
           minLength: 1
@@ -1473,6 +1556,7 @@ components:
         supply_persona:
           $ref: '#/components/schemas/SupplyDetailResponse'
       required:
+        - username
         - email
         - id
         - name
@@ -1625,8 +1709,10 @@ components:
           type: string
           enum:
             - demand-organizations
+            - inbox-messages
             - inbox-offers
             - inbox-referrals
+            - outbox-messages
             - outbox-offers
             - outbox-referrals
             - outbox-visits
@@ -1741,6 +1827,9 @@ components:
     SysAdminOrgCollectionResponse:
       type: object
       properties:
+        username:
+          type: string
+          minLength: 1
         email:
           type: string
           minLength: 1
@@ -1776,6 +1865,7 @@ components:
           required:
             - status
       required:
+        - username
         - email
         - id
         - name
