@@ -876,6 +876,11 @@ paths:
           schema:
             type: string
             format: uuid
+        - in: query
+          name: sequence_id
+          schema:
+            type: string
+            format: uuid
         - $ref: '#/components/parameters/PageNumberParam'
         - $ref: '#/components/parameters/ItemsPerPageParam'
         - in: query
@@ -994,6 +999,123 @@ paths:
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
 
+  /v1/outbox/messages:
+    post:
+      tags:
+        - message outbox
+      description: |
+        # Authorization
+        Required role: `org_admin`
+
+        # Description
+        Send a message for a sequence as a demand organization.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrgAdminMessageSendRequest'
+      responses:
+        201:
+          description: "Successfully sent message."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrgAdminMessageDetailResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+    get:
+      tags:
+        - message outbox
+      description: |
+        # Authorization
+        Required role: `org_admin`
+
+        # Description
+        Get a paginated collection of messages for a sequence as a demand organization.
+      parameters:
+        - $ref: '#/components/parameters/SequenceIdQueryParam'
+        - in: query
+          name: sender_type
+          schema:
+            type: string
+            enum:
+              - demand
+              - supply
+            default: supply
+        - $ref: '#/components/parameters/PageNumberParam'
+        - $ref: '#/components/parameters/ItemsPerPageParam'
+        - in: query
+          name: sort_by
+          schema:
+            type: string
+            enum:
+              - created_at
+            default: created_at
+        - $ref: '#/components/parameters/SortOrderParam'
+      responses:
+        200:
+          description: "Successfully got the messages."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrgAdminMessagePageResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+  /v1/outbox/messages/{message_id}:
+    parameters:
+      - $ref: '#/components/parameters/MessageIdPathParam'
+    get:
+      tags:
+        - message outbox
+      description: |
+        # Authorization
+        Required role: `org_admin`
+
+        # Description
+        Get the details of a message for a sequence as a demand organization.
+      responses:
+        200:
+          description: "Successfully got the message."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrgAdminMessageDetailResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+  /v1/outbox/messages/files/{file_id}:
+    parameters:
+      - $ref: '#/components/parameters/FileIdPathParam'
+    get:
+      tags:
+        - message outbox
+      description: |
+        # Authorization
+        Required role: `org_admin`
+
+        # Description
+        Get the file attached to a message as a demand organization.
+      responses:
+        200:
+          description: "Successfully got the file."
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
   /v1/inbox/referrals:
     get:
       tags:
@@ -1111,6 +1233,124 @@ paths:
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
 
+  /v1/inbox/messages:
+    post:
+      tags:
+        - message inbox
+      description: |
+        # Authorization
+        Required role: `org_admin`
+
+        # Description
+        Send a message for a sequence as a supply organization.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrgAdminMessageSendRequest'
+      responses:
+        201:
+          description: "Successfully sent message."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrgAdminMessageDetailResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+    get:
+      tags:
+        - message inbox
+      description: |
+        # Authorization
+        Required role: `org_admin`
+
+        # Description
+        Get a paginated collection of messages for a sequence as a supply organization.
+      parameters:
+        - $ref: '#/components/parameters/SequenceIdQueryParam'
+        - in: query
+          name: sender_type
+          schema:
+            type: string
+            enum:
+              - demand
+              - supply
+            default: demand
+        - $ref: '#/components/parameters/PageNumberParam'
+        - $ref: '#/components/parameters/ItemsPerPageParam'
+        - in: query
+          name: sort_by
+          schema:
+            type: string
+            enum:
+              - created_at
+            default: created_at
+        - $ref: '#/components/parameters/SortOrderParam'
+      responses:
+        200:
+          description: "Successfully got the messages."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrgAdminMessagePageResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+  /v1/inbox/messages/{message_id}:
+    parameters:
+      - $ref: '#/components/parameters/MessageIdPathParam'
+    get:
+      tags:
+        - message inbox
+      description: |
+        # Authorization
+        Required role: `org_admin`
+
+        # Description
+        Get the details of a message for a sequence as a supply organization.
+      responses:
+        200:
+          description: "Successfully got the message."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrgAdminMessageDetailResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+  /v1/inbox/messages/files/{file_id}:
+    parameters:
+      - $ref: '#/components/parameters/FileIdPathParam'
+    get:
+      tags:
+        - message inbox
+      description: |
+        # Authorization
+        Required role: `org_admin`
+
+        # Description
+        Get the file attached to a message as a supply organization.
+      responses:
+        200:
+          description: "Successfully got the file."
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
   /v1/sys_admin/referrals/{referral_id}:
     parameters:
       - $ref: '#/components/parameters/ReferralIdPathParam'
@@ -1130,6 +1370,49 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SysAdminReferralDetailResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
+  /v1/sys_admin/messages:
+    get:
+      tags:
+        - message sys_admin
+      description: |
+        # Authorization
+        Required role: `sys_admin`
+
+        # Description
+        Get a paginated collection of messages for a sequence as a system admin.
+      parameters:
+        - $ref: '#/components/parameters/SequenceIdQueryParam'
+        - in: query
+          name: sender_type
+          schema:
+            type: string
+            enum:
+              - demand
+              - supply
+        - $ref: '#/components/parameters/PageNumberParam'
+        - $ref: '#/components/parameters/ItemsPerPageParam'
+        - in: query
+          name: sort_by
+          schema:
+            type: string
+            enum:
+              - created_at
+            default: created_at
+        - $ref: '#/components/parameters/SortOrderParam'
+      responses:
+        200:
+          description: 'Successfully returned messages.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SysAdminMessagePageResponse'
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
@@ -1704,6 +1987,22 @@ x-amazon-apigateway-gateway-responses:
 
 components:
   parameters:
+    FileIdPathParam:
+      in: path
+      name: file_id
+      schema:
+        type: string
+        format: uuid
+      required: true
+      description: ID of a file.
+    MessageIdPathParam:
+      in: path
+      name: message_id
+      schema:
+        type: string
+        format: uuid
+      required: true
+      description: ID of a message.
     OfferIdPathParam:
       in: path
       name: offer_id
@@ -1735,6 +2034,13 @@ components:
     ReferralIdPathParam:
       in: path
       name: referral_id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    SequenceIdQueryParam:
+      in: query
+      name: sequence_id
       schema:
         type: string
         format: uuid
@@ -3488,6 +3794,9 @@ components:
             id:
               type: string
               format: uuid
+            sequence_id:
+              type: string
+              format: uuid
             offer_id:
               type: string
               format: uuid
@@ -3523,6 +3832,7 @@ components:
               format: date-time
           required:
             - id
+            - sequence_id
             - care_type
             - referral_type
             - status
@@ -3689,6 +3999,9 @@ components:
             id:
               type: string
               format: uuid
+            sequence_id:
+              type: string
+              format: uuid
             offer_id:
               type: string
               format: uuid
@@ -3717,6 +4030,11 @@ components:
               format: date-time
           required:
             - id
+            # sequence_id was made optional as a simple way for AC Cloud api.intake to
+            # process referrals. But sequence_id must be required in all referral
+            # responses from AlayaMarket. The OpenAPI spec should be updated to reflect
+            # this requirement as soon as possible to reduce confusion.
+            # - sequence_id
             - care_type
             - referral_type
             - start_at
@@ -5256,6 +5574,235 @@ components:
       required:
         - name
         - start_date
+
+    MessageCategoryCore:
+      type: string
+      enum:
+        - client_attachment
+
+    OrgAdminMessageSendRequest:
+      properties:
+        sequence_id:
+          type: string
+          format: uuid
+        category:
+          $ref: '#/components/schemas/MessageCategoryCore'
+        text:
+          type: string
+        file:
+          type: object
+          title: OrgAdminMessageSendFileRequest
+          properties:
+            url:
+              type: string
+            name:
+              type: string
+            size_in_bytes:
+              type: integer
+              minimum: 0
+              maximum: 52428800
+          required:
+            - url
+            - name
+      required:
+        - sequence_id
+        - category
+
+    OrgAdminMessageDetailResponse:
+      properties:
+        message:
+          type: object
+          title: OrgAdminMessageDetailMessageResponse
+          properties:
+            id:
+              type: string
+              format: uuid
+            sequence_id:
+              type: string
+              format: uuid
+            category:
+              $ref: '#/components/schemas/MessageCategoryCore'
+            text:
+              type: string
+            created_at:
+              type: string
+              format: date-time
+            file:
+              type: object
+              title: OrgAdminMessageDetailFileResponse
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                url:
+                  type: string
+                name:
+                  type: string
+                size_in_bytes:
+                  type: integer
+                  minimum: 0
+                  maximum: 52428800
+              required:
+                - id
+                - name
+          required:
+            - id
+            - sequence_id
+            - category
+            - created_at
+        sender:
+          type: object
+          title: OrgAdminMessageDetailSenderResponse
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+          required:
+            - id
+            - name
+        recipient:
+          type: object
+          title: OrgAdminMessageDetailRecipientResponse
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+          required:
+            - id
+            - name
+      required:
+        - message
+        - sender
+        - recipient
+
+    OrgAdminMessagePageResponse:
+      allOf:
+        - $ref: '#/components/schemas/PageCore'
+        - type: object
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/OrgAdminMessageCollectionResponse'
+          required:
+            - items
+
+    OrgAdminMessageCollectionResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+        category:
+          $ref: '#/components/schemas/MessageCategoryCore'
+        text:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        file:
+          type: object
+          title: MessageCollectionFileResponse
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+          required:
+            - id
+            - name
+      required:
+        - id
+        - category
+        - created_at
+
+    SysAdminMessagePageResponse:
+      allOf:
+        - $ref: '#/components/schemas/PageCore'
+        - type: object
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/SysAdminMessageCollectionResponse'
+          required:
+            - items
+
+    SysAdminMessageCollectionResponse:
+      properties:
+        message:
+          type: object
+          title: SysAdminMessageDetailMessageResponse
+          properties:
+            id:
+              type: string
+              format: uuid
+            sequence_id:
+              type: string
+              format: uuid
+            category:
+              $ref: '#/components/schemas/MessageCategoryCore'
+            text:
+              type: string
+            created_at:
+              type: string
+              format: date-time
+            file:
+              type: object
+              title: SysAdminMessageDetailFileResponse
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                url:
+                  type: string
+                name:
+                  type: string
+                size_in_bytes:
+                  type: integer
+                  minimum: 0
+                  maximum: 52428800
+              required:
+                - id
+                - url
+                - name
+          required:
+            - id
+            - sequence_id
+            - category
+            - created_at
+        sender:
+          type: object
+          title: SysAdminMessageDetailSenderResponse
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+          required:
+            - id
+            - name
+        recipient:
+          type: object
+          title: SysAdminMessageDetailRecipientResponse
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+          required:
+            - id
+            - name
+      required:
+        - message
+        - sender
+        - recipient
 
   securitySchemes:
     CognitoAuthorizer:
