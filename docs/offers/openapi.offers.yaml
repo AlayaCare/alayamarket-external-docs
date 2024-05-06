@@ -3809,6 +3809,9 @@ components:
               $ref: '#/components/schemas/ReferralTypeCore'
             comment:
               type: string
+            cancellation_comment:
+              type: string
+              maxLength: 1000
             demand_labels:
               type: array
               items:
@@ -4020,6 +4023,9 @@ components:
               format: date-time
             comment:
               type: string
+            cancellation_comment:
+              type: string
+              maxLength: 1000
             status:
               $ref: '#/components/schemas/ReferralStatusCore'
             created_at:
@@ -4124,6 +4130,11 @@ components:
     OutboxReferralCancelRequest:
       allOf:
         - $ref: '#/components/schemas/ReferralReasonCodeCore'
+        - type: object
+          properties:
+            comment:
+              type: string
+              maxLength: 1000
 
     InboxReferralCancelRequest:
       allOf:
@@ -4142,6 +4153,8 @@ components:
           - client_hospitalization
           - client_passed_away
           - client_refused_service
+          - processing_error
+          - other
 
     ReferralStatusCore:
       type: string
