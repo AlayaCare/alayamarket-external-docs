@@ -2450,7 +2450,54 @@ components:
       type: object
       properties:
         referral:
-          $ref: '#/components/schemas/InboxReferralCore'
+          title: "InboxReferralCollectionReferralResponse"
+          allOf:
+            - $ref: '#/components/schemas/ReferralReasonCodeCore'
+            - type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                sequence_id:
+                  type: string
+                  format: uuid
+                offer_id:
+                  type: string
+                  format: uuid
+                shift_id:
+                  type: string
+                  format: uuid
+                care_type:
+                  $ref: '#/components/schemas/CareTypeCore'
+                referral_type:
+                  $ref: '#/components/schemas/ReferralTypeCore'
+                start_at:
+                  type: string
+                  format: date-time
+                end_at:
+                  type: string
+                  format: date-time
+                status:
+                  $ref: '#/components/schemas/ReferralStatusCore'
+                created_at:
+                  type: string
+                  format: date-time
+                updated_at:
+                  type: string
+                  format: date-time
+              required:
+                - id
+                # sequence_id was made optional as a simple way for AC Cloud api.intake to
+                # process referrals. But sequence_id must be required in all referral
+                # responses from AlayaMarket. The OpenAPI spec should be updated to reflect
+                # this requirement as soon as possible to reduce confusion.
+                # - sequence_id
+                - care_type
+                - referral_type
+                - start_at
+                - end_at
+                - status
+                - created_at
         revision:
           title: InboxReferralCollectionRevisionResponse
           type: object
@@ -3991,62 +4038,6 @@ components:
               items:
                 $ref: '#/components/schemas/OutboxReferralCollectionResponse'
 
-    InboxReferralCore:
-      description: |
-        Core representation of an referral on the inbox API.
-        Meant to be used in the nested `referral` in a top level (API) response schema.
-      allOf:
-        - $ref: '#/components/schemas/ReferralReasonCodeCore'
-        - type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            sequence_id:
-              type: string
-              format: uuid
-            offer_id:
-              type: string
-              format: uuid
-            shift_id:
-              type: string
-              format: uuid
-            care_type:
-              $ref: '#/components/schemas/CareTypeCore'
-            referral_type:
-              $ref: '#/components/schemas/ReferralTypeCore'
-            start_at:
-              type: string
-              format: date-time
-            end_at:
-              type: string
-              format: date-time
-            comment:
-              type: string
-            cancellation_comment:
-              type: string
-              maxLength: 1000
-            status:
-              $ref: '#/components/schemas/ReferralStatusCore'
-            created_at:
-              type: string
-              format: date-time
-            updated_at:
-              type: string
-              format: date-time
-          required:
-            - id
-            # sequence_id was made optional as a simple way for AC Cloud api.intake to
-            # process referrals. But sequence_id must be required in all referral
-            # responses from AlayaMarket. The OpenAPI spec should be updated to reflect
-            # this requirement as soon as possible to reduce confusion.
-            # - sequence_id
-            - care_type
-            - referral_type
-            - start_at
-            - end_at
-            - status
-            - created_at
 
     InboxReferralDetailResponse:
       description: |
@@ -4056,7 +4047,59 @@ components:
       type: object
       properties:
         referral:
-          $ref: '#/components/schemas/InboxReferralCore'
+          title: "InboxReferralDetailReferralResponse"
+          allOf:
+            - $ref: '#/components/schemas/ReferralReasonCodeCore'
+            - type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                sequence_id:
+                  type: string
+                  format: uuid
+                offer_id:
+                  type: string
+                  format: uuid
+                shift_id:
+                  type: string
+                  format: uuid
+                care_type:
+                  $ref: '#/components/schemas/CareTypeCore'
+                referral_type:
+                  $ref: '#/components/schemas/ReferralTypeCore'
+                start_at:
+                  type: string
+                  format: date-time
+                end_at:
+                  type: string
+                  format: date-time
+                comment:
+                  type: string
+                cancellation_comment:
+                  type: string
+                  maxLength: 1000
+                status:
+                  $ref: '#/components/schemas/ReferralStatusCore'
+                created_at:
+                  type: string
+                  format: date-time
+                updated_at:
+                  type: string
+                  format: date-time
+              required:
+                - id
+                # sequence_id was made optional as a simple way for AC Cloud api.intake to
+                # process referrals. But sequence_id must be required in all referral
+                # responses from AlayaMarket. The OpenAPI spec should be updated to reflect
+                # this requirement as soon as possible to reduce confusion.
+                # - sequence_id
+                - care_type
+                - referral_type
+                - start_at
+                - end_at
+                - status
+                - created_at
         demand:
           # better to call sender (CCAC)? or demand_persona?
           $ref: '#/components/schemas/OrganizationLeanCore'
