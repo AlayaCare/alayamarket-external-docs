@@ -336,7 +336,11 @@ components:
         referral_id:
           type: string
           format: uuid
-          description: ID of the offer
+          description: ID of the referral
+        sequence_id:
+          type: string
+          format: uuid
+          description: ID of the sequence the referral belongs to
         client:
           type: object
           properties:
@@ -399,6 +403,8 @@ components:
         - event_id
         - timestamp
         - referral_id
+        # TODO (AM-3816): Make required.
+        # - sequence_id
         - client
         - demand
         - supply
@@ -678,7 +684,11 @@ components:
         referral_id:
           type: string
           format: uuid
-          description: ID of the offer
+          description: ID of the referral
+        sequence_id:
+          type: string
+          format: uuid
+          description: ID of the sequence the referral belongs to
         client:
           type: object
           properties:
@@ -741,6 +751,8 @@ components:
         - event_id
         - timestamp
         - referral_id
+        # TODO (AM-3816): Make required.
+        # - sequence_id
         - client
         - demand
         - supply
