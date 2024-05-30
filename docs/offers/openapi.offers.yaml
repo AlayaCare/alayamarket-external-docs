@@ -1116,6 +1116,32 @@ paths:
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
+  /v1/outbox/messages/files/{file_id}/presigned:
+    parameters:
+      - $ref: '#/components/parameters/FileIdPathParam'
+    get:
+      tags:
+        - message outbox
+      description: |
+        # Authorization
+        Required role: `org_admin`
+
+        # Description
+        Get the pre-signed URL for the file attached to a message as a demand
+        organization.
+      responses:
+        200:
+          description: "Successfully got the pre-signed URL."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrgAdminFilePresignedDetailResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
   /v1/inbox/referrals:
     get:
       tags:
@@ -1131,6 +1157,11 @@ paths:
           name: referral_status
           schema:
             $ref: '#/components/schemas/ReferralStatusCore'
+        - in: query
+          name: sequence_id
+          schema:
+            type: string
+            format: uuid
         - $ref: '#/components/parameters/OfferIdQueryParam'
         - $ref: '#/components/parameters/ShiftIdQueryParam'
         - $ref: '#/components/parameters/RevisionsQueryParam'
@@ -1350,6 +1381,32 @@ paths:
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
+  /v1/inbox/messages/files/{file_id}/presigned:
+    parameters:
+      - $ref: '#/components/parameters/FileIdPathParam'
+    get:
+      tags:
+        - message inbox
+      description: |
+        # Authorization
+        Required role: `org_admin`
+
+        # Description
+        Get the pre-signed URL for the file attached to a message as a supply
+        organization.
+      responses:
+        200:
+          description: "Successfully got the pre-signed URL."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrgAdminFilePresignedDetailResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
 
   /v1/sys_admin/referrals/{referral_id}:
     parameters:
@@ -1413,6 +1470,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SysAdminMessagePageResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+  /v1/sys_admin/messages/by_file_id/{file_id}:
+    parameters:
+      - $ref: '#/components/parameters/FileIdPathParam'
+    get:
+      tags:
+        - message sys_admin
+      description: |
+        # Authorization
+        Required role: `sys_admin`
+
+        # Description
+        Get a message by file ID.
+      responses:
+        200:
+          description: 'Successfully returned a message.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SysAdminMessageDetailResponse'
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
@@ -2699,6 +2781,8 @@ components:
           - client_hospitalization
           - client_passed_away
           - client_refused_service
+          - processing_error
+          - other
         reason_comment:
           type: string
 
@@ -5784,11 +5868,11 @@ components:
             items:
               type: array
               items:
-                $ref: '#/components/schemas/SysAdminMessageCollectionResponse'
+                $ref: '#/components/schemas/SysAdminMessageDetailResponse'
           required:
             - items
 
-    SysAdminMessageCollectionResponse:
+    SysAdminMessageDetailResponse:
       properties:
         message:
           type: object
@@ -5859,6 +5943,13 @@ components:
         - message
         - sender
         - recipient
+
+    OrgAdminFilePresignedDetailResponse:
+      properties:
+        url:
+          type: string
+      required:
+        - url
 
   securitySchemes:
     CognitoAuthorizer:
