@@ -75,7 +75,8 @@ stringified json data within the <code>Message</code> of the payload. </p>
 </div></div><ul class="text-xs">Allowed values:<!-- --> <li class="border inline-block text-orange-600 rounded ml-1 py-0 px-2"><span>&quot;ReferralCreated&quot;</span></li><li class="border inline-block text-orange-600 rounded ml-1 py-0 px-2"><span>&quot;ReferralProcessed&quot;</span></li><li class="border inline-block text-orange-600 rounded ml-1 py-0 px-2"><span>&quot;ReferralSupplyCancelled&quot;</span></li><li class="border inline-block text-orange-600 rounded ml-1 py-0 px-2"><span>&quot;ReferralUpdated&quot;</span></li></ul></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">id</span><div class="text-red-600 text-xs">required</div><div class="text-red-600 text-xs">deprecated</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->uuid</span></div><div><div class="prose max-w-none text-sm"><p>ID of the referral</p>
 </div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">event_id</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->uuid</span></div><div><div class="prose max-w-none text-sm"><p>ID of the event</p>
 </div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">timestamp</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->datetime</span></div><div><div class="prose max-w-none text-sm"><p>Timestamp of the event</p>
-</div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">referral_id</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->uuid</span></div><div><div class="prose max-w-none text-sm"><p>ID of the offer</p>
+</div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">referral_id</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->uuid</span></div><div><div class="prose max-w-none text-sm"><p>ID of the referral</p>
+</div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">sequence_id</span></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->uuid</span></div><div><div class="prose max-w-none text-sm"><p>ID of the sequence the referral belongs to</p>
 </div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><button class="focus:outline-none undefined" type="button"><div class="inline-block"><span class="break-anywhere text-sm italic">client</span></div><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" class="inline-block align-baseline cursor-pointer ml-0.5 -mb-1 w-5 h-5 transform transition-transform duration-150 ease-linear  "><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg></button><button type="button" class="ml-1 text-sm text-gray-500">Expand all</button><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">object</div><div class="inline-block"></div></div></div></div><div class="rounded p-4 py-2 border bg-gray-100 bg-gray-200 hidden"><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">outbox_id</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"></div><div><div class="prose max-w-none text-sm"><p>ID of the client in the demand system</p>
 </div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">id</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->UUID</span></div><div><div class="prose max-w-none text-sm"><p>ID of the client</p>
 </div></div></div></div></div></div><p class="mt-2 text-xs text-gray-700">Additional properties are allowed.</p></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><button class="focus:outline-none undefined" type="button"><div class="inline-block"><span class="break-anywhere text-sm italic">demand</span></div><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" class="inline-block align-baseline cursor-pointer ml-0.5 -mb-1 w-5 h-5 transform transition-transform duration-150 ease-linear  "><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg></button><button type="button" class="ml-1 text-sm text-gray-500">Expand all</button><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">object</div><div class="inline-block"></div></div></div></div><div class="rounded p-4 py-2 border bg-gray-100 bg-gray-200 hidden"><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">name</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"></div><div><div class="prose max-w-none text-sm"><p>Name of the demand organization</p>
@@ -97,6 +98,7 @@ starts with "https://" without a trailing slash
   <span class="hljs-attr">"event_id"</span>: <span class="hljs-string">"a7a26ff2-e851-45b6-9634-d595f45458b7"</span>,
   <span class="hljs-attr">"timestamp"</span>: <span class="hljs-string">"string"</span>,
   <span class="hljs-attr">"referral_id"</span>: <span class="hljs-string">"2d946960-d63d-4137-b67f-4dc8d4a3067c"</span>,
+  <span class="hljs-attr">"sequence_id"</span>: <span class="hljs-string">"7cd84c09-94f4-486c-9c49-de3b9cf3f74f"</span>,
   <span class="hljs-attr">"client"</span>: {
     <span class="hljs-attr">"outbox_id"</span>: <span class="hljs-string">"string"</span>,
     <span class="hljs-attr">"id"</span>: <span class="hljs-string">"string"</span>
@@ -264,7 +266,8 @@ service. This is only supported for offers of type 'visit'.</p>
 </div></div><ul class="text-xs">Allowed values:<!-- --> <li class="border inline-block text-orange-600 rounded ml-1 py-0 px-2"><span>&quot;ReferralCreated&quot;</span></li><li class="border inline-block text-orange-600 rounded ml-1 py-0 px-2"><span>&quot;ReferralDemandCancelled&quot;</span></li><li class="border inline-block text-orange-600 rounded ml-1 py-0 px-2"><span>&quot;ReferralUpdated&quot;</span></li></ul></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">id</span><div class="text-red-600 text-xs">required</div><div class="text-red-600 text-xs">deprecated</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->uuid</span></div><div><div class="prose max-w-none text-sm"><p>ID of the referral</p>
 </div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">event_id</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->uuid</span></div><div><div class="prose max-w-none text-sm"><p>ID of the event</p>
 </div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">timestamp</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->datetime</span></div><div><div class="prose max-w-none text-sm"><p>Timestamp of the event</p>
-</div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">referral_id</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->uuid</span></div><div><div class="prose max-w-none text-sm"><p>ID of the offer</p>
+</div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">referral_id</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->uuid</span></div><div><div class="prose max-w-none text-sm"><p>ID of the referral</p>
+</div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">sequence_id</span></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->uuid</span></div><div><div class="prose max-w-none text-sm"><p>ID of the sequence the referral belongs to</p>
 </div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><button class="focus:outline-none undefined" type="button"><div class="inline-block"><span class="break-anywhere text-sm italic">client</span></div><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" class="inline-block align-baseline cursor-pointer ml-0.5 -mb-1 w-5 h-5 transform transition-transform duration-150 ease-linear  "><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg></button><button type="button" class="ml-1 text-sm text-gray-500">Expand all</button><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">object</div><div class="inline-block"></div></div></div></div><div class="rounded p-4 py-2 border bg-gray-100 bg-gray-200 hidden"><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">outbox_id</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"></div><div><div class="prose max-w-none text-sm"><p>ID of the client in the demand system</p>
 </div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">id</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->UUID</span></div><div><div class="prose max-w-none text-sm"><p>ID of the client</p>
 </div></div></div></div></div></div><p class="mt-2 text-xs text-gray-700">Additional properties are allowed.</p></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><button class="focus:outline-none undefined" type="button"><div class="inline-block"><span class="break-anywhere text-sm italic">demand</span></div><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" class="inline-block align-baseline cursor-pointer ml-0.5 -mb-1 w-5 h-5 transform transition-transform duration-150 ease-linear  "><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg></button><button type="button" class="ml-1 text-sm text-gray-500">Expand all</button><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">object</div><div class="inline-block"></div></div></div></div><div class="rounded p-4 py-2 border bg-gray-100 bg-gray-200 hidden"><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">name</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"></div><div><div class="prose max-w-none text-sm"><p>Name of the demand organization</p>
@@ -285,6 +288,7 @@ starts with "https://" without a trailing slash
   <span class="hljs-attr">"event_id"</span>: <span class="hljs-string">"a7a26ff2-e851-45b6-9634-d595f45458b7"</span>,
   <span class="hljs-attr">"timestamp"</span>: <span class="hljs-string">"string"</span>,
   <span class="hljs-attr">"referral_id"</span>: <span class="hljs-string">"2d946960-d63d-4137-b67f-4dc8d4a3067c"</span>,
+  <span class="hljs-attr">"sequence_id"</span>: <span class="hljs-string">"7cd84c09-94f4-486c-9c49-de3b9cf3f74f"</span>,
   <span class="hljs-attr">"client"</span>: {
     <span class="hljs-attr">"outbox_id"</span>: <span class="hljs-string">"string"</span>,
     <span class="hljs-attr">"id"</span>: <span class="hljs-string">"string"</span>
@@ -325,7 +329,8 @@ starts with "https://" without a trailing slash
 </div></div><ul class="text-xs">Allowed values:<!-- --> <li class="border inline-block text-orange-600 rounded ml-1 py-0 px-2"><span>&quot;ReferralCreated&quot;</span></li><li class="border inline-block text-orange-600 rounded ml-1 py-0 px-2"><span>&quot;ReferralProcessed&quot;</span></li><li class="border inline-block text-orange-600 rounded ml-1 py-0 px-2"><span>&quot;ReferralSupplyCancelled&quot;</span></li><li class="border inline-block text-orange-600 rounded ml-1 py-0 px-2"><span>&quot;ReferralUpdated&quot;</span></li></ul></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">id</span><div class="text-red-600 text-xs">required</div><div class="text-red-600 text-xs">deprecated</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->uuid</span></div><div><div class="prose max-w-none text-sm"><p>ID of the referral</p>
 </div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">event_id</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->uuid</span></div><div><div class="prose max-w-none text-sm"><p>ID of the event</p>
 </div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">timestamp</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->datetime</span></div><div><div class="prose max-w-none text-sm"><p>Timestamp of the event</p>
-</div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">referral_id</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->uuid</span></div><div><div class="prose max-w-none text-sm"><p>ID of the offer</p>
+</div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">referral_id</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->uuid</span></div><div><div class="prose max-w-none text-sm"><p>ID of the referral</p>
+</div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">sequence_id</span></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->uuid</span></div><div><div class="prose max-w-none text-sm"><p>ID of the sequence the referral belongs to</p>
 </div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><button class="focus:outline-none undefined" type="button"><div class="inline-block"><span class="break-anywhere text-sm italic">client</span></div><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" class="inline-block align-baseline cursor-pointer ml-0.5 -mb-1 w-5 h-5 transform transition-transform duration-150 ease-linear  "><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg></button><button type="button" class="ml-1 text-sm text-gray-500">Expand all</button><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">object</div><div class="inline-block"></div></div></div></div><div class="rounded p-4 py-2 border bg-gray-100 bg-gray-200 hidden"><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">outbox_id</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"></div><div><div class="prose max-w-none text-sm"><p>ID of the client in the demand system</p>
 </div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">id</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->UUID</span></div><div><div class="prose max-w-none text-sm"><p>ID of the client</p>
 </div></div></div></div></div></div><p class="mt-2 text-xs text-gray-700">Additional properties are allowed.</p></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><button class="focus:outline-none undefined" type="button"><div class="inline-block"><span class="break-anywhere text-sm italic">demand</span></div><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" class="inline-block align-baseline cursor-pointer ml-0.5 -mb-1 w-5 h-5 transform transition-transform duration-150 ease-linear  "><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg></button><button type="button" class="ml-1 text-sm text-gray-500">Expand all</button><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">object</div><div class="inline-block"></div></div></div></div><div class="rounded p-4 py-2 border bg-gray-100 bg-gray-200 hidden"><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">name</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"></div><div><div class="prose max-w-none text-sm"><p>Name of the demand organization</p>
@@ -403,7 +408,8 @@ starts with "https://" without a trailing slash
 </div></div><ul class="text-xs">Allowed values:<!-- --> <li class="border inline-block text-orange-600 rounded ml-1 py-0 px-2"><span>&quot;ReferralCreated&quot;</span></li><li class="border inline-block text-orange-600 rounded ml-1 py-0 px-2"><span>&quot;ReferralDemandCancelled&quot;</span></li><li class="border inline-block text-orange-600 rounded ml-1 py-0 px-2"><span>&quot;ReferralUpdated&quot;</span></li></ul></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">id</span><div class="text-red-600 text-xs">required</div><div class="text-red-600 text-xs">deprecated</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->uuid</span></div><div><div class="prose max-w-none text-sm"><p>ID of the referral</p>
 </div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">event_id</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->uuid</span></div><div><div class="prose max-w-none text-sm"><p>ID of the event</p>
 </div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">timestamp</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->datetime</span></div><div><div class="prose max-w-none text-sm"><p>Timestamp of the event</p>
-</div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">referral_id</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->uuid</span></div><div><div class="prose max-w-none text-sm"><p>ID of the offer</p>
+</div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">referral_id</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->uuid</span></div><div><div class="prose max-w-none text-sm"><p>ID of the referral</p>
+</div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">sequence_id</span></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->uuid</span></div><div><div class="prose max-w-none text-sm"><p>ID of the sequence the referral belongs to</p>
 </div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><button class="focus:outline-none undefined" type="button"><div class="inline-block"><span class="break-anywhere text-sm italic">client</span></div><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" class="inline-block align-baseline cursor-pointer ml-0.5 -mb-1 w-5 h-5 transform transition-transform duration-150 ease-linear  "><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg></button><button type="button" class="ml-1 text-sm text-gray-500">Expand all</button><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">object</div><div class="inline-block"></div></div></div></div><div class="rounded p-4 py-2 border bg-gray-100 bg-gray-200 hidden"><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">outbox_id</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"></div><div><div class="prose max-w-none text-sm"><p>ID of the client in the demand system</p>
 </div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">id</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->UUID</span></div><div><div class="prose max-w-none text-sm"><p>ID of the client</p>
 </div></div></div></div></div></div><p class="mt-2 text-xs text-gray-700">Additional properties are allowed.</p></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><button class="focus:outline-none undefined" type="button"><div class="inline-block"><span class="break-anywhere text-sm italic">demand</span></div><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" class="inline-block align-baseline cursor-pointer ml-0.5 -mb-1 w-5 h-5 transform transition-transform duration-150 ease-linear  "><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg></button><button type="button" class="ml-1 text-sm text-gray-500">Expand all</button><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">object</div><div class="inline-block"></div></div></div></div><div class="rounded p-4 py-2 border bg-gray-100 bg-gray-200 hidden"><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">name</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"></div><div><div class="prose max-w-none text-sm"><p>Name of the demand organization</p>
@@ -466,7 +472,8 @@ starts with "https://" without a trailing slash
 </div></div><ul class="text-xs">Allowed values:<!-- --> <li class="border inline-block text-orange-600 rounded ml-1 py-0 px-2"><span>&quot;ReferralCreated&quot;</span></li><li class="border inline-block text-orange-600 rounded ml-1 py-0 px-2"><span>&quot;ReferralProcessed&quot;</span></li><li class="border inline-block text-orange-600 rounded ml-1 py-0 px-2"><span>&quot;ReferralSupplyCancelled&quot;</span></li><li class="border inline-block text-orange-600 rounded ml-1 py-0 px-2"><span>&quot;ReferralUpdated&quot;</span></li></ul></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">id</span><div class="text-red-600 text-xs">required</div><div class="text-red-600 text-xs">deprecated</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->uuid</span></div><div><div class="prose max-w-none text-sm"><p>ID of the referral</p>
 </div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">event_id</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->uuid</span></div><div><div class="prose max-w-none text-sm"><p>ID of the event</p>
 </div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">timestamp</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->datetime</span></div><div><div class="prose max-w-none text-sm"><p>Timestamp of the event</p>
-</div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">referral_id</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->uuid</span></div><div><div class="prose max-w-none text-sm"><p>ID of the offer</p>
+</div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">referral_id</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->uuid</span></div><div><div class="prose max-w-none text-sm"><p>ID of the referral</p>
+</div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">sequence_id</span></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->uuid</span></div><div><div class="prose max-w-none text-sm"><p>ID of the sequence the referral belongs to</p>
 </div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><button class="focus:outline-none undefined" type="button"><div class="inline-block"><span class="break-anywhere text-sm italic">client</span></div><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" class="inline-block align-baseline cursor-pointer ml-0.5 -mb-1 w-5 h-5 transform transition-transform duration-150 ease-linear  "><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg></button><button type="button" class="ml-1 text-sm text-gray-500">Expand all</button><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">object</div><div class="inline-block"></div></div></div></div><div class="rounded p-4 py-2 border bg-gray-100 bg-gray-200 hidden"><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">outbox_id</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"></div><div><div class="prose max-w-none text-sm"><p>ID of the client in the demand system</p>
 </div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">id</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->UUID</span></div><div><div class="prose max-w-none text-sm"><p>ID of the client</p>
 </div></div></div></div></div></div><p class="mt-2 text-xs text-gray-700">Additional properties are allowed.</p></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><button class="focus:outline-none undefined" type="button"><div class="inline-block"><span class="break-anywhere text-sm italic">demand</span></div><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" class="inline-block align-baseline cursor-pointer ml-0.5 -mb-1 w-5 h-5 transform transition-transform duration-150 ease-linear  "><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg></button><button type="button" class="ml-1 text-sm text-gray-500">Expand all</button><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">object</div><div class="inline-block"></div></div></div></div><div class="rounded p-4 py-2 border bg-gray-100 bg-gray-200 hidden"><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">name</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"></div><div><div class="prose max-w-none text-sm"><p>Name of the demand organization</p>
@@ -531,7 +538,8 @@ starts with "https://" without a trailing slash
 </div></div><ul class="text-xs">Allowed values:<!-- --> <li class="border inline-block text-orange-600 rounded ml-1 py-0 px-2"><span>&quot;ReferralCreated&quot;</span></li><li class="border inline-block text-orange-600 rounded ml-1 py-0 px-2"><span>&quot;ReferralDemandCancelled&quot;</span></li><li class="border inline-block text-orange-600 rounded ml-1 py-0 px-2"><span>&quot;ReferralUpdated&quot;</span></li></ul></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">id</span><div class="text-red-600 text-xs">required</div><div class="text-red-600 text-xs">deprecated</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->uuid</span></div><div><div class="prose max-w-none text-sm"><p>ID of the referral</p>
 </div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">event_id</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->uuid</span></div><div><div class="prose max-w-none text-sm"><p>ID of the event</p>
 </div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">timestamp</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->datetime</span></div><div><div class="prose max-w-none text-sm"><p>Timestamp of the event</p>
-</div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">referral_id</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->uuid</span></div><div><div class="prose max-w-none text-sm"><p>ID of the offer</p>
+</div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">referral_id</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->uuid</span></div><div><div class="prose max-w-none text-sm"><p>ID of the referral</p>
+</div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">sequence_id</span></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->uuid</span></div><div><div class="prose max-w-none text-sm"><p>ID of the sequence the referral belongs to</p>
 </div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><button class="focus:outline-none undefined" type="button"><div class="inline-block"><span class="break-anywhere text-sm italic">client</span></div><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" class="inline-block align-baseline cursor-pointer ml-0.5 -mb-1 w-5 h-5 transform transition-transform duration-150 ease-linear  "><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg></button><button type="button" class="ml-1 text-sm text-gray-500">Expand all</button><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">object</div><div class="inline-block"></div></div></div></div><div class="rounded p-4 py-2 border bg-gray-100 bg-gray-200 hidden"><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">outbox_id</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"></div><div><div class="prose max-w-none text-sm"><p>ID of the client in the demand system</p>
 </div></div></div></div></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">id</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"><span class="bg-yellow-600 font-bold no-underline text-white rounded lowercase mr-2 p-1 text-xs">format: <!-- -->UUID</span></div><div><div class="prose max-w-none text-sm"><p>ID of the client</p>
 </div></div></div></div></div></div><p class="mt-2 text-xs text-gray-700">Additional properties are allowed.</p></div></div><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><button class="focus:outline-none undefined" type="button"><div class="inline-block"><span class="break-anywhere text-sm italic">demand</span></div><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" class="inline-block align-baseline cursor-pointer ml-0.5 -mb-1 w-5 h-5 transform transition-transform duration-150 ease-linear  "><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg></button><button type="button" class="ml-1 text-sm text-gray-500">Expand all</button><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">object</div><div class="inline-block"></div></div></div></div><div class="rounded p-4 py-2 border bg-gray-100 bg-gray-200 hidden"><div><div class="flex py-2"><div class="min-w-1/4 mr-2"><span class="break-anywhere text-sm italic">name</span><div class="text-red-600 text-xs">required</div></div><div><div><div class="capitalize text-sm text-teal-500 font-bold inline-block mr-2">string</div><div class="inline-block"></div><div><div class="prose max-w-none text-sm"><p>Name of the demand organization</p>
@@ -848,8 +856,14 @@ starts with "https://" without a trailing slash
               "referral_id": {
                 "type": "string",
                 "format": "uuid",
-                "description": "ID of the offer",
+                "description": "ID of the referral",
                 "x-parser-schema-id": "<anonymous-schema-28>"
+              },
+              "sequence_id": {
+                "type": "string",
+                "format": "uuid",
+                "description": "ID of the sequence the referral belongs to",
+                "x-parser-schema-id": "<anonymous-schema-29>"
               },
               "client": {
                 "type": "object",
@@ -857,20 +871,20 @@ starts with "https://" without a trailing slash
                   "outbox_id": {
                     "type": "string",
                     "description": "ID of the client in the demand system",
-                    "x-parser-schema-id": "<anonymous-schema-30>"
+                    "x-parser-schema-id": "<anonymous-schema-31>"
                   },
                   "id": {
                     "type": "string",
                     "format": "UUID",
                     "description": "ID of the client",
-                    "x-parser-schema-id": "<anonymous-schema-31>"
+                    "x-parser-schema-id": "<anonymous-schema-32>"
                   }
                 },
                 "required": [
                   "outbox_id",
                   "id"
                 ],
-                "x-parser-schema-id": "<anonymous-schema-29>"
+                "x-parser-schema-id": "<anonymous-schema-30>"
               },
               "demand": {
                 "type": "object",
@@ -878,25 +892,25 @@ starts with "https://" without a trailing slash
                   "name": {
                     "type": "string",
                     "description": "Name of the demand organization",
-                    "x-parser-schema-id": "<anonymous-schema-33>"
+                    "x-parser-schema-id": "<anonymous-schema-34>"
                   },
                   "host": {
                     "type": "string",
                     "description": "The host of the demand organization - a fully qualified domain name that\nstarts with \"https://\" without a trailing slash\n(e.g. https://org.alayacare.com).\n",
                     "example": "https://org.alayacare.com",
-                    "x-parser-schema-id": "<anonymous-schema-34>"
+                    "x-parser-schema-id": "<anonymous-schema-35>"
                   },
                   "source": {
                     "type": "string",
                     "description": "From whom the organization was sourced\n(e.g. `alayacare`, `procura`, `staffy`, `e2e_tests`, `internal`)\n",
-                    "x-parser-schema-id": "<anonymous-schema-35>"
+                    "x-parser-schema-id": "<anonymous-schema-36>"
                   }
                 },
                 "required": [
                   "name",
                   "source"
                 ],
-                "x-parser-schema-id": "<anonymous-schema-32>"
+                "x-parser-schema-id": "<anonymous-schema-33>"
               },
               "supply": {
                 "type": "object",
@@ -904,25 +918,25 @@ starts with "https://" without a trailing slash
                   "name": {
                     "type": "string",
                     "description": "Name of the demand organization",
-                    "x-parser-schema-id": "<anonymous-schema-37>"
+                    "x-parser-schema-id": "<anonymous-schema-38>"
                   },
                   "host": {
                     "type": "string",
                     "description": "The host of the supply organization - a fully qualified domain name that\nstarts with \"https://\" without a trailing slash\n(e.g. https://org.alayacare.com).\n",
                     "example": "https://org.alayacare.com",
-                    "x-parser-schema-id": "<anonymous-schema-38>"
+                    "x-parser-schema-id": "<anonymous-schema-39>"
                   },
                   "source": {
                     "type": "string",
                     "description": "From whom the organization was sourced\n(e.g. `alayacare`, `procura`, `staffy`, `e2e_tests`, `internal`)\n",
-                    "x-parser-schema-id": "<anonymous-schema-39>"
+                    "x-parser-schema-id": "<anonymous-schema-40>"
                   }
                 },
                 "required": [
                   "name",
                   "source"
                 ],
-                "x-parser-schema-id": "<anonymous-schema-36>"
+                "x-parser-schema-id": "<anonymous-schema-37>"
               }
             },
             "required": [
@@ -957,7 +971,7 @@ starts with "https://" without a trailing slash
                 "type": "string",
                 "description": "Source of the event.",
                 "const": "alayamarket.visits",
-                "x-parser-schema-id": "<anonymous-schema-40>"
+                "x-parser-schema-id": "<anonymous-schema-41>"
               },
               "event_name": {
                 "type": "string",
@@ -967,50 +981,50 @@ starts with "https://" without a trailing slash
                   "VisitSupplyScheduled",
                   "VisitSupplyRescheduled"
                 ],
-                "x-parser-schema-id": "<anonymous-schema-41>"
+                "x-parser-schema-id": "<anonymous-schema-42>"
               },
               "id": {
                 "deprecated": true,
                 "type": "string",
                 "format": "uuid",
                 "description": "ID of the visit",
-                "x-parser-schema-id": "<anonymous-schema-42>"
+                "x-parser-schema-id": "<anonymous-schema-43>"
               },
               "event_id": {
                 "type": "string",
                 "format": "uuid",
                 "description": "ID of the event",
-                "x-parser-schema-id": "<anonymous-schema-43>"
+                "x-parser-schema-id": "<anonymous-schema-44>"
               },
               "timestamp": {
                 "type": "string",
                 "format": "datetime",
                 "description": "Timestamp of the event",
-                "x-parser-schema-id": "<anonymous-schema-44>"
+                "x-parser-schema-id": "<anonymous-schema-45>"
               },
               "visit_id": {
                 "type": "string",
                 "format": "uuid",
                 "description": "ID of the visit",
-                "x-parser-schema-id": "<anonymous-schema-45>"
+                "x-parser-schema-id": "<anonymous-schema-46>"
               },
               "referral_id": {
                 "type": "string",
                 "format": "uuid",
                 "description": "ID of the referral",
-                "x-parser-schema-id": "<anonymous-schema-46>"
+                "x-parser-schema-id": "<anonymous-schema-47>"
               },
               "start_at": {
                 "type": "string",
                 "format": "date-time",
                 "description": "Start date-time of the visit. \n\n**This is a mutable property and should be used carefully.**\n",
-                "x-parser-schema-id": "<anonymous-schema-47>"
+                "x-parser-schema-id": "<anonymous-schema-48>"
               },
               "end_at": {
                 "type": "string",
                 "format": "date-time",
                 "description": "End date-time of the visit. \n\n**This is a mutable property and should be used carefully.**\n",
-                "x-parser-schema-id": "<anonymous-schema-48>"
+                "x-parser-schema-id": "<anonymous-schema-49>"
               },
               "service": {
                 "type": "object",
@@ -1019,19 +1033,19 @@ starts with "https://" without a trailing slash
                     "type": "string",
                     "format": "uuid",
                     "description": "ID of the service.",
-                    "x-parser-schema-id": "<anonymous-schema-50>"
+                    "x-parser-schema-id": "<anonymous-schema-51>"
                   },
                   "outbox_id": {
                     "type": "string",
                     "description": "ID of the service in the demand system.",
-                    "x-parser-schema-id": "<anonymous-schema-51>"
+                    "x-parser-schema-id": "<anonymous-schema-52>"
                   }
                 },
                 "required": [
                   "id",
                   "outbox_id"
                 ],
-                "x-parser-schema-id": "<anonymous-schema-49>"
+                "x-parser-schema-id": "<anonymous-schema-50>"
               }
             },
             "required": [
@@ -1067,7 +1081,7 @@ starts with "https://" without a trailing slash
                 "type": "string",
                 "description": "Source of the event.",
                 "const": "alayamarket.visit_tasks",
-                "x-parser-schema-id": "<anonymous-schema-52>"
+                "x-parser-schema-id": "<anonymous-schema-53>"
               },
               "event_name": {
                 "type": "string",
@@ -1075,37 +1089,37 @@ starts with "https://" without a trailing slash
                 "enum": [
                   "VisitTasksCompleted"
                 ],
-                "x-parser-schema-id": "<anonymous-schema-53>"
+                "x-parser-schema-id": "<anonymous-schema-54>"
               },
               "id": {
                 "deprecated": true,
                 "type": "string",
                 "format": "uuid",
                 "description": "ID of the visit.",
-                "x-parser-schema-id": "<anonymous-schema-54>"
+                "x-parser-schema-id": "<anonymous-schema-55>"
               },
               "event_id": {
                 "type": "string",
                 "format": "uuid",
                 "description": "ID of the event",
-                "x-parser-schema-id": "<anonymous-schema-55>"
+                "x-parser-schema-id": "<anonymous-schema-56>"
               },
               "timestamp": {
                 "type": "string",
                 "format": "datetime",
                 "description": "Timestamp of the event",
-                "x-parser-schema-id": "<anonymous-schema-56>"
+                "x-parser-schema-id": "<anonymous-schema-57>"
               },
               "visit_id": {
                 "type": "string",
                 "format": "uuid",
                 "description": "ID of the visit",
-                "x-parser-schema-id": "<anonymous-schema-57>"
+                "x-parser-schema-id": "<anonymous-schema-58>"
               },
               "visit_outbox_id": {
                 "type": "string",
                 "description": "ID of the visit in the demand system associated with the visit. This is available for `visit` type referrals only.",
-                "x-parser-schema-id": "<anonymous-schema-58>"
+                "x-parser-schema-id": "<anonymous-schema-59>"
               },
               "tasks": {
                 "type": "array",
@@ -1116,28 +1130,28 @@ starts with "https://" without a trailing slash
                       "type": "string",
                       "format": "uuid",
                       "description": "ID of the visit task.",
-                      "x-parser-schema-id": "<anonymous-schema-61>"
+                      "x-parser-schema-id": "<anonymous-schema-62>"
                     },
                     "outbox_id": {
                       "type": "string",
                       "description": "ID of the visit task in the demand system.",
-                      "x-parser-schema-id": "<anonymous-schema-62>"
+                      "x-parser-schema-id": "<anonymous-schema-63>"
                     },
                     "is_completed": {
                       "type": "boolean",
                       "description": "Is the visit task completed?",
-                      "x-parser-schema-id": "<anonymous-schema-63>"
+                      "x-parser-schema-id": "<anonymous-schema-64>"
                     },
                     "completed_at": {
                       "type": "string",
                       "format": "date-time",
                       "description": "The date-time at which the visit task was completed.",
-                      "x-parser-schema-id": "<anonymous-schema-64>"
+                      "x-parser-schema-id": "<anonymous-schema-65>"
                     },
                     "completion_comment": {
                       "type": "string",
                       "description": "Comment related to the completion of the visit task.",
-                      "x-parser-schema-id": "<anonymous-schema-65>"
+                      "x-parser-schema-id": "<anonymous-schema-66>"
                     }
                   },
                   "required": [
@@ -1145,9 +1159,9 @@ starts with "https://" without a trailing slash
                     "outbox_id",
                     "is_completed"
                   ],
-                  "x-parser-schema-id": "<anonymous-schema-60>"
+                  "x-parser-schema-id": "<anonymous-schema-61>"
                 },
-                "x-parser-schema-id": "<anonymous-schema-59>"
+                "x-parser-schema-id": "<anonymous-schema-60>"
               }
             },
             "required": [
@@ -1180,7 +1194,7 @@ starts with "https://" without a trailing slash
                 "type": "string",
                 "description": "Source of the event.",
                 "const": "alayamarket.work_sessions",
-                "x-parser-schema-id": "<anonymous-schema-66>"
+                "x-parser-schema-id": "<anonymous-schema-67>"
               },
               "event_name": {
                 "type": "string",
@@ -1189,76 +1203,76 @@ starts with "https://" without a trailing slash
                   "WorkSessionStarted",
                   "WorkSessionEnded"
                 ],
-                "x-parser-schema-id": "<anonymous-schema-67>"
+                "x-parser-schema-id": "<anonymous-schema-68>"
               },
               "id": {
                 "deprecated": true,
                 "type": "string",
                 "format": "uuid",
                 "description": "ID of the work session.",
-                "x-parser-schema-id": "<anonymous-schema-68>"
+                "x-parser-schema-id": "<anonymous-schema-69>"
               },
               "event_id": {
                 "type": "string",
                 "format": "uuid",
                 "description": "ID of the event.",
-                "x-parser-schema-id": "<anonymous-schema-69>"
+                "x-parser-schema-id": "<anonymous-schema-70>"
               },
               "timestamp": {
                 "type": "string",
                 "format": "datetime",
                 "description": "Timestamp of the event.",
-                "x-parser-schema-id": "<anonymous-schema-70>"
+                "x-parser-schema-id": "<anonymous-schema-71>"
               },
               "work_session_id": {
                 "type": "string",
                 "format": "uuid",
                 "description": "ID of the work session.",
-                "x-parser-schema-id": "<anonymous-schema-71>"
+                "x-parser-schema-id": "<anonymous-schema-72>"
               },
               "visit_id": {
                 "type": "string",
                 "format": "uuid",
                 "description": "ID of the visit associated to the work session.",
-                "x-parser-schema-id": "<anonymous-schema-72>"
+                "x-parser-schema-id": "<anonymous-schema-73>"
               },
               "visit_outbox_id": {
                 "type": "string",
                 "format": "uuid",
                 "description": "ID of the visit in the demand system associated to the work session. This is available for `visit` type referrals only.",
-                "x-parser-schema-id": "<anonymous-schema-73>"
+                "x-parser-schema-id": "<anonymous-schema-74>"
               },
               "start_at": {
                 "type": "string",
                 "format": "date-time",
                 "description": "Start date-time of the work session.",
-                "x-parser-schema-id": "<anonymous-schema-74>"
+                "x-parser-schema-id": "<anonymous-schema-75>"
               },
               "start_latitude": {
                 "type": "number",
                 "description": "Start latitude of the work session.",
-                "x-parser-schema-id": "<anonymous-schema-75>"
+                "x-parser-schema-id": "<anonymous-schema-76>"
               },
               "start_longitude": {
                 "type": "number",
                 "description": "Start longitude of the work session.",
-                "x-parser-schema-id": "<anonymous-schema-76>"
+                "x-parser-schema-id": "<anonymous-schema-77>"
               },
               "end_at": {
                 "type": "string",
                 "format": "date-time",
                 "description": "End date-time of the work session. This is required for `WorkSessionEnded` events only.",
-                "x-parser-schema-id": "<anonymous-schema-77>"
+                "x-parser-schema-id": "<anonymous-schema-78>"
               },
               "end_latitude": {
                 "type": "number",
                 "description": "End latitude of the work session. This is available for `WorkSessionEnded` events only.",
-                "x-parser-schema-id": "<anonymous-schema-78>"
+                "x-parser-schema-id": "<anonymous-schema-79>"
               },
               "end_longitude": {
                 "type": "number",
                 "description": "End longitude of the work session. This is available for `WorkSessionEnded` events only.",
-                "x-parser-schema-id": "<anonymous-schema-79>"
+                "x-parser-schema-id": "<anonymous-schema-80>"
               }
             },
             "required": [
@@ -1297,13 +1311,13 @@ starts with "https://" without a trailing slash
                     "enum": [
                       "MessageDemandSent"
                     ],
-                    "x-parser-schema-id": "<anonymous-schema-81>"
+                    "x-parser-schema-id": "<anonymous-schema-82>"
                   }
                 },
                 "required": [
                   "event_name"
                 ],
-                "x-parser-schema-id": "<anonymous-schema-80>"
+                "x-parser-schema-id": "<anonymous-schema-81>"
               }
             ],
             "x-parser-schema-id": "InboxMessageEventPayload"
@@ -1327,7 +1341,7 @@ starts with "https://" without a trailing slash
                 "type": "string",
                 "description": "Source of the event.",
                 "const": "alayamarket.offers",
-                "x-parser-schema-id": "<anonymous-schema-82>"
+                "x-parser-schema-id": "<anonymous-schema-83>"
               },
               "event_name": {
                 "type": "string",
@@ -1338,32 +1352,32 @@ starts with "https://" without a trailing slash
                   "OfferExpired",
                   "OfferFulfilled"
                 ],
-                "x-parser-schema-id": "<anonymous-schema-83>"
+                "x-parser-schema-id": "<anonymous-schema-84>"
               },
               "id": {
                 "deprecated": true,
                 "type": "string",
                 "format": "uuid",
                 "description": "ID of the offer",
-                "x-parser-schema-id": "<anonymous-schema-84>"
+                "x-parser-schema-id": "<anonymous-schema-85>"
               },
               "event_id": {
                 "type": "string",
                 "format": "uuid",
                 "description": "ID of the event",
-                "x-parser-schema-id": "<anonymous-schema-85>"
+                "x-parser-schema-id": "<anonymous-schema-86>"
               },
               "timestamp": {
                 "type": "string",
                 "format": "datetime",
                 "description": "Timestamp of the event",
-                "x-parser-schema-id": "<anonymous-schema-86>"
+                "x-parser-schema-id": "<anonymous-schema-87>"
               },
               "offer_id": {
                 "type": "string",
                 "format": "uuid",
                 "description": "ID of the offer",
-                "x-parser-schema-id": "<anonymous-schema-87>"
+                "x-parser-schema-id": "<anonymous-schema-88>"
               }
             },
             "required": [
@@ -1395,7 +1409,7 @@ starts with "https://" without a trailing slash
                 "type": "string",
                 "description": "Source of the event.",
                 "const": "alayamarket.referrals",
-                "x-parser-schema-id": "<anonymous-schema-88>"
+                "x-parser-schema-id": "<anonymous-schema-89>"
               },
               "event_name": {
                 "type": "string",
@@ -1405,32 +1419,38 @@ starts with "https://" without a trailing slash
                   "ReferralDemandCancelled",
                   "ReferralUpdated"
                 ],
-                "x-parser-schema-id": "<anonymous-schema-89>"
+                "x-parser-schema-id": "<anonymous-schema-90>"
               },
               "id": {
                 "deprecated": true,
                 "type": "string",
                 "format": "uuid",
                 "description": "ID of the referral",
-                "x-parser-schema-id": "<anonymous-schema-90>"
+                "x-parser-schema-id": "<anonymous-schema-91>"
               },
               "event_id": {
                 "type": "string",
                 "format": "uuid",
                 "description": "ID of the event",
-                "x-parser-schema-id": "<anonymous-schema-91>"
+                "x-parser-schema-id": "<anonymous-schema-92>"
               },
               "timestamp": {
                 "type": "string",
                 "format": "datetime",
                 "description": "Timestamp of the event",
-                "x-parser-schema-id": "<anonymous-schema-92>"
+                "x-parser-schema-id": "<anonymous-schema-93>"
               },
               "referral_id": {
                 "type": "string",
                 "format": "uuid",
-                "description": "ID of the offer",
-                "x-parser-schema-id": "<anonymous-schema-93>"
+                "description": "ID of the referral",
+                "x-parser-schema-id": "<anonymous-schema-94>"
+              },
+              "sequence_id": {
+                "type": "string",
+                "format": "uuid",
+                "description": "ID of the sequence the referral belongs to",
+                "x-parser-schema-id": "<anonymous-schema-95>"
               },
               "client": {
                 "type": "object",
@@ -1438,20 +1458,20 @@ starts with "https://" without a trailing slash
                   "outbox_id": {
                     "type": "string",
                     "description": "ID of the client in the demand system",
-                    "x-parser-schema-id": "<anonymous-schema-95>"
+                    "x-parser-schema-id": "<anonymous-schema-97>"
                   },
                   "id": {
                     "type": "string",
                     "format": "UUID",
                     "description": "ID of the client",
-                    "x-parser-schema-id": "<anonymous-schema-96>"
+                    "x-parser-schema-id": "<anonymous-schema-98>"
                   }
                 },
                 "required": [
                   "outbox_id",
                   "id"
                 ],
-                "x-parser-schema-id": "<anonymous-schema-94>"
+                "x-parser-schema-id": "<anonymous-schema-96>"
               },
               "demand": {
                 "type": "object",
@@ -1459,25 +1479,25 @@ starts with "https://" without a trailing slash
                   "name": {
                     "type": "string",
                     "description": "Name of the demand organization",
-                    "x-parser-schema-id": "<anonymous-schema-98>"
+                    "x-parser-schema-id": "<anonymous-schema-100>"
                   },
                   "host": {
                     "type": "string",
                     "description": "The host of the demand organization - a fully qualified domain name that\nstarts with \"https://\" without a trailing slash\n(e.g. https://org.alayacare.com).\n",
                     "example": "https://org.alayacare.com",
-                    "x-parser-schema-id": "<anonymous-schema-99>"
+                    "x-parser-schema-id": "<anonymous-schema-101>"
                   },
                   "source": {
                     "type": "string",
                     "description": "From whom the organization was sourced\n(e.g. `alayacare`, `procura`, `staffy`, `e2e_tests`, `internal`)\n",
-                    "x-parser-schema-id": "<anonymous-schema-100>"
+                    "x-parser-schema-id": "<anonymous-schema-102>"
                   }
                 },
                 "required": [
                   "name",
                   "source"
                 ],
-                "x-parser-schema-id": "<anonymous-schema-97>"
+                "x-parser-schema-id": "<anonymous-schema-99>"
               },
               "supply": {
                 "type": "object",
@@ -1485,25 +1505,25 @@ starts with "https://" without a trailing slash
                   "name": {
                     "type": "string",
                     "description": "Name of the demand organization",
-                    "x-parser-schema-id": "<anonymous-schema-102>"
+                    "x-parser-schema-id": "<anonymous-schema-104>"
                   },
                   "host": {
                     "type": "string",
                     "description": "The host of the supply organization - a fully qualified domain name that\nstarts with \"https://\" without a trailing slash\n(e.g. https://org.alayacare.com).\n",
                     "example": "https://org.alayacare.com",
-                    "x-parser-schema-id": "<anonymous-schema-103>"
+                    "x-parser-schema-id": "<anonymous-schema-105>"
                   },
                   "source": {
                     "type": "string",
                     "description": "From whom the organization was sourced (e.g. `alayacare`, `procura`, `staffy`, `e2e_tests`, `internal`)",
-                    "x-parser-schema-id": "<anonymous-schema-104>"
+                    "x-parser-schema-id": "<anonymous-schema-106>"
                   }
                 },
                 "required": [
                   "name",
                   "source"
                 ],
-                "x-parser-schema-id": "<anonymous-schema-101>"
+                "x-parser-schema-id": "<anonymous-schema-103>"
               }
             },
             "required": [
