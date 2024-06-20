@@ -1516,9 +1516,7 @@ paths:
         One of `referral_id`, `service_id`, or `service_outbox_id` must be provided.
       parameters:
         - $ref: '#/components/parameters/ReferralIdQueryParam'
-          required: false
         - $ref: '#/components/parameters/ServiceIdQueryParam'
-          required: false
         - in: query
           name: service_outbox_id
           schema:
@@ -1590,9 +1588,7 @@ paths:
         One of `referral_id` or `service_id` must be provided.
       parameters:
         - $ref: '#/components/parameters/ReferralIdQueryParam'
-          required: false
         - $ref: '#/components/parameters/ServiceIdQueryParam'
-          required: false
         - $ref: '#/components/parameters/PageNumberParam'
         - $ref: '#/components/parameters/ItemsPerPageParam'
         - in: query
@@ -1882,9 +1878,7 @@ paths:
             type: string
             format: uuid
         - $ref: '#/components/parameters/ReferralIdQueryParam'
-          required: false
         - $ref: '#/components/parameters/ServiceIdQueryParam'
-          required: false
         - in: query
           name: service_outbox_id
           schema:
@@ -2233,7 +2227,6 @@ components:
             $ref: '#/components/schemas/OutboxOfferVisitRequest'
       required:
         - offer
-        - price
         - client
         - service
 
@@ -2272,7 +2265,6 @@ components:
           items:
             $ref: '#/components/schemas/OutboxOfferVisitRequest'
       required:
-        - price
         - client
         - service
         - visits
@@ -2481,7 +2473,6 @@ components:
           required:
             - offer
             - demand
-            - price
             - client
             - service
 
@@ -2705,7 +2696,6 @@ components:
           $ref: '#/components/schemas/OrganizationLeanCore'
       required:
         - offer
-        - price
         - match
         - demand
         - client
@@ -3762,7 +3752,6 @@ components:
       required:
         - referral
         - supply_persona_id
-        - price
         - client
         - service
 
@@ -3854,7 +3843,6 @@ components:
       required:
         - referral
         - supply_persona_id
-        - price
         - client
         - service
         - revision
@@ -4039,7 +4027,6 @@ components:
             - referral
             - demand
             - supply
-            - price
             - client
             - service
             - revision
@@ -4107,7 +4094,6 @@ components:
           required:
             - referral
             - supply
-            - price
             - client
             - service
             - revision
@@ -4237,7 +4223,6 @@ components:
       required:
         - referral
         - demand
-        - price
         - service
         - client
         - revision
@@ -5188,7 +5173,6 @@ components:
       required:
         - offer
         - demand
-        - price
         - client
         - service
 
