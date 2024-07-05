@@ -2470,11 +2470,14 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/OutboxOfferVisitResponse'
+            response_counts:
+              $ref: '#/components/schemas/OfferResponseCountsCore'
           required:
             - offer
             - demand
             - client
             - service
+            - response_counts
 
     OutboxOfferMatchCollectionResponse:
       description: |
@@ -5170,7 +5173,10 @@ components:
               - outbox_id
               - start_at
               - end_at
+        response_counts:
+          $ref: '#/components/schemas/OfferResponseCountsCore'
       required:
+        - response_counts
         - offer
         - demand
         - client
