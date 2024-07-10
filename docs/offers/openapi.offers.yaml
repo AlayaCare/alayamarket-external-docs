@@ -2320,8 +2320,69 @@ components:
                   id:
                     type: string
                     format: uuid
+                  care_type:
+                    $ref: '#/components/schemas/CareTypeCore'
+                  start_at:
+                    type: string
+                    format: date-time
+                    description: Derived from the visits
+                  end_at:
+                    type: string
+                    format: date-time
+                    description: Derived from the visits
+                  expires_at:
+                    type: string
+                    format: date-time
+                  demand_labels:
+                    type: array
+                    items:
+                      type: string
+                    minItems: 1
                 required:
                   - id
+                  - care_type
+                  - start_at
+                  - end_at
+                  - expires_at
+              client:
+                title: OutboxShiftOfferCreateItemClientResponse
+                description: The `client` object included in the response when creating a shift offer.
+                type: object
+                properties:
+                  outbox_id:
+                    type: string
+                    minLength: 1
+                  demographics:
+                    title: OutboxShiftOfferCreateItemClientDemographicsResponse
+                    description: The `client` `demographics` object included in the response when creating a shift offer.
+                    type: object
+                    properties:
+                      first_name:
+                        type: string
+                        minLength: 1
+                      last_name:
+                        type: string
+                        minLength: 1
+                    required:
+                      - first_name
+                      - last_name
+                required:
+                  - outbox_id
+                  - demographics
+              service:
+                title: OutboxShiftOfferCreateItemServiceResponse
+                description: The `service` object included in the response when creating a shift offer.
+                type: object
+                properties:
+                  outbox_id:
+                    type: string
+                    minLength: 1
+                  name:
+                    type: string
+                    minLength: 1
+                required:
+                  - outbox_id
+                  - name
               visits:
                 title: OutboxShiftOfferCreateItemVisitsResponse
                 description: The `visits` object included in the response when creating a shift offer.
@@ -2337,9 +2398,14 @@ components:
                   required:
                     - id
                     - outbox_id
+              response_counts:
+                $ref: '#/components/schemas/OfferResponseCountsCore'
             required:
               - offer
+              - client
+              - service
               - visits
+              - response_counts
       required:
         - shift
         - items
