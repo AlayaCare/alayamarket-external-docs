@@ -1408,6 +1408,91 @@ paths:
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
 
+  /v1/sys_admin/referrals:
+    get:
+      tags:
+        - referral sys_admin
+      description: |
+        # Authorization
+        Required role: `sys_admin`
+
+        # Description
+        Get a collection of referrals.
+      parameters:
+        - in: query
+          name: demand_persona_id
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: supply_persona_id
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: status
+          schema:
+            $ref: '#/components/schemas/ReferralStatusCore'
+        - $ref: '#/components/parameters/ShiftIdQueryParam'
+        - $ref: '#/components/parameters/OfferIdQueryParam'
+        - in: query
+          name: care_type
+          schema:
+            $ref: '#/components/schemas/CareTypeCore'
+        - in: query
+          name: referral_type
+          schema:
+            $ref: '#/components/schemas/ReferralTypeCore'
+        - in: query
+          name: client_outbox_id
+          schema:
+            type: string
+        - in: query
+          name: demand_label
+          schema:
+            type: string
+            description: Referrals associated with any given label set by the demand
+              organization.
+        - in: query
+          name: has_alayacare_authorization
+          schema:
+            type: boolean
+        - $ref: '#/components/parameters/RevisionsQueryParam'
+        - in: query
+          name: revision_group_id
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: sequence_id
+          schema:
+            type: string
+            format: uuid
+        - $ref: '#/components/parameters/PageNumberParam'
+        - $ref: '#/components/parameters/ItemsPerPageParam'
+        - in: query
+          name: sort_by
+          schema:
+            type: string
+            enum:
+              - last_modified
+              - revision_number
+            default: last_modified
+        - $ref: '#/components/parameters/SortOrderParam'
+      responses:
+        200:
+          description: 'Successfully returned a collection of referrals.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SysAdminReferralPageResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
   /v1/sys_admin/referrals/{referral_id}:
     parameters:
       - $ref: '#/components/parameters/ReferralIdPathParam'
@@ -3916,6 +4001,66 @@ components:
         - service
         - revision
 
+    SysAdminReferralCollectionResponse:
+      description: |
+        API response of an referral on the outbox API.
+      type: object
+      properties:
+        referral:
+          $ref: '#/components/schemas/OutboxReferralCore'
+        demand:
+          $ref: '#/components/schemas/OrganizationLeanCore'
+        supply:
+          $ref: '#/components/schemas/OrganizationLeanCore'
+        client:
+          title: OutboxReferralCollectionClientResponse
+          type: object
+          properties:
+            outbox_id:
+              type: string
+            demographics:
+              $ref: '#/components/schemas/DemographicLeanCore'
+          required:
+            - outbox_id
+            - demographics
+        service:
+          title: OutboxReferralCollectionServiceResponse
+          type: object
+          properties:
+            outbox_id:
+              type: string
+            name:
+              type: string
+              minLength: 1
+          required:
+            - name
+            - outbox_id
+        revision:
+          title: OutboxReferralCollectionRevisionResponse
+          type: object
+          properties:
+            revision_group_id:
+              type: string
+              format: uuid
+            revision_number:
+              type: integer
+              minimum: 1
+            revision_reasons:
+              type: array
+              items:
+                type: string
+            revision_comment:
+              type: string
+          required:
+            - revision_group_id
+            - revision_number
+      required:
+        - referral
+        - supply
+        - client
+        - service
+        - revision
+
     OutboxReferralCollectionResponse:
       description: |
         API response of an referral on the outbox API.
@@ -4166,6 +4311,16 @@ components:
             - client
             - service
             - revision
+
+    SysAdminReferralPageResponse:
+      allOf:
+        - $ref: '#/components/schemas/PageCore'
+        - type: object
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/SysAdminReferralCollectionResponse'
 
     OutboxReferralPageResponse:
       allOf:
