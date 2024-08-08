@@ -4012,31 +4012,46 @@ components:
           $ref: '#/components/schemas/OrganizationLeanCore'
         supply:
           $ref: '#/components/schemas/OrganizationLeanCore'
+        alayacare:
+          title: SysAdminReferralCollectionAlayacareResponse
+          properties:
+            has_authorization:
+              type: boolean
+          required:
+            - has_authorization
         client:
-          title: OutboxReferralCollectionClientResponse
+          title: SysAdminReferralCollectionClientResponse
           type: object
           properties:
+            id:
+              type: string
+              format: uuid
             outbox_id:
               type: string
             demographics:
               $ref: '#/components/schemas/DemographicLeanCore'
           required:
+            - id
             - outbox_id
             - demographics
         service:
-          title: OutboxReferralCollectionServiceResponse
+          title: SysAdminReferralCollectionServiceResponse
           type: object
           properties:
+            id:
+              type: string
+              format: uuid
             outbox_id:
               type: string
             name:
               type: string
               minLength: 1
           required:
+            - id
             - name
             - outbox_id
         revision:
-          title: OutboxReferralCollectionRevisionResponse
+          title: SysAdminReferralCollectionRevisionResponse
           type: object
           properties:
             revision_group_id:
@@ -4051,9 +4066,12 @@ components:
                 type: string
             revision_comment:
               type: string
+            is_latest_revision:
+              type: boolean
           required:
             - revision_group_id
             - revision_number
+            - is_latest_revision
       required:
         - referral
         - supply
@@ -4070,27 +4088,42 @@ components:
           $ref: '#/components/schemas/OutboxReferralCore'
         supply:
           $ref: '#/components/schemas/OrganizationLeanCore'
+        alayacare:
+          title: OutboxReferralCollectionAlayacareResponse
+          properties:
+            has_authorization:
+              type: boolean
+          required:
+            - has_authorization
         client:
           title: OutboxReferralCollectionClientResponse
           type: object
           properties:
+            id:
+              type: string
+              format: uuid
             outbox_id:
               type: string
             demographics:
               $ref: '#/components/schemas/DemographicLeanCore'
           required:
+            - id
             - outbox_id
             - demographics
         service:
           title: OutboxReferralCollectionServiceResponse
           type: object
           properties:
+            id:
+              type: string
+              format: uuid
             outbox_id:
               type: string
             name:
               type: string
               minLength: 1
           required:
+            - id
             - name
             - outbox_id
         revision:
@@ -4109,9 +4142,12 @@ components:
                 type: string
             revision_comment:
               type: string
+            is_latest_revision:
+              type: boolean
           required:
             - revision_group_id
             - revision_number
+            - is_latest_revision
       required:
         - referral
         - supply
