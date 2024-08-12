@@ -5870,6 +5870,9 @@ components:
                     type: string
                 required:
                   - name
+            referral_task_id:
+              type: string
+              format: uuid
 
     OutboxCarePlanCore:
       type: object
