@@ -1264,6 +1264,34 @@ paths:
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
 
+  /v1/inbox/referrals/{referral_id}/tasks/update:
+    parameters:
+      - $ref: '#/components/parameters/ReferralIdPathParam'
+    post:
+      tags:
+        - referral inbox
+      description: |
+        # Authorization
+        Required role: `org_admin`
+
+        # Description
+        Update referral tasks for a given referral.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InboxReferralTasksUpdateRequest'
+      responses:
+        204:
+          description: "Successfully updated referral task"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
   /v1/inbox/messages:
     post:
       tags:
@@ -4527,6 +4555,27 @@ components:
           - client_refused_service
           - processing_error
           - other
+    
+    InboxReferralTasksUpdateRequest:
+      type: object
+      properties:
+        referral_tasks:
+          type: array
+          minItems: 1
+          items:
+            title: InboxReferralTasksUpdateItemRequest
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              inbox_id:
+                type: string
+            required:
+              - id
+              - inbox_id
+      required:
+        - referral_tasks
 
     ReferralStatusCore:
       type: string
