@@ -1923,6 +1923,40 @@ paths:
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
 
+  /v1/inbox/visits/{visit_id}/tasks:
+    parameters:
+      - $ref: '#/components/parameters/VisitIdPathParam'
+    post:
+      tags:
+        - visit inbox
+      description: |
+        # Authorization
+        Required role: supply `org_admin`.
+
+        # Description
+        Create visit tasks for a visit scheduled by supply from a service referral.
+        Each inbox task id must correspond to a referral task's inbox_id.
+        Inbox task ids that don't have corresponding referral tasks will be ignored.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InboxVisitTasksCreationRequest'
+      responses:
+        200:
+          description: "Successfully created visit task."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InboxVisitTasksCreationResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
   /v1/inbox/visits/{visit_id}/tasks/complete:
     parameters:
       - $ref: '#/components/parameters/VisitIdPathParam'
@@ -4649,6 +4683,34 @@ components:
             $ref: '#/components/schemas/InboxVisitTaskCompletionCore'
       required:
         - tasks
+
+    InboxVisitTasksCreationRequest:
+      type: object
+      properties:
+        inbox_ids:
+          type: array
+          items:
+            type: string
+      required:
+        - inbox_ids
+
+    InboxVisitTasksCreationResponse:
+      type: object
+      properties:
+        tasks:
+          type: array
+          items:
+            title: InboxVisitTasksCreationItemResponse
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              inbox_id:
+                type: string
+            required:
+              - id
+              - inbox_id
 
     InboxVisitScheduleRequest:
       type: object
