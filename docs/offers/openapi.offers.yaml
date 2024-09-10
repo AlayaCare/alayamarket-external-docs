@@ -41,10 +41,42 @@ paths:
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
+
+  /v1/outbox/bundle/offers:
+    post:
+      tags:
+        - offer outbox bundle
+      description: |
+        # Authorization
+        Required role: `org_admin`
+
+        # Description
+        Create a Bundle Offer by the Demand organization.
+        This will generate multiple offers with type: `service` linked with a common
+        `bundle_id`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OutboxBundleOfferCreateRequest'
+      responses:
+        201:
+          description: "Successfully created offer bundle."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutboxBundleOfferCreateResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
   /v1/outbox/shift/offers:
     post:
       tags:
-        - offer outbox ALPHA
+        - offer outbox bundle
       description: |
         # Authorization
         Required role: `org_admin`
@@ -2555,6 +2587,159 @@ components:
               - response_counts
       required:
         - shift
+        - items
+
+    OutboxBundleOfferCreateRequest:
+      type: object
+      properties:
+        offer:
+          title: OutboxBundleOfferCreateOfferRequest
+          type: object
+          properties:
+            expires_at:
+              type: string
+              format: date-time
+            comment:
+              type: string
+            demand_labels:
+              type: array
+              items:
+                type: string
+              minItems: 1
+          required:
+            - expires_at
+        direct_supply_persona_ids:
+          description: |
+            Identifiers of one (or more) supply organization for direct-to-supplier
+            matching.
+          type: array
+          items:
+            type: string
+            format: uuid
+        case_manager:
+          $ref: '#/components/schemas/CaseManagerCore'
+        items:
+          type: array
+          maxItems: 10
+          items:
+            title: OutboxBundleOfferCreateItemRequest
+            type: object
+            properties:
+              care_type:
+                $ref: '#/components/schemas/CareTypeCore'
+              price:
+                $ref: '#/components/schemas/OutboxOfferPriceCore'
+              client:
+                $ref: '#/components/schemas/OutboxOfferClientRequest'
+              service:
+                $ref: '#/components/schemas/OutboxServiceRequest'
+              alayacare:
+                $ref: '#/components/schemas/OutboxAlayaCareCore'
+            required:
+              - care_type
+              - client
+              - service
+      required:
+        - offer
+        - items
+
+    OutboxBundleOfferCreateResponse:
+      type: object
+      properties:
+        bundle:
+          title: OutboxBundleOfferCreateBundleResponse
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              description: |
+                The ID of the bundle. Referred to as `shift_id` when retrieving the offer
+                in all other contexts.
+          required:
+            - id
+        items:
+          type: array
+          items:
+            title: OutboxBundleOfferCreateItemsResponse
+            type: object
+            properties:
+              offer:
+                title: OutboxBundleOfferCreateItemOfferResponse
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  care_type:
+                    $ref: '#/components/schemas/CareTypeCore'
+                  start_at:
+                    type: string
+                    format: date-time
+                    description: Derived from the visits
+                  end_at:
+                    type: string
+                    format: date-time
+                    description: Derived from the visits
+                  expires_at:
+                    type: string
+                    format: date-time
+                  demand_labels:
+                    type: array
+                    items:
+                      type: string
+                    minItems: 1
+                required:
+                  - id
+                  - care_type
+                  - start_at
+                  - end_at
+                  - expires_at
+              client:
+                title: OutboxBundleOfferCreateItemClientResponse
+                type: object
+                properties:
+                  outbox_id:
+                    type: string
+                    minLength: 1
+                  demographics:
+                    title: OutboxBundleOfferCreateItemClientDemographicsResponse
+                    type: object
+                    properties:
+                      first_name:
+                        type: string
+                        minLength: 1
+                      last_name:
+                        type: string
+                        minLength: 1
+                    required:
+                      - first_name
+                      - last_name
+                required:
+                  - outbox_id
+                  - demographics
+              service:
+                title: OutboxBundleOfferCreateItemServiceResponse
+                type: object
+                properties:
+                  outbox_id:
+                    type: string
+                    minLength: 1
+                  name:
+                    type: string
+                    minLength: 1
+                required:
+                  - outbox_id
+                  - name
+              response_counts:
+                $ref: '#/components/schemas/OfferResponseCountsCore'
+            required:
+              - offer
+              - client
+              - service
+              - response_counts
+      required:
+        - bundle
         - items
 
     OutboxOfferCollectionResponse:
