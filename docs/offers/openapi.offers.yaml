@@ -2601,11 +2601,6 @@ components:
               format: date-time
             comment:
               type: string
-            demand_labels:
-              type: array
-              items:
-                type: string
-              minItems: 1
           required:
             - expires_at
         direct_supply_persona_ids:
@@ -2627,6 +2622,11 @@ components:
             properties:
               care_type:
                 $ref: '#/components/schemas/CareTypeCore'
+              demand_labels:
+                type: array
+                items:
+                  type: string
+                minItems: 1
               price:
                 $ref: '#/components/schemas/OutboxOfferPriceCore'
               client:
@@ -2673,6 +2673,8 @@ components:
                     format: uuid
                   care_type:
                     $ref: '#/components/schemas/CareTypeCore'
+                  status:
+                    $ref: '#/components/schemas/OfferStatusCore'
                   start_at:
                     type: string
                     format: date-time
