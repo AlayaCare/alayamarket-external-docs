@@ -212,6 +212,7 @@ components:
           description: Category of the message.
           enum:
             - client_attachment
+            - comment
         referral_id:
           type: string
           format: uuid
