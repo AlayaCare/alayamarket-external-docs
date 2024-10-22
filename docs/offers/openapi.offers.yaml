@@ -1071,14 +1071,8 @@ paths:
         Get a paginated collection of messages for a sequence as a demand organization.
       parameters:
         - $ref: '#/components/parameters/SequenceIdQueryParam'
-        - in: query
-          name: sender_type
-          schema:
-            type: string
-            enum:
-              - demand
-              - supply
-            default: supply
+        - $ref: '#/components/parameters/MessageSenderTypeQueryParam'
+        - $ref: '#/components/parameters/MessageCategoryQueryParam'
         - $ref: '#/components/parameters/PageNumberParam'
         - $ref: '#/components/parameters/ItemsPerPageParam'
         - in: query
@@ -1313,7 +1307,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/InboxReferralTasksUpdateRequest'
+              $ref: '#/components/schemas/InboxClientTasksUpdateRequest'
       responses:
         204:
           description: "Successfully updated referral task"
@@ -1364,14 +1358,8 @@ paths:
         Get a paginated collection of messages for a sequence as a supply organization.
       parameters:
         - $ref: '#/components/parameters/SequenceIdQueryParam'
-        - in: query
-          name: sender_type
-          schema:
-            type: string
-            enum:
-              - demand
-              - supply
-            default: demand
+        - $ref: '#/components/parameters/MessageSenderTypeQueryParam'
+        - $ref: '#/components/parameters/MessageCategoryQueryParam'
         - $ref: '#/components/parameters/PageNumberParam'
         - $ref: '#/components/parameters/ItemsPerPageParam'
         - in: query
@@ -1591,13 +1579,8 @@ paths:
         Get a paginated collection of messages for a sequence as a system admin.
       parameters:
         - $ref: '#/components/parameters/SequenceIdQueryParam'
-        - in: query
-          name: sender_type
-          schema:
-            type: string
-            enum:
-              - demand
-              - supply
+        - $ref: '#/components/parameters/MessageSenderTypeQueryParam'
+        - $ref: '#/components/parameters/MessageCategoryQueryParam'
         - $ref: '#/components/parameters/PageNumberParam'
         - $ref: '#/components/parameters/ItemsPerPageParam'
         - in: query
@@ -2344,6 +2327,16 @@ components:
       name: sort_order
       schema:
         $ref: '#/components/schemas/SortOrderCore'
+    MessageSenderTypeQueryParam:
+      in: query
+      name: sender_type
+      schema:
+        $ref: '#/components/schemas/MessageSenderTypeCore'
+    MessageCategoryQueryParam:
+      in: query
+      name: category
+      schema:
+        $ref: '#/components/schemas/MessageCategoryCore'
 
   schemas:
     StatusHealthzResponse:
@@ -4777,14 +4770,14 @@ components:
           - processing_error
           - other
     
-    InboxReferralTasksUpdateRequest:
+    InboxClientTasksUpdateRequest:
       type: object
       properties:
-        referral_tasks:
+        client_tasks:
           type: array
           minItems: 1
           items:
-            title: InboxReferralTasksUpdateItemRequest
+            title: InboxClientTasksUpdateItemRequest
             type: object
             properties:
               id:
@@ -4796,7 +4789,7 @@ components:
               - id
               - inbox_id
       required:
-        - referral_tasks
+        - client_tasks
 
     ReferralStatusCore:
       type: string
@@ -5812,12 +5805,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AuthorizationCore'
-        # TODO AM-3222: Remove support for single authorization
-        authorization:
-          allOf:
-            - type: object
-              deprecated: true
-            - $ref: '#/components/schemas/AuthorizationCore'
         care_plan:
           $ref: '#/components/schemas/OutboxCarePlanCore'
 
@@ -5828,12 +5815,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AuthorizationCore'
-        # TODO AM-3222: Remove support for single authorization
-        authorization:
-          allOf:
-            - type: object
-              deprecated: true
-            - $ref: '#/components/schemas/AuthorizationCore'
         care_plan:
           $ref: '#/components/schemas/InboxOfferCarePlanResponse'
 
@@ -5844,12 +5825,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AuthorizationCore'
-        # TODO AM-3222: Remove support for single authorization
-        authorization:
-          allOf:
-            - type: object
-              deprecated: true
-            - $ref: '#/components/schemas/AuthorizationCore'
         care_plan:
           $ref: '#/components/schemas/InboxReferralCarePlanResponse'
 
@@ -6168,7 +6143,7 @@ components:
                     type: string
                 required:
                   - name
-            referral_task_id:
+            client_task_id:
               type: string
               format: uuid
 
@@ -6267,6 +6242,13 @@ components:
       type: string
       enum:
         - client_attachment
+        - comment
+
+    MessageSenderTypeCore:
+      type: string
+      enum:
+        - demand
+        - supply
 
     OrgAdminMessageSendRequest:
       properties:
@@ -6310,6 +6292,8 @@ components:
               format: uuid
             category:
               $ref: '#/components/schemas/MessageCategoryCore'
+            sender_type:
+              $ref: '#/components/schemas/MessageSenderTypeCore'
             text:
               type: string
             created_at:
@@ -6337,6 +6321,7 @@ components:
             - id
             - sequence_id
             - category
+            - sender_type
             - created_at
         sender:
           type: object
@@ -6386,6 +6371,8 @@ components:
           format: uuid
         category:
           $ref: '#/components/schemas/MessageCategoryCore'
+        sender_type:
+          $ref: '#/components/schemas/MessageSenderTypeCore'
         text:
           type: string
         created_at:
@@ -6406,6 +6393,7 @@ components:
       required:
         - id
         - category
+        - sender_type
         - created_at
 
     SysAdminMessagePageResponse:
@@ -6434,6 +6422,8 @@ components:
               format: uuid
             category:
               $ref: '#/components/schemas/MessageCategoryCore'
+            sender_type:
+              $ref: '#/components/schemas/MessageSenderTypeCore'
             text:
               type: string
             created_at:
@@ -6462,6 +6452,7 @@ components:
             - id
             - sequence_id
             - category
+            - sender_type
             - created_at
         sender:
           type: object
