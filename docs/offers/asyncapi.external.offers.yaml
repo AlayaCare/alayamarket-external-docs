@@ -37,6 +37,13 @@ channels:
   # channels will represent topics in SNS.
   # channels that the application publishes to, and consumers can subscribe to, should use the `subscribe` keyword.
   # channels that the application consumes to, and other applications can publish to, should use the `publish` keyword.
+  outbox-forms:
+    subscribe:
+      operationId: sub_outbox_forms
+      description: |
+        Subscribe demand participants to outbox form events published by the service.
+      message:
+        $ref: '#/components/messages/OutboxFormEventMessage'
   outbox-messages:
     subscribe:
       operationId: sub_outbox_messages
@@ -104,6 +111,13 @@ channels:
 
 components:
   messages:
+    OutboxFormEventMessage:
+      messageId: message_outbox_form
+      name: OutboxFormEvent
+      title: Outbox form received event
+      summary: Inform relevant demand participants about a form submission received
+      payload:
+        $ref: '#/components/schemas/OutboxFormEventPayload'
     OutboxMessageEventMessage:
       messageId: message_outbox_message
       name: OutboxMessageEvent
@@ -212,6 +226,7 @@ components:
           description: Category of the message.
           enum:
             - client_attachment
+            - comment
         referral_id:
           type: string
           format: uuid
@@ -254,6 +269,54 @@ components:
                 - MessageDemandSent
           required:
             - event_name
+    OutboxFormEventPayload:
+      type: object
+      properties:
+        event_id:
+          type: string
+          format: uuid
+          description: ID of the event
+        event_name:
+          type: string
+          description: Name of the event.
+          enum:
+            - FormSubmissionSupplyApproved
+        event_source:
+          type: string
+          description: Source of the event.
+          const: alayamarket.forms
+        form_submission_id:
+          type: string
+          format: uuid
+          description: ID of the form submission
+        id:
+          deprecated: true
+          type: string
+          format: uuid
+          description: ID of the event
+        referral_id:
+          type: string
+          format: uuid
+          description: ID of the related referral
+        service_id:
+          type: string
+          format: uuid
+          description: ID of the related service
+        visit_id:
+          type: string
+          format: uuid
+          description: ID of the related visit
+        timestamp:
+          type: string
+          format: datetime
+          description: Timestamp of the event
+      required:
+        - event_id
+        - event_name
+        - event_source
+        - form_submission_id
+        - referral_id
+        - timestamp
     OutboxMessageEventPayload:
       allOf:
         - $ref: '#/components/schemas/MessageEventPayloadCore'
@@ -422,6 +485,7 @@ components:
               - VisitSupplyDeleted
               - VisitSupplyScheduled
               - VisitSupplyRescheduled
+              - VisitSupplyStatusChanged
         id:
           deprecated: true
           type: string
