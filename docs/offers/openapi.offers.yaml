@@ -1071,14 +1071,8 @@ paths:
         Get a paginated collection of messages for a sequence as a demand organization.
       parameters:
         - $ref: '#/components/parameters/SequenceIdQueryParam'
-        - in: query
-          name: sender_type
-          schema:
-            type: string
-            enum:
-              - demand
-              - supply
-            default: supply
+        - $ref: '#/components/parameters/MessageSenderTypeQueryParam'
+        - $ref: '#/components/parameters/MessageCategoryQueryParam'
         - $ref: '#/components/parameters/PageNumberParam'
         - $ref: '#/components/parameters/ItemsPerPageParam'
         - in: query
@@ -1313,7 +1307,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/InboxReferralTasksUpdateRequest'
+              $ref: '#/components/schemas/InboxClientTasksUpdateRequest'
       responses:
         204:
           description: "Successfully updated referral task"
@@ -1364,14 +1358,8 @@ paths:
         Get a paginated collection of messages for a sequence as a supply organization.
       parameters:
         - $ref: '#/components/parameters/SequenceIdQueryParam'
-        - in: query
-          name: sender_type
-          schema:
-            type: string
-            enum:
-              - demand
-              - supply
-            default: demand
+        - $ref: '#/components/parameters/MessageSenderTypeQueryParam'
+        - $ref: '#/components/parameters/MessageCategoryQueryParam'
         - $ref: '#/components/parameters/PageNumberParam'
         - $ref: '#/components/parameters/ItemsPerPageParam'
         - in: query
@@ -1591,13 +1579,8 @@ paths:
         Get a paginated collection of messages for a sequence as a system admin.
       parameters:
         - $ref: '#/components/parameters/SequenceIdQueryParam'
-        - in: query
-          name: sender_type
-          schema:
-            type: string
-            enum:
-              - demand
-              - supply
+        - $ref: '#/components/parameters/MessageSenderTypeQueryParam'
+        - $ref: '#/components/parameters/MessageCategoryQueryParam'
         - $ref: '#/components/parameters/PageNumberParam'
         - $ref: '#/components/parameters/ItemsPerPageParam'
         - in: query
@@ -1922,6 +1905,75 @@ paths:
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
 
+  /v1/inbox/visits/{visit_id}/hold:
+    parameters:
+      - $ref: '#/components/parameters/VisitIdPathParam'
+    post:
+      tags:
+        - visit inbox
+      description: |
+        # Authorization
+        Required role: supply `org_admin`.
+
+        # Description
+        Hold a visit of a service referral. The supply organization holding the visit
+        must be identical to the one that scheduled the original visit.
+      responses:
+        204:
+          description: "Successfully held the visit."
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
+  /v1/inbox/visits/{visit_id}/cancel:
+    parameters:
+      - $ref: '#/components/parameters/VisitIdPathParam'
+    post:
+      tags:
+        - visit inbox
+      description: |
+        # Authorization
+        Required role: supply `org_admin`.
+
+        # Description
+        Cancel a visit of a service referral. The supply organization cancelling the visit
+        must be identical to the one that scheduled the original visit.
+      responses:
+        204:
+          description: "Successfully cancelled the visit."
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
+  /v1/inbox/visits/{visit_id}/reactivate:
+    parameters:
+      - $ref: '#/components/parameters/VisitIdPathParam'
+    post:
+      tags:
+        - visit inbox
+      description: |
+        # Authorization
+        Required role: supply `org_admin`.
+
+        # Description
+        Reactivates a visit of a service referral. The supply organization ractivating the visit
+        must be identical to the one that scheduled the original visit.
+      responses:
+        204:
+          description: "Successfully reactivated the visit."
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
   /v1/inbox/visits/{visit_id}/reschedule:
     parameters:
       - $ref: '#/components/parameters/VisitIdPathParam'
@@ -2216,6 +2268,93 @@ paths:
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
 
+  /v1/inbox/form_submissions:
+    post:
+      tags:
+        - form submission inbox
+      description: |
+        # Authorization
+        Required role: supply `org_admin` assigned to the associated referral.
+
+        # Description
+        Save a form submission.
+
+        One of `service_id` or `visit_id` must be provided.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InboxFormSubmissionCreationRequest'
+      responses:
+        201:
+          description: "Successfully created form submission."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InboxFormSubmissionCreationResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
+  /v1/outbox/form_submissions/{form_submission_id}:
+    parameters:
+      - $ref: '#/components/parameters/FormSubmissionIdPathParam'
+    get:
+      tags:
+        - form submission outbox
+      description: |
+        # Authorization
+        Required role: demand `org_admin` assigned to the referral 
+        associated to the form submission.
+
+        # Description
+        Read a form submission.
+      responses:
+        200:
+          description: "Successfully retrieved the form submission."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutboxFormSubmissionDetailResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
+  /v1/outbox/form_submissions/fields/{form_submission_field_id}/attachment/presigned:
+    parameters:
+      - $ref: '#/components/parameters/FormSubmissionFieldIdPathParam'
+    get:
+      tags:
+        - form submission outbox
+      description: |
+        # Authorization
+        Required role: demand `org_admin` assigned to the referral 
+        associated to the form submission.
+
+        # Description
+        Get the pre-signed URL for the file attached to a form submission field as
+        a demand organization.
+      responses:
+        200:
+          description: "Successfully got the pre-signed URL."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrgAdminFilePresignedDetailResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
       # By default, All endpoints are using the CognitoAuthorizer
 security:
   - CognitoAuthorizer: [ ]
@@ -2250,6 +2389,22 @@ components:
         format: uuid
       required: true
       description: ID of a file.
+    FormSubmissionIdPathParam:
+      in: path
+      name: form_submission_id
+      schema:
+        type: string
+        format: uuid
+      required: true
+      description: ID of a form submission.
+    FormSubmissionFieldIdPathParam:
+      in: path
+      name: form_submission_field_id
+      schema:
+        type: string
+        format: uuid
+      required: true
+      description: ID of a form submission field.
     MessageIdPathParam:
       in: path
       name: message_id
@@ -2344,6 +2499,16 @@ components:
       name: sort_order
       schema:
         $ref: '#/components/schemas/SortOrderCore'
+    MessageSenderTypeQueryParam:
+      in: query
+      name: sender_type
+      schema:
+        $ref: '#/components/schemas/MessageSenderTypeCore'
+    MessageCategoryQueryParam:
+      in: query
+      name: category
+      schema:
+        $ref: '#/components/schemas/MessageCategoryCore'
 
   schemas:
     StatusHealthzResponse:
@@ -4777,14 +4942,14 @@ components:
           - processing_error
           - other
     
-    InboxReferralTasksUpdateRequest:
+    InboxClientTasksUpdateRequest:
       type: object
       properties:
-        referral_tasks:
+        client_tasks:
           type: array
           minItems: 1
           items:
-            title: InboxReferralTasksUpdateItemRequest
+            title: InboxClientTasksUpdateItemRequest
             type: object
             properties:
               id:
@@ -4796,7 +4961,7 @@ components:
               - id
               - inbox_id
       required:
-        - referral_tasks
+        - client_tasks
 
     ReferralStatusCore:
       type: string
@@ -5039,6 +5204,8 @@ components:
               enum:
                 - scheduled
                 - deleted
+                - cancelled
+                - on_hold
             start_at:
               type: string
               format: date-time
@@ -5053,6 +5220,14 @@ components:
             - service_outbox_id
             - start_at
             - end_at
+        supply:
+          title: SysAdminVisitDetailSupplyResponse
+          properties:
+            id:
+              type: string
+              format: uuid
+          required:
+            - id
         supply_employee:
           title: SysAdminVisitDetailSupplyEmployeeResponse
           type: object
@@ -5105,6 +5280,7 @@ components:
               - id
               - is_completed
       required:
+        - supply
         - visit
         - tasks
 
@@ -5173,6 +5349,14 @@ components:
       properties:
         visit:
           $ref: '#/components/schemas/OutboxVisitCore'
+        supply:
+          title: OutboxVisitDetailSupplyResponse
+          properties:
+            id:
+              type: string
+              format: uuid
+          required:
+            - id
         supply_employee:
           title: OutboxVisitDetailSupplyEmployeeResponse
           type: object
@@ -5222,6 +5406,7 @@ components:
               - id
               - is_completed
       required:
+        - supply
         - visit
         - tasks
 
@@ -5249,6 +5434,8 @@ components:
           enum:
             - scheduled
             - deleted
+            - cancelled
+            - on_hold
         start_at:
           type: string
           format: date-time
@@ -5289,6 +5476,8 @@ components:
           enum:
             - scheduled
             - deleted
+            - cancelled
+            - on_hold
         start_at:
           type: string
           format: date-time
@@ -5382,6 +5571,154 @@ components:
           type: string
       required:
         - end_at
+
+    InboxFormSubmissionFieldCore:
+      type: object
+      properties:
+        field_id:
+          type: string
+          format: uuid
+        value_type:
+          type: string
+          enum:
+            - attachment
+            - boolean
+            - decimal
+            - json
+            - string
+        value:
+          type: string
+      required:
+        - field_id
+        - value_type
+        - value
+      
+    InboxFormSubmissionCreationRequest:
+      type: object
+      properties:
+        form_template_id:
+          type: string
+          format: uuid
+        service_id:
+          type: string
+          format: uuid
+        visit_id:
+          type: string
+          format: uuid
+        work_session_id:
+          type: string
+          format: uuid
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/InboxFormSubmissionFieldCore'
+          minItems: 1
+      required:
+        - form_template_id
+        # One of service_id or visit_id is required.
+        - fields
+
+    InboxFormSubmissionCreationResponse:
+      type: object
+      properties:
+        form_template_id:
+          type: string
+          format: uuid
+        id:
+          type: string
+          format: uuid
+        service_id:
+          type: string
+          format: uuid
+        visit_id:
+          type: string
+          format: uuid
+        work_session_id:
+          type: string
+          format: uuid
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/InboxFormSubmissionFieldCore'
+          minItems: 1
+      required:
+        - id
+        - form_template_id
+        # One of service_id or visit_id is required.
+        - fields
+
+    OutboxFormSubmissionFieldCore:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        field_outbox_id:
+          type: string
+          description: ID of the form template field provided by the demand organization.
+        value_type:
+          type: string
+          enum:
+            - attachment
+            - boolean
+            - decimal
+            - json
+            - string
+        value:
+          type: string
+      required:
+        - id
+        - field_outbox_id
+        - value_type
+        - value
+
+    OutboxFormSubmissionDetailResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        form_template_id:
+          type: string
+          format: uuid
+        form_template_outbox_id:
+          type: string
+          description: ID of the form template provided by the demand organization.
+        client_id:
+          type: string
+          format: uuid
+          description: ID of the client of the form submission.
+        client_outbox_id:
+          type: string
+          description: ID of the client provided by the demand organization.
+        service_id:
+          type: string
+          format: uuid
+          description: ID of the service of the form submission.
+        service_outbox_id:
+          type: string
+          description: ID of the service provided by the demand organization.
+        visit_id:
+          type: string
+          format: uuid
+          description: ID of the visit of the form submission.
+        work_session_id:
+          type: string
+          format: uuid
+          description: ID of the work session linked to the form submission.
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/OutboxFormSubmissionFieldCore'
+          minItems: 1
+      required:
+        - id
+        - form_template_id
+        - form_template_outbox_id
+        - client_id
+        - client_outbox_id
+        - fields
+        # One of service_id or visit_id is required.
 
     OutboxWorkSessionPageResponse:
       type: object
@@ -5812,14 +6149,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AuthorizationCore'
-        # TODO AM-3222: Remove support for single authorization
-        authorization:
-          allOf:
-            - type: object
-              deprecated: true
-            - $ref: '#/components/schemas/AuthorizationCore'
         care_plan:
           $ref: '#/components/schemas/OutboxCarePlanCore'
+        form_templates:
+          type: array
+          items: 
+            $ref: '#/components/schemas/OutboxFormTemplateCore'
 
     InboxOfferAlayaCareResponse:
       type: object
@@ -5828,14 +6163,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AuthorizationCore'
-        # TODO AM-3222: Remove support for single authorization
-        authorization:
-          allOf:
-            - type: object
-              deprecated: true
-            - $ref: '#/components/schemas/AuthorizationCore'
         care_plan:
           $ref: '#/components/schemas/InboxOfferCarePlanResponse'
+        form_templates:
+          type: array
+          items: 
+            $ref: '#/components/schemas/InboxOfferFormTemplateResponse'
 
     InboxReferralAlayaCareResponse:
       type: object
@@ -5844,14 +6177,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AuthorizationCore'
-        # TODO AM-3222: Remove support for single authorization
-        authorization:
-          allOf:
-            - type: object
-              deprecated: true
-            - $ref: '#/components/schemas/AuthorizationCore'
         care_plan:
           $ref: '#/components/schemas/InboxReferralCarePlanResponse'
+        form_templates:
+          type: array
+          items: 
+            $ref: '#/components/schemas/InboxReferralFormTemplateResponse'
 
     AuthorizationCore:
       type: object
@@ -5930,6 +6261,134 @@ components:
           type: string
         email:
           type: string
+
+    FormTemplateFieldCore:
+      type: object
+      properties:
+        field_tag: 
+          type: string
+        field_type:
+          type: string
+        id: 
+          type: integer
+        instructions: 
+          type: string
+        json_logic: 
+          type: object
+        label: 
+          type: string
+        parent_id: 
+          type: integer
+        rank:
+          type: integer
+        required:
+          type: boolean
+        settings: 
+          type: object
+      required:
+        - field_type
+        - id
+        - label
+        - parent_id
+        - rank
+        - required
+  
+    FormTemplateCore:
+      type: object
+      properties:
+        admin_eyes_only: 
+          type: boolean
+        approve_automatically: 
+          type: boolean
+        clinical_event_name:
+          type: string
+        display_instructions_in_pdf: 
+          type: boolean
+        display_report: 
+          type: boolean
+        exclude_from_shift_report: 
+          type: boolean
+        form_type: 
+          type: string
+        id:
+          type: integer
+        instructions:
+          type: string
+        language_code:
+          type: string
+        name:
+          type: string
+        notify_alert_queue: 
+          type: boolean
+        pre_populate: 
+          type: boolean
+        requires_clock_in: 
+          type: boolean
+        schema_id: 
+          type: string
+          format: uuid
+        schema_version:
+          type: integer
+        visit_link_required: 
+          type: boolean
+      required:
+        - admin_eyes_only
+        - approve_automatically
+        - display_instructions_in_pdf
+        - display_report
+        - exclude_from_shift_report
+        - form_type
+        - id
+        - language_code
+        - name
+        - notify_alert_queue
+        - pre_populate
+        - requires_clock_in
+        - schema_id
+        - schema_version
+        - visit_link_required
+
+    OutboxFormTemplateCore:
+      allOf:
+        - $ref: '#/components/schemas/FormTemplateCore'
+        - type: object
+          properties:
+            fields:
+              type: array
+              items:
+                $ref: '#/components/schemas/FormTemplateFieldCore'
+
+    InboxOfferFormTemplateResponse:
+      allOf:
+        - $ref: '#/components/schemas/FormTemplateCore'
+        - type: object
+          properties:
+            fields:
+              type: array
+              items:
+                $ref: '#/components/schemas/FormTemplateFieldCore'
+
+    InboxReferralFormTemplateFieldResponse:
+      allOf:
+        - $ref: '#/components/schemas/FormTemplateFieldCore'
+        - type: object
+          properties:
+            field_id:
+              type: string
+              format: uuid
+              
+    InboxReferralFormTemplateResponse:
+      allOf:
+        - $ref: '#/components/schemas/FormTemplateCore'
+        - type: object
+          properties:
+            fields: 
+              type: array
+              items:
+                $ref: '#/components/schemas/InboxReferralFormTemplateFieldResponse'
+            form_template_id:
+              type: string
+              format: uuid
 
     OutboxCarePlanDiagnosisCore:
       allOf:
@@ -6168,7 +6627,7 @@ components:
                     type: string
                 required:
                   - name
-            referral_task_id:
+            client_task_id:
               type: string
               format: uuid
 
@@ -6267,6 +6726,13 @@ components:
       type: string
       enum:
         - client_attachment
+        - comment
+
+    MessageSenderTypeCore:
+      type: string
+      enum:
+        - demand
+        - supply
 
     OrgAdminMessageSendRequest:
       properties:
@@ -6277,6 +6743,9 @@ components:
           $ref: '#/components/schemas/MessageCategoryCore'
         text:
           type: string
+        author:
+          type: string
+          maxLength: 100
         file:
           type: object
           title: OrgAdminMessageSendFileRequest
@@ -6310,8 +6779,13 @@ components:
               format: uuid
             category:
               $ref: '#/components/schemas/MessageCategoryCore'
+            sender_type:
+              $ref: '#/components/schemas/MessageSenderTypeCore'
             text:
               type: string
+            author:
+              type: string
+              maxLength: 100
             created_at:
               type: string
               format: date-time
@@ -6337,6 +6811,7 @@ components:
             - id
             - sequence_id
             - category
+            - sender_type
             - created_at
         sender:
           type: object
@@ -6386,8 +6861,13 @@ components:
           format: uuid
         category:
           $ref: '#/components/schemas/MessageCategoryCore'
+        sender_type:
+          $ref: '#/components/schemas/MessageSenderTypeCore'
         text:
           type: string
+        author:
+          type: string
+          maxLength: 100
         created_at:
           type: string
           format: date-time
@@ -6406,6 +6886,7 @@ components:
       required:
         - id
         - category
+        - sender_type
         - created_at
 
     SysAdminMessagePageResponse:
@@ -6434,8 +6915,13 @@ components:
               format: uuid
             category:
               $ref: '#/components/schemas/MessageCategoryCore'
+            sender_type:
+              $ref: '#/components/schemas/MessageSenderTypeCore'
             text:
               type: string
+            author:
+              type: string
+              maxLength: 100
             created_at:
               type: string
               format: date-time
@@ -6462,6 +6948,7 @@ components:
             - id
             - sequence_id
             - category
+            - sender_type
             - created_at
         sender:
           type: object
