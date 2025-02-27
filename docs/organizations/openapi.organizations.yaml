@@ -1712,6 +1712,7 @@ components:
             - inbox-messages
             - inbox-offers
             - inbox-referrals
+            - outbox-forms
             - outbox-messages
             - outbox-offers
             - outbox-referrals
