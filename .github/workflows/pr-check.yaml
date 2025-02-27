@@ -15,7 +15,7 @@ jobs:
       - name: Install AsyncAPI Generator
         run: npm install -g @asyncapi/cli
       - name: Generate Organization AsyncAPI UI
-        run: asyncapi generate fromTemplate docs/organizations/asyncapi.external.organizations.yaml @asyncapi/html-template -o docs/organizations/asyncapi.external.organizations
+        run: asyncapi generate fromTemplate docs/organizations/asyncapi.external.organizations.yaml @asyncapi/html-template@2.3.14 -o docs/organizations/asyncapi.external.organizations
       - name: Commit Organization AsyncAPI changes
         uses: EndBug/add-and-commit@v9
         with:
@@ -24,7 +24,7 @@ jobs:
           message: 'Re-generated organization async api ui'
           add: 'docs/organizations/asyncapi.external.organizations'
       - name: Generate Offer AsyncAPI UI
-        run: ag docs/offers/asyncapi.external.offers.yaml @asyncapi/html-template -o docs/offers/asyncapi.external.offers
+        run: asyncapi generate fromTemplate docs/offers/asyncapi.external.offers.yaml @asyncapi/html-template@2.3.14 -o docs/offers/asyncapi.external.offers
       - name: Commit Offer AsyncAPI changes
         uses: EndBug/add-and-commit@v9
         with:
