@@ -5592,6 +5592,15 @@ components:
         - field_id
         - value_type
         - value
+
+    FormSubmissionHiddenFieldCore:
+      type: object
+      properties:
+        field_id:
+          type: string
+          format: uuid
+      required:
+        - field_id
       
     InboxFormSubmissionCreationRequest:
       type: object
@@ -5613,6 +5622,10 @@ components:
           items:
             $ref: '#/components/schemas/InboxFormSubmissionFieldCore'
           minItems: 1
+        hidden_fields:
+          type: array
+          items: 
+            $ref: '#/components/schemas/FormSubmissionHiddenFieldCore'
       required:
         - form_template_id
         # One of service_id or visit_id is required.
@@ -5641,6 +5654,10 @@ components:
           items:
             $ref: '#/components/schemas/InboxFormSubmissionFieldCore'
           minItems: 1
+        hidden_fields:
+          type: array
+          items: 
+            $ref: '#/components/schemas/FormSubmissionHiddenFieldCore'
       required:
         - id
         - form_template_id
