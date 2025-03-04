@@ -2975,12 +2975,16 @@ components:
             updated_at:
               type: string
               format: date-time
+            sequence_id:
+              type: string
+              format: uuid
           required:
             - id
             - status
             - start_at
             - end_at
             - created_at
+            - sequence_id
 
     OfferResponseCountsCore:
       type: object
@@ -3191,6 +3195,9 @@ components:
             updated_at:
               type: string
               format: date-time
+            sequence_id:
+              type: string
+              format: uuid
           required:
             - id
             - care_type
@@ -3199,6 +3206,7 @@ components:
             - start_at
             - end_at
             - created_at
+            - sequence_id
 
     InboxOfferDetailResponse:
       description: |
