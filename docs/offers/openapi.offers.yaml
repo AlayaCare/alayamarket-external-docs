@@ -5697,6 +5697,19 @@ components:
         - value_type
         - value
 
+    OutboxFormSubmissionHiddenFieldCore:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        field_outbox_id:
+          type: string
+          description: ID of the form template field provided by the demand organization.
+      required:
+        - id
+        - field_outbox_id
+
     OutboxFormSubmissionDetailResponse:
       type: object
       properties:
@@ -5736,6 +5749,10 @@ components:
           items:
             $ref: '#/components/schemas/OutboxFormSubmissionFieldCore'
           minItems: 1
+        hidden_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/OutboxFormSubmissionHiddenFieldCore'
       required:
         - id
         - form_template_id
