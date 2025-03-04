@@ -262,6 +262,32 @@ paths:
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
+  /v1/sys_admin/{organization_id}/edit:
+    post:
+      tags:
+        - organizations (sys_admin)
+      parameters:
+        - $ref: '#/components/parameters/OrgIdPathParam'
+      description: |
+        # Authorization
+        Required role: `sys_admin`
+
+        Update the details of an organization.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SysAdminOrgEditRequest'
+      responses:
+        204:
+          description: "Organization details updated successfully."
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
   /v1/sys_admin/{organization_id}/demand_persona/activate:
     post:
       tags:
@@ -1339,6 +1365,22 @@ components:
           type: string
       required:
         - approval_id
+
+    SysAdminOrgEditRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+        address:
+          type: object
+          title: SysAdminOrgEditAddressRequest
+          properties:
+            name:
+              type: string
+      required:
+        - name
+        - address
 
     OrgSaveApiKeyRequest:
       type: object
