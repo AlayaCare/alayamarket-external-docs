@@ -2300,6 +2300,33 @@ paths:
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
 
+  /v1/inbox/form_templates/{form_template_id}:
+    parameters:
+      - $ref: '#/components/parameters/FormTemplateIdPathParam'
+    get:
+      tags:
+        - form template inbox
+      description: |
+        # Authorization
+        Required role: supply `org_admin` in the trusted network
+        of the demand organization of the form template.
+
+        # Description
+        Read a form template.
+      responses:
+        200:
+          description: "Successfully retrieved the form template."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InboxFormTemplateDetailResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
   /v1/outbox/form_submissions/{form_submission_id}:
     parameters:
       - $ref: '#/components/parameters/FormSubmissionIdPathParam'
@@ -2397,6 +2424,14 @@ components:
         format: uuid
       required: true
       description: ID of a form submission.
+    FormTemplateIdPathParam:
+      in: path
+      name: form_template_id
+      schema:
+        type: string
+        format: uuid
+      required: true
+      description: ID of a form template.
     FormSubmissionFieldIdPathParam:
       in: path
       name: form_submission_field_id
@@ -6224,7 +6259,7 @@ components:
         form_templates:
           type: array
           items: 
-            $ref: '#/components/schemas/InboxReferralFormTemplateResponse'
+            $ref: '#/components/schemas/InboxFormTemplateDetailResponse'
 
     AuthorizationCore:
       type: object
@@ -6410,7 +6445,7 @@ components:
               items:
                 $ref: '#/components/schemas/FormTemplateFieldCore'
 
-    InboxReferralFormTemplateFieldResponse:
+    InboxFormTemplateFieldResponse:
       allOf:
         - $ref: '#/components/schemas/FormTemplateFieldCore'
         - type: object
@@ -6419,7 +6454,7 @@ components:
               type: string
               format: uuid
               
-    InboxReferralFormTemplateResponse:
+    InboxFormTemplateDetailResponse:
       allOf:
         - $ref: '#/components/schemas/FormTemplateCore'
         - type: object
@@ -6427,7 +6462,7 @@ components:
             fields: 
               type: array
               items:
-                $ref: '#/components/schemas/InboxReferralFormTemplateFieldResponse'
+                $ref: '#/components/schemas/InboxFormTemplateFieldResponse'
             form_template_id:
               type: string
               format: uuid
