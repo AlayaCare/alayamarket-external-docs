@@ -3352,6 +3352,9 @@ components:
               $ref: '#/components/schemas/OfferMatchResponseCore'
             status:
               $ref: '#/components/schemas/OfferMatchStatusCore'
+            sequence_id:
+              type: string
+              format: uuid
             # TODO: could be interesting to encapsulate the timestamp fields in a schema
             created_at:
               type: string
@@ -3363,6 +3366,7 @@ components:
             - id
             - response
             - status
+            - sequence_id
             - created_at
 
     OutboxOfferCloseRequest:
