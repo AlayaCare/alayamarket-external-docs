@@ -37,13 +37,13 @@ channels:
   # channels will represent topics in SNS.
   # channels that the application publishes to, and consumers can subscribe to, should use the `subscribe` keyword.
   # channels that the application consumes to, and other applications can publish to, should use the `publish` keyword.
-  outbox-forms:
+  outbox-form-submissions:
     subscribe:
-      operationId: sub_outbox_forms
+      operationId: sub_outbox_form_submissions
       description: |
-        Subscribe demand participants to outbox form events published by the service.
+        Subscribe demand participants to outbox form submission events published by the service.
       message:
-        $ref: '#/components/messages/OutboxFormEventMessage'
+        $ref: '#/components/messages/OutboxFormSubmissionEventMessage'
   outbox-messages:
     subscribe:
       operationId: sub_outbox_messages
@@ -87,6 +87,13 @@ channels:
         Subscribe demand participants to outbox work session events published by the service.
       message:
         $ref: '#/components/messages/OutboxWorkSessionEventMessage'
+  inbox-form-templates:
+    subscribe:
+      operationId: sub_inbox_form_templates
+      description: |
+        Subscribe supply participants to inbox form events published by the service.
+      message:
+        $ref: '#/components/messages/InboxFormTemplateEventMessage'
   inbox-messages:
     subscribe:
       operationId: sub_inbox_messages
@@ -111,13 +118,13 @@ channels:
 
 components:
   messages:
-    OutboxFormEventMessage:
-      messageId: message_outbox_form
+    OutboxFormSubmissionEventMessage:
+      messageId: message_outbox_form_submission
       name: OutboxFormEvent
       title: Outbox form received event
       summary: Inform relevant demand participants about a form submission received
       payload:
-        $ref: '#/components/schemas/OutboxFormEventPayload'
+        $ref: '#/components/schemas/OutboxFormSubmissionEventPayload'
     OutboxMessageEventMessage:
       messageId: message_outbox_message
       name: OutboxMessageEvent
@@ -161,6 +168,13 @@ components:
       summary: Inform relevant demand participants about a change to the work session state
       payload:
         $ref: '#/components/schemas/OutboxWorkSessionEventPayload'
+    InboxFormTemplateEventMessage:
+      messageId: message_inbox_form_template
+      name: InboxFormTemplateEvent
+      title: Inbox form template received event
+      summary: Inform relevant supply participants about a form template published
+      payload:
+        $ref: '#/components/schemas/InboxFormTemplateEventPayload'
     InboxMessageEventMessage:
       messageId: message_inbox_message
       name: InboxMessageEvent
@@ -269,7 +283,7 @@ components:
                 - MessageDemandSent
           required:
             - event_name
-    OutboxFormEventPayload:
+    OutboxFormSubmissionEventPayload:
       type: object
       properties:
         event_id:
@@ -680,6 +694,41 @@ components:
         - work_session_id
         - visit_id
         - start_at
+    InboxFormTemplateEventPayload:
+      type: object
+      properties:
+        event_id:
+          type: string
+          format: uuid
+          description: ID of the event
+        event_name:
+          type: string
+          description: Name of the event.
+          enum:
+            - FormTemplateDemandPublished
+        event_source:
+          type: string
+          description: Source of the event.
+          const: alayamarket.form_templates
+        form_template_id:
+          type: string
+          format: uuid
+          description: ID of the form template
+        id:
+          deprecated: true
+          type: string
+          format: uuid
+          description: ID of the event
+        timestamp:
+          type: string
+          format: datetime
+          description: Timestamp of the event
+      required:
+        - event_id
+        - event_name
+        - event_source
+        - form_template_id
+        - timestamp
     InboxOfferEventPayload:
       type: object
       properties:
