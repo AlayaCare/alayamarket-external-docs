@@ -1751,10 +1751,11 @@ components:
           type: string
           enum:
             - demand-organizations
+            - inbox-form-templates
             - inbox-messages
             - inbox-offers
             - inbox-referrals
-            - outbox-forms
+            - outbox-form-submissions
             - outbox-messages
             - outbox-offers
             - outbox-referrals
