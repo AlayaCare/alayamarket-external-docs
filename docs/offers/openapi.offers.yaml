@@ -2299,20 +2299,21 @@ paths:
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
-
-  /v1/inbox/form_templates/{form_template_id}:
+  
+  /v1/inbox/form_templates/by_demand_persona_id/{demand_persona_id}/by_schema_id/{schema_id}/latest:
     parameters:
-      - $ref: '#/components/parameters/FormTemplateIdPathParam'
+      - $ref: '#/components/parameters/DemandPersonaIdPathParam'
+      - $ref: '#/components/parameters/FormSchemaIdPathParam'
     get:
       tags:
         - form template inbox
       description: |
         # Authorization
         Required role: supply `org_admin` in the trusted network
-        of the demand organization of the form template.
+        of the demand organization of the form.
 
         # Description
-        Read a form template.
+        Returns the latest form version available for a given schema_id within a demand organization.
       responses:
         200:
           description: "Successfully retrieved the form template."
@@ -2408,6 +2409,14 @@ x-amazon-apigateway-gateway-responses:
 
 components:
   parameters:
+    DemandPersonaIdPathParam:
+      in: path
+      name: demand_persona_id
+      schema:
+        type: string
+        format: uuid
+      required: true
+      description: ID of a demand organization.
     FileIdPathParam:
       in: path
       name: file_id
@@ -2424,14 +2433,14 @@ components:
         format: uuid
       required: true
       description: ID of a form submission.
-    FormTemplateIdPathParam:
+    FormSchemaIdPathParam:
       in: path
-      name: form_template_id
+      name: schema_id
       schema:
         type: string
         format: uuid
       required: true
-      description: ID of a form template.
+      description: Schema id of a form.
     FormSubmissionFieldIdPathParam:
       in: path
       name: form_submission_field_id
@@ -6460,6 +6469,9 @@ components:
               items:
                 $ref: '#/components/schemas/InboxFormTemplateFieldResponse'
             form_template_id:
+              type: string
+              format: uuid
+            demand_persona_id:
               type: string
               format: uuid
 
