@@ -172,7 +172,7 @@ components:
       messageId: message_inbox_form_template
       name: InboxFormTemplateEvent
       title: Inbox form template received event
-      summary: Inform relevant supply participants about a form template published
+      summary: Inform relevant supply participants about a new version of a form published
       payload:
         $ref: '#/components/schemas/InboxFormTemplateEventPayload'
     InboxMessageEventMessage:
@@ -710,15 +710,19 @@ components:
           type: string
           description: Source of the event.
           const: alayamarket.form_templates
-        form_template_id:
+        demand_persona_id:
           type: string
           format: uuid
-          description: ID of the form template
+          description: ID of the demand org of the form template
         id:
           deprecated: true
           type: string
           format: uuid
           description: ID of the event
+        schema_id:
+          type: string
+          format: uuid
+          description: Schema ID of the form template
         timestamp:
           type: string
           format: datetime
@@ -727,7 +731,8 @@ components:
         - event_id
         - event_name
         - event_source
-        - form_template_id
+        - demand_persona_id
+        - schema_id
         - timestamp
     InboxOfferEventPayload:
       type: object
