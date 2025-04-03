@@ -258,6 +258,14 @@ paths:
           description: |
             Response of an Offer Match to filter on. <br>
             Multiple values are supported (in an `OR` fashion). <br>
+        - in: query
+          name: sequence_id
+          schema:
+            type: string
+            format: uuid
+          description: |
+            Sequence ID of the Offer Match to filter on.
+            Multiple values are supported (in an `OR` fashion).
         - $ref: '#/components/parameters/PageNumberParam'
         - $ref: '#/components/parameters/ItemsPerPageParam'
         - $ref: '#/components/parameters/SortByParam'
@@ -585,6 +593,14 @@ paths:
             $ref: '#/components/schemas/OfferMatchResponseCore'
           description: |
             Response of an Offer Match to filter on.
+            Multiple values are supported (in an `OR` fashion).
+        - in: query
+          name: sequence_id
+          schema:
+            type: string
+            format: uuid
+          description: |
+            Sequence ID of the Offer Match to filter on.
             Multiple values are supported (in an `OR` fashion).
         - $ref: '#/components/parameters/PageNumberParam'
         - $ref: '#/components/parameters/ItemsPerPageParam'
