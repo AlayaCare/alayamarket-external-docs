@@ -241,6 +241,10 @@ components:
           enum:
             - client_attachment
             - comment
+        offer_id:
+          type: string
+          format: uuid
+          description: ID of the related offer
         referral_id:
           type: string
           format: uuid
