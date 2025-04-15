@@ -273,7 +273,6 @@ components:
         - message_id
         - sender
         - category
-        - referral_id
         - sequence_id
     InboxMessageEventPayload:
       allOf:
