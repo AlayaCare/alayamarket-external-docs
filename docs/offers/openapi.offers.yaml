@@ -6872,6 +6872,7 @@ components:
           $ref: '#/components/schemas/MessageCategoryCore'
         text:
           type: string
+          maxLength: 2500
         author:
           type: string
           maxLength: 100
@@ -6912,6 +6913,7 @@ components:
               $ref: '#/components/schemas/MessageSenderTypeCore'
             text:
               type: string
+              maxLength: 2500
             author:
               type: string
               maxLength: 100
@@ -6994,6 +6996,7 @@ components:
           $ref: '#/components/schemas/MessageSenderTypeCore'
         text:
           type: string
+          maxLength: 2500
         author:
           type: string
           maxLength: 100
@@ -7048,6 +7051,7 @@ components:
               $ref: '#/components/schemas/MessageSenderTypeCore'
             text:
               type: string
+              maxLength: 2500
             author:
               type: string
               maxLength: 100
