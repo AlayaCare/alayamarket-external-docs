@@ -2920,7 +2920,6 @@ components:
                   - id
                   - care_type
                   - start_at
-                  - end_at
                   - expires_at
               client:
                 title: OutboxBundleOfferCreateItemClientResponse
@@ -3039,7 +3038,6 @@ components:
             - id
             - status
             - start_at
-            - end_at
             - created_at
 
     OfferResponseCountsCore:
@@ -3196,7 +3194,6 @@ components:
                 - care_type
                 - referral_type
                 - start_at
-                - end_at
                 - status
                 - created_at
         revision:
@@ -3257,7 +3254,6 @@ components:
             - offer_type
             - expires_at
             - start_at
-            - end_at
             - created_at
 
     InboxOfferDetailResponse:
@@ -4701,7 +4697,6 @@ components:
             - referral_type
             - status
             - start_at
-            - end_at
             - created_at
 
     SysAdminReferralDetailResponse:
@@ -4919,7 +4914,6 @@ components:
                 - care_type
                 - referral_type
                 - start_at
-                - end_at
                 - status
                 - created_at
         demand:
