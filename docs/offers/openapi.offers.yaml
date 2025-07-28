@@ -3835,6 +3835,9 @@ components:
         start_at:
           type: string
           format: date-time
+        expected_start_at:
+          type: string
+          format: date-time
         end_at:
           type: string
           format: date-time
@@ -4371,6 +4374,9 @@ components:
             start_at:
               type: string
               format: date-time
+            expected_start_at:
+              type: string
+              format: date-time
             end_at:
               type: string
               format: date-time
@@ -4448,6 +4454,9 @@ components:
               type: string
               minLength: 1
             start_at:
+              type: string
+              format: date-time
+            expected_start_at:
               type: string
               format: date-time
             end_at:
@@ -4737,6 +4746,9 @@ components:
                 start_at:
                   type: string
                   format: date-time
+                expected_start_at:
+                  type: string
+                  format: date-time
                 end_at:
                   type: string
                   format: date-time
@@ -4803,6 +4815,9 @@ components:
                   type: string
                   minLength: 1
                 start_at:
+                  type: string
+                  format: date-time
+                expected_start_at:
                   type: string
                   format: date-time
                 end_at:
@@ -4942,6 +4957,9 @@ components:
               type: string
               minLength: 1
             start_at:
+              type: string
+              format: date-time
+            expected_start_at:
               type: string
               format: date-time
             end_at:
@@ -6109,6 +6127,9 @@ components:
             address:
               $ref: '#/components/schemas/AddressCore'
             start_at:
+              type: string
+              format: date-time
+            expected_start_at:
               type: string
               format: date-time
             end_at:
