@@ -3844,6 +3844,8 @@ components:
         instructions:
           # CCAC includes goals and other items in ServiceInstructions
           type: string
+        notes:
+          type: string
         skills:
           # should this live here or at root level or client level?
           # should this be a string or list of strings or list of objects?
@@ -4382,6 +4384,8 @@ components:
               format: date-time
             instructions:
               type: string
+            notes:
+              type: string
             skills:
               type: array
               items:
@@ -4463,6 +4467,8 @@ components:
               type: string
               format: date-time
             instructions:
+              type: string
+            notes:
               type: string
             skills:
               type: array
@@ -4754,6 +4760,8 @@ components:
                   format: date-time
                 instructions:
                   type: string
+                notes:
+                  type: string
                 skills:
                   type: array
                   items:
@@ -4824,6 +4832,8 @@ components:
                   type: string
                   format: date-time
                 instructions:
+                  type: string
+                notes:
                   type: string
                 skills:
                   type: array
@@ -4966,6 +4976,8 @@ components:
               type: string
               format: date-time
             instructions:
+              type: string
+            notes:
               type: string
             skills:
               type: array
@@ -6137,6 +6149,8 @@ components:
               format: date-time
             instructions:
               # CCAC includes goals and other items in ServiceInstructions
+              type: string
+            notes:
               type: string
             skills:
               # should this live here or at root level or client level?
