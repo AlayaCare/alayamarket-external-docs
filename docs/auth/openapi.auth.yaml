@@ -37,7 +37,7 @@ paths:
         - NONE: [ ]
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AuthApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AuthApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -63,7 +63,7 @@ paths:
         - NONE: []
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AuthApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AuthApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         # TODO: I thought the passthrough behaviour was only used for non proxy integration
         passthroughBehavior: "when_no_match"
@@ -86,7 +86,7 @@ paths:
         - NONE: []
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AuthApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AuthApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         # TODO: I thought the passthrough behaviour was only used for non proxy integration
         passthroughBehavior: "when_no_match"
@@ -109,7 +109,7 @@ paths:
         - NONE: []
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AuthApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AuthApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         # TODO: I thought the passthrough behaviour was only used for non proxy integration
         passthroughBehavior: "when_no_match"
@@ -132,7 +132,7 @@ paths:
         - NONE: []
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AuthApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AuthApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         # TODO: I thought the passthrough behaviour was only used for non proxy integration
         passthroughBehavior: "when_no_match"
@@ -150,7 +150,7 @@ paths:
 #      x-amazon-apigateway-request-validator: "body"
 #      x-amazon-apigateway-integration:
 #        uri:
-#          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AuthApiFunction.Arn}:live/invocations"
+#          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AuthApiFunctionV2.Arn}:live/invocations"
 #        httpMethod: "POST"
 #        passthroughBehavior: "when_no_match"
 #        type: "aws_proxy"
@@ -167,7 +167,7 @@ paths:
                 $ref: '#/components/schemas/CurrentIdentityDetailResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AuthApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AuthApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"

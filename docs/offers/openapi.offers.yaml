@@ -37,7 +37,7 @@ paths:
         - NONE: [ ]
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -69,7 +69,7 @@ paths:
                 $ref: '#/components/schemas/OutboxBundleOfferCreateResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -101,7 +101,7 @@ paths:
                 $ref: '#/components/schemas/OutboxShiftOfferCreateResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -133,7 +133,7 @@ paths:
                 $ref: '#/components/schemas/OutboxOfferDetailResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -205,7 +205,7 @@ paths:
                 $ref: '#/components/schemas/OutboxOfferPageResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -232,7 +232,7 @@ paths:
                 $ref: '#/components/schemas/OutboxOfferDetailResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -279,7 +279,7 @@ paths:
                 $ref: '#/components/schemas/OutboxOfferMatchPageResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -310,7 +310,7 @@ paths:
           description: "Successfully marked Offer as Cancelled"
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -342,7 +342,7 @@ paths:
           description: "Successfully marked Offer as Assigned."
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -378,7 +378,7 @@ paths:
                 $ref: '#/components/schemas/InboxOfferPageResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -405,7 +405,7 @@ paths:
                 $ref: '#/components/schemas/InboxOfferDetailResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -435,7 +435,7 @@ paths:
           description: "Successfully marked Offer as Accepted"
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -465,7 +465,7 @@ paths:
           description: "Successfully marked Offer as Declined"
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -542,7 +542,7 @@ paths:
                 $ref: '#/components/schemas/OutboxOfferPageResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -568,7 +568,7 @@ paths:
                 $ref: '#/components/schemas/SysAdminOfferDetailResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -615,7 +615,7 @@ paths:
                 $ref: '#/components/schemas/OutboxOfferMatchPageResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -641,7 +641,7 @@ paths:
           description: "Setting succesfully saved."
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -663,7 +663,7 @@ paths:
                 $ref: '#/components/schemas/OutboxOfferAssignmentSettingUpdateResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -697,7 +697,7 @@ paths:
           description: "Setting succesfully saved."
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -719,7 +719,7 @@ paths:
                 $ref: '#/components/schemas/OutboxOfferAssignmentSettingUpdateResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -749,7 +749,7 @@ paths:
                 $ref: '#/components/schemas/DemandTakeRateCollectionResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -788,7 +788,7 @@ paths:
           description: 'Successfully set the demand-specific take rate.'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -812,7 +812,7 @@ paths:
                 $ref: '#/components/schemas/RegionalTakeRateDetailResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -840,7 +840,7 @@ paths:
                 $ref: '#/components/schemas/RegionalTakeRateDetailResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -870,7 +870,7 @@ paths:
                 $ref: '#/components/schemas/OutboxReferralDetailResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -949,7 +949,7 @@ paths:
                 $ref: '#/components/schemas/OutboxReferralPageResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -976,7 +976,7 @@ paths:
                 $ref: '#/components/schemas/OutboxReferralDetailResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -1005,7 +1005,7 @@ paths:
           description: "Successfully marked Referral as Cancelled"
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -1042,7 +1042,7 @@ paths:
                 $ref: '#/components/schemas/OutboxReferralDetailResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -1072,7 +1072,7 @@ paths:
                 $ref: '#/components/schemas/OrgAdminMessageDetailResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -1108,7 +1108,7 @@ paths:
                 $ref: '#/components/schemas/OrgAdminMessagePageResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -1133,7 +1133,7 @@ paths:
                 $ref: '#/components/schemas/OrgAdminMessageDetailResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -1154,7 +1154,7 @@ paths:
           description: "Successfully got the file."
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -1180,7 +1180,7 @@ paths:
                 $ref: '#/components/schemas/OrgAdminFilePresignedDetailResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -1220,7 +1220,7 @@ paths:
                 $ref: '#/components/schemas/InboxReferralPageResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -1247,7 +1247,7 @@ paths:
                 $ref: '#/components/schemas/InboxReferralDetailResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -1272,7 +1272,7 @@ paths:
           description: "Successfully marked Referral as Processed."
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -1301,7 +1301,7 @@ paths:
           description: "Successfully marked Referral as Cancelled"
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -1329,7 +1329,7 @@ paths:
           description: "Successfully updated referral task"
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -1359,7 +1359,7 @@ paths:
                 $ref: '#/components/schemas/OrgAdminMessageDetailResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -1395,7 +1395,7 @@ paths:
                 $ref: '#/components/schemas/OrgAdminMessagePageResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -1420,7 +1420,7 @@ paths:
                 $ref: '#/components/schemas/OrgAdminMessageDetailResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -1441,7 +1441,7 @@ paths:
           description: "Successfully got the file."
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -1467,7 +1467,7 @@ paths:
                 $ref: '#/components/schemas/OrgAdminFilePresignedDetailResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -1552,7 +1552,7 @@ paths:
                 $ref: '#/components/schemas/SysAdminReferralPageResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -1578,7 +1578,7 @@ paths:
                 $ref: '#/components/schemas/SysAdminReferralDetailResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -1616,7 +1616,7 @@ paths:
                 $ref: '#/components/schemas/SysAdminMessagePageResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -1641,7 +1641,7 @@ paths:
                 $ref: '#/components/schemas/SysAdminMessageDetailResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -1687,7 +1687,7 @@ paths:
                 $ref: '#/components/schemas/OutboxVisitPageResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -1713,7 +1713,7 @@ paths:
                 $ref: '#/components/schemas/OutboxVisitDetailResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -1753,7 +1753,7 @@ paths:
                 $ref: '#/components/schemas/InboxVisitPageResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -1779,7 +1779,7 @@ paths:
                 $ref: '#/components/schemas/InboxVisitDetailResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -1810,7 +1810,7 @@ paths:
                 $ref: '#/components/schemas/InboxVisitDetailResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -1843,7 +1843,7 @@ paths:
                 $ref: '#/components/schemas/InboxVisitScheduleResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -1871,7 +1871,7 @@ paths:
           description: "Successfully assigned an employee to the visit."
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -1893,7 +1893,7 @@ paths:
           description: "Successfully unassigned the employee from the visit."
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -1916,7 +1916,7 @@ paths:
           description: "Successfully deleted the visit."
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -1939,7 +1939,7 @@ paths:
           description: "Successfully held the visit."
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -1962,7 +1962,7 @@ paths:
           description: "Successfully cancelled the visit."
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -1985,7 +1985,36 @@ paths:
           description: "Successfully reactivated the visit."
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+
+  /v1/inbox/visits/{visit_id}/adjust_timekeeping:
+    parameters:
+      - $ref: '#/components/parameters/VisitIdPathParam'
+    post:
+      tags:
+        - visit inbox
+      description: |
+        # Authorization
+        Required role: supply `org_admin`.
+
+        # Description
+        Adjust the timekeeping metadata of a visit. The supply organization holding the visit
+        must be identical to the one that scheduled the original visit.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InboxVisitAdjustTimekeepingRequest'
+      responses:
+        204:
+          description: "Successfully adjusted the verified date-times of the visit."
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -2018,7 +2047,7 @@ paths:
                 $ref: '#/components/schemas/InboxVisitRescheduleResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -2052,7 +2081,7 @@ paths:
                 $ref: '#/components/schemas/InboxVisitTasksCreationResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -2085,7 +2114,7 @@ paths:
                 $ref: '#/components/schemas/InboxVisitTaskCollectionResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -2152,7 +2181,7 @@ paths:
                 $ref: '#/components/schemas/SysAdminVisitPageResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -2178,7 +2207,7 @@ paths:
                 $ref: '#/components/schemas/SysAdminVisitDetailResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -2218,7 +2247,7 @@ paths:
                 $ref: '#/components/schemas/OutboxWorkSessionPageResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -2250,7 +2279,7 @@ paths:
                 $ref: '#/components/schemas/InboxWorkSessionStartResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -2279,7 +2308,7 @@ paths:
           description: "Successfully ended a Work Session."
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -2311,7 +2340,7 @@ paths:
                 $ref: '#/components/schemas/InboxFormSubmissionCreationResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -2339,7 +2368,7 @@ paths:
                 $ref: '#/components/schemas/InboxFormTemplateDetailResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -2366,7 +2395,7 @@ paths:
                 $ref: '#/components/schemas/OutboxFormSubmissionDetailResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -2394,7 +2423,7 @@ paths:
                 $ref: '#/components/schemas/OrgAdminFilePresignedDetailResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -3963,6 +3992,9 @@ components:
               email:
                 type: string
                 format: email
+              is_active:
+                type: boolean
+                default: true
               is_emergency:
                 type: boolean
               phone_number:
@@ -4030,9 +4062,16 @@ components:
               description:
                 # AlayaCare doesn't use this for the CCAC
                 type: string
+              is_primary:
+                type: boolean
               start_date:
                 type: string
                 format: date
+              end_date:
+                type: string
+                format: date
+              treatment:
+                type: string
         surgeries:
           type: array
           items:
@@ -4045,7 +4084,12 @@ components:
               description:
                 # AlayaCare combines CCAC location and surgeon
                 type: string
+              details:
+                type: string
               start_date:
+                type: string
+                format: date
+              end_date:
                 type: string
                 format: date
         custom_fields:
@@ -4167,7 +4211,8 @@ components:
         start_date:
           type: string
           format: date
-        # AlayaCare has a treatment field?
+        treatment:
+          type: string
 
     AddressAnonCore:
       type: object
@@ -5248,6 +5293,16 @@ components:
         - start_at
         - end_at
 
+    InboxVisitAdjustTimekeepingRequest:
+      type: object
+      properties:
+        verified_start_at:
+          type: string
+          format: date-time
+        verified_end_at:
+          type: string
+          format: date-time
+
     OutboxVisitPageResponse:
       allOf:
         - $ref: '#/components/schemas/PageCore'
@@ -5312,6 +5367,12 @@ components:
               type: string
               format: date-time
             end_at:
+              type: string
+              format: date-time
+            verified_start_at:
+              type: string
+              format: date-time
+            verified_end_at:
               type: string
               format: date-time
           required:
@@ -5390,7 +5451,16 @@ components:
       type: object
       properties:
         visit:
-          $ref: '#/components/schemas/InboxVisitCore'
+          title: InboxVisitDetailCore
+          allOf:
+            - $ref: '#/components/schemas/InboxVisitCore'
+            - properties:
+                verified_start_at:
+                  type: string
+                  format: date-time
+                verified_end_at:
+                  type: string
+                  format: date-time
         supply_employee:
           title: InboxVisitDetailSupplyEmployeeResponse
           type: object
@@ -5450,7 +5520,16 @@ components:
       type: object
       properties:
         visit:
-          $ref: '#/components/schemas/OutboxVisitCore'
+          title: OutboxVisitDetailCore
+          allOf:
+            - $ref: '#/components/schemas/OutboxVisitCore'
+            - properties:
+                verified_start_at:
+                  type: string
+                  format: date-time
+                verified_end_at:
+                  type: string
+                  format: date-time
         supply:
           title: OutboxVisitDetailSupplyResponse
           properties:
@@ -6019,6 +6098,9 @@ components:
                   email:
                     type: string
                     format: email
+                  is_active:
+                    type: boolean
+                    default: true
                   is_emergency:
                     type: boolean
                   phone_number:
@@ -6090,9 +6172,16 @@ components:
                   description:
                     # AlayaCare doesn't use this for the CCAC
                     type: string
+                  is_primary:
+                    type: boolean
                   start_date:
                     type: string
                     format: date
+                  end_date:
+                    type: string
+                    format: date
+                  treatment:
+                    type: string
             surgeries:
               title: SysAdminOfferDetailClientSurgeriesResponse
               type: array
@@ -6106,7 +6195,12 @@ components:
                   description:
                     # AlayaCare combines CCAC location and surgeon
                     type: string
+                  details:
+                    type: string
                   start_date:
+                    type: string
+                    format: date
+                  end_date:
                     type: string
                     format: date
             custom_fields:
@@ -6361,8 +6455,13 @@ components:
           type: string
         program_id:
           type: string
+        custom_number_of_days:
+          type: integer
         rule_type:
           type: string
+        rule_custom:
+          type: number
+          format: decimal
         rule_daily:
           type: number
           format: decimal
