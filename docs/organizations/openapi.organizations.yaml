@@ -37,7 +37,7 @@ paths:
         - NONE: [ ]
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -63,7 +63,7 @@ paths:
                 $ref: "#/components/schemas/SysAdminOrgAutoSignUpResponse"
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -89,7 +89,7 @@ paths:
                 $ref: '#/components/schemas/SysAdminOrgSignUpResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -111,7 +111,7 @@ paths:
           description: "Sign up confirmed"
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -133,7 +133,7 @@ paths:
           description: "Sign up confirmed"
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -209,7 +209,7 @@ paths:
                 $ref: '#/components/schemas/SysAdminOrgPageResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -232,7 +232,7 @@ paths:
                 $ref: '#/components/schemas/OrgDetailResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -258,7 +258,7 @@ paths:
           description: "API keys saved successfully."
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -284,7 +284,7 @@ paths:
           description: "Organization details updated successfully."
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -303,7 +303,7 @@ paths:
           description: "Demand activated - empty response"
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -322,7 +322,7 @@ paths:
           description: "Demand deactivated - empty response"
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -341,7 +341,7 @@ paths:
           description: "Supply activated - empty response"
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -360,7 +360,7 @@ paths:
           description: "Supply deactivated - empty response"
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -410,7 +410,7 @@ paths:
                 $ref: '#/components/schemas/OrgPageResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -466,7 +466,7 @@ paths:
         - NONE: [ ]
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -493,7 +493,7 @@ paths:
         - NONE: [ ]
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -513,7 +513,7 @@ paths:
           description: "API keys saved successfully."
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -541,7 +541,7 @@ paths:
                 $ref: '#/components/schemas/OrgAdminOrgSubscribeCollectionResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -563,7 +563,7 @@ paths:
                 $ref: '#/components/schemas/DemandDetailResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -580,7 +580,7 @@ paths:
           description: "Demand activated."
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -648,7 +648,7 @@ paths:
                 $ref: '#/components/schemas/DemandTrustedNetworkPageResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -672,7 +672,7 @@ paths:
           description: "Trusted Network saved by demand org."
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -689,7 +689,7 @@ paths:
           description: "Demand deactivated."
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -711,7 +711,7 @@ paths:
                 $ref: '#/components/schemas/SupplyDetailResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -728,7 +728,7 @@ paths:
           description: "Supply activated."
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -745,7 +745,7 @@ paths:
           description: "Supply deactivated."
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -769,7 +769,7 @@ paths:
           description: "Care types saved."
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -810,7 +810,7 @@ paths:
                 $ref: '#/components/schemas/SupplyTrustedNetworkPageResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -833,7 +833,7 @@ paths:
           description: "Supply added to and/or removed from trusted network(s)."
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -856,7 +856,7 @@ paths:
                 $ref: '#/components/schemas/DemandDetailResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -879,7 +879,7 @@ paths:
                 $ref: '#/components/schemas/SupplyDetailResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -904,7 +904,7 @@ paths:
           description: "Care types saved - empty response"
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -946,7 +946,7 @@ paths:
                 $ref: '#/components/schemas/SupplyTrustedNetworkPageResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -1021,7 +1021,7 @@ paths:
                 $ref: '#/components/schemas/DemandTrustedNetworkPageResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -1046,7 +1046,7 @@ paths:
           description: "Trusted Network saved by sys admin."
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -1071,7 +1071,7 @@ paths:
           description: "Added to the Trusted Network - empty response"
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -1096,7 +1096,7 @@ paths:
           description: "Removed from the Trusted Network - empty response"
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -1125,7 +1125,7 @@ paths:
                 $ref: '#/components/schemas/SysAdminOrgSubscribeResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -1148,7 +1148,7 @@ paths:
           description: Unsubscribe complete
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
@@ -1174,7 +1174,7 @@ paths:
                 $ref: '#/components/schemas/SubscriptionPageResponse'
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunction.Arn}:live/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrganizationApiFunctionV2.Arn}:live/invocations"
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
