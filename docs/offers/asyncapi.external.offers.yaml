@@ -500,9 +500,10 @@ components:
             enum:
               - VisitSupplyAssigned
               - VisitSupplyDeleted
+              - VisitSupplyRescheduled
               - VisitSupplyScheduled
               - VisitSupplyStatusChanged
-              - VisitSupplyRescheduled
+              - VisitSupplyTimekeepingAdjusted
               - VisitSupplyUnassigned
         id:
           deprecated: true
