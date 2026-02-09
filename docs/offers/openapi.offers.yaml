@@ -1184,6 +1184,53 @@ paths:
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
+  /v1/outbox/sequences:
+    get:
+      tags:
+        - sequence outbox
+      description: |
+        # Authorization
+        Required role: `org_admin`
+
+        # Description
+        Get a paginated collection of sequences as a demand organization.
+      parameters:
+        - in: query
+          name: supply_persona_id
+          schema:
+            type: string
+            format: uuid
+          description: Filter sequences by supply organization ID.
+          required: false
+        - in: query
+          name: client_outbox_id
+          schema:
+            type: string
+          description: Filter sequences by client outbox ID.
+          required: false
+        - in: query
+          name: sort_by
+          schema:
+            type: string
+            enum:
+              - latest_message_created_at
+            default: latest_message_created_at
+        - $ref: '#/components/parameters/SortOrderParam'
+        - $ref: '#/components/parameters/PageNumberParam'
+        - $ref: '#/components/parameters/ItemsPerPageParam'
+      responses:
+        200:
+          description: "Successfully retrieved paginated sequences."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutboxSequencePageResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
   /v1/inbox/referrals:
     get:
       tags:
@@ -1639,6 +1686,60 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SysAdminMessageDetailResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+  /v1/sys_admin/sequences:
+    get:
+      tags:
+        - sequence sys_admin
+      description: |
+        # Authorization
+        Required role: `sys_admin`
+
+        # Description
+        Get a paginated collection of sequences as a system admin.
+      parameters:
+        - in: query
+          name: demand_persona_id
+          schema:
+            type: string
+            format: uuid
+          description: Filter sequences by demand organization ID.
+          required: false
+        - in: query
+          name: supply_persona_id
+          schema:
+            type: string
+            format: uuid
+          description: Filter sequences by supply organization ID.
+          required: false
+        - in: query
+          name: client_outbox_id
+          schema:
+            type: string
+          description: Filter sequences by client outbox ID.
+          required: false
+        - in: query
+          name: sort_by
+          schema:
+            type: string
+            enum:
+              - latest_message_created_at
+            default: latest_message_created_at
+        - $ref: '#/components/parameters/SortOrderParam'
+        - $ref: '#/components/parameters/PageNumberParam'
+        - $ref: '#/components/parameters/ItemsPerPageParam'
+      responses:
+        200:
+          description: "Successfully retrieved paginated sequences."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SysAdminSequencePageResponse'
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
@@ -7246,6 +7347,103 @@ components:
           type: string
       required:
         - url
+
+    OutboxSequencePageResponse:
+      allOf:
+        - $ref: '#/components/schemas/PageCore'
+        - type: object
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/OutboxSequenceCollectionResponse'
+          required:
+            - items
+
+    SequenceClientResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        outbox_id:
+          type: string
+          minLength: 1
+        demographics:
+          $ref: '#/components/schemas/DemographicLeanCore'
+      required:
+        - outbox_id
+        - demographics
+
+    SequenceServiceResponse:
+      type: object
+      properties:
+        outbox_id:
+          type: string
+          minLength: 1
+        name:
+          type: string
+          minLength: 1
+      required:
+        - name
+        - outbox_id
+
+    OutboxSequenceCollectionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        supply:
+          $ref: '#/components/schemas/OrganizationLeanCore'
+        client:
+          $ref: '#/components/schemas/SequenceClientResponse'
+        service:
+          $ref: '#/components/schemas/SequenceServiceResponse'
+        latest_message_created_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - supply
+        - client
+        - service
+
+    SysAdminSequencePageResponse:
+      allOf:
+        - $ref: '#/components/schemas/PageCore'
+        - type: object
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/SysAdminSequenceCollectionResponse'
+          required:
+            - items
+
+    SysAdminSequenceCollectionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        demand:
+          $ref: '#/components/schemas/OrganizationLeanCore'
+        supply:
+          $ref: '#/components/schemas/OrganizationLeanCore'
+        client:
+          $ref: '#/components/schemas/SequenceClientResponse'
+        service:
+          $ref: '#/components/schemas/SequenceServiceResponse'
+        latest_message_created_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - demand
+        - supply
+        - client
+        - service
 
   securitySchemes:
     CognitoAuthorizer:
