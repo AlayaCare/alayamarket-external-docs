@@ -1231,6 +1231,57 @@ paths:
         httpMethod: "POST"
         passthroughBehavior: "when_no_match"
         type: "aws_proxy"
+  /v1/inbox/sequences:
+    get:
+      tags:
+        - sequence inbox
+      description: |
+        # Authorization
+        Required role: `org_admin`
+
+        # Description
+        Get a paginated collection of sequences as a supply organization.
+      parameters:
+        - in: query
+          name: demand_persona_id
+          schema:
+            type: string
+            format: uuid
+          description: Filter sequences by demand organization ID.
+          required: false
+        - in: query
+          name: sequence_id
+          schema:
+            type: array
+            items:
+              type: string
+              format: uuid
+            maxItems: 100
+          description: Filter by specific sequence IDs.
+          required: false
+        - in: query
+          name: sort_by
+          schema:
+            type: string
+            enum:
+              - latest_message_created_at
+            default: latest_message_created_at
+        - $ref: '#/components/parameters/SortOrderParam'
+        - $ref: '#/components/parameters/PageNumberParam'
+        - $ref: '#/components/parameters/ItemsPerPageParam'
+      responses:
+        200:
+          description: "Successfully retrieved paginated sequences."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InboxSequencePageResponse'
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OfferApiFunctionV2.Arn}:live/invocations"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
   /v1/inbox/referrals:
     get:
       tags:
@@ -1722,6 +1773,16 @@ paths:
           schema:
             type: string
           description: Filter sequences by client outbox ID.
+          required: false
+        - in: query
+          name: sequence_id
+          schema:
+            type: array
+            items:
+              type: string
+              format: uuid
+            maxItems: 100
+          description: Filter by specific sequence IDs.
           required: false
         - in: query
           name: sort_by
@@ -7388,6 +7449,26 @@ components:
         - name
         - outbox_id
 
+    InboxSequenceClientResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        demographics:
+          $ref: '#/components/schemas/DemographicLeanCore'
+      required:
+        - demographics
+
+    InboxSequenceServiceResponse:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+      required:
+        - name
+
     OutboxSequenceCollectionResponse:
       type: object
       properties:
@@ -7406,6 +7487,39 @@ components:
       required:
         - id
         - supply
+        - client
+        - service
+
+    InboxSequencePageResponse:
+      allOf:
+        - $ref: '#/components/schemas/PageCore'
+        - type: object
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/InboxSequenceCollectionResponse'
+          required:
+            - items
+
+    InboxSequenceCollectionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        demand:
+          $ref: '#/components/schemas/OrganizationLeanCore'
+        client:
+          $ref: '#/components/schemas/InboxSequenceClientResponse'
+        service:
+          $ref: '#/components/schemas/InboxSequenceServiceResponse'
+        latest_message_created_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - demand
         - client
         - service
 
