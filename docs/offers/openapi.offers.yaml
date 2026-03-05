@@ -1209,6 +1209,16 @@ paths:
           description: Filter sequences by client outbox ID.
           required: false
         - in: query
+          name: sequence_id
+          schema:
+            type: array
+            items:
+              type: string
+              format: uuid
+            maxItems: 100
+          description: Filter by specific sequence IDs.
+          required: false
+        - in: query
           name: sort_by
           schema:
             type: string
@@ -7457,8 +7467,6 @@ components:
           format: uuid
         demographics:
           $ref: '#/components/schemas/DemographicLeanCore'
-      required:
-        - demographics
 
     InboxSequenceServiceResponse:
       type: object
@@ -7468,6 +7476,24 @@ components:
           minLength: 1
       required:
         - name
+
+    SequenceLatestReferralResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+      required:
+        - id
+
+    SequenceOfferResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+      required:
+        - id
 
     OutboxSequenceCollectionResponse:
       type: object
@@ -7481,6 +7507,10 @@ components:
           $ref: '#/components/schemas/SequenceClientResponse'
         service:
           $ref: '#/components/schemas/SequenceServiceResponse'
+        latest_referral:
+          $ref: '#/components/schemas/SequenceLatestReferralResponse'
+        offer:
+          $ref: '#/components/schemas/SequenceOfferResponse'
         latest_message_created_at:
           type: string
           format: date-time
@@ -7514,6 +7544,10 @@ components:
           $ref: '#/components/schemas/InboxSequenceClientResponse'
         service:
           $ref: '#/components/schemas/InboxSequenceServiceResponse'
+        latest_referral:
+          $ref: '#/components/schemas/SequenceLatestReferralResponse'
+        offer:
+          $ref: '#/components/schemas/SequenceOfferResponse'
         latest_message_created_at:
           type: string
           format: date-time
@@ -7549,6 +7583,10 @@ components:
           $ref: '#/components/schemas/SequenceClientResponse'
         service:
           $ref: '#/components/schemas/SequenceServiceResponse'
+        latest_referral:
+          $ref: '#/components/schemas/SequenceLatestReferralResponse'
+        offer:
+          $ref: '#/components/schemas/SequenceOfferResponse'
         latest_message_created_at:
           type: string
           format: date-time
