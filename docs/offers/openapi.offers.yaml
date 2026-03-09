@@ -7501,6 +7501,9 @@ components:
         id:
           type: string
           format: uuid
+        created_at:
+          type: string
+          format: date-time
         supply:
           $ref: '#/components/schemas/OrganizationLeanCore'
         client:
@@ -7516,6 +7519,7 @@ components:
           format: date-time
       required:
         - id
+        - created_at
         - supply
         - client
         - service
@@ -7538,6 +7542,9 @@ components:
         id:
           type: string
           format: uuid
+        created_at:
+          type: string
+          format: date-time
         demand:
           $ref: '#/components/schemas/OrganizationLeanCore'
         client:
@@ -7553,6 +7560,7 @@ components:
           format: date-time
       required:
         - id
+        - created_at
         - demand
         - client
         - service
@@ -7575,6 +7583,9 @@ components:
         id:
           type: string
           format: uuid
+        created_at:
+          type: string
+          format: date-time
         demand:
           $ref: '#/components/schemas/OrganizationLeanCore'
         supply:
@@ -7592,6 +7603,7 @@ components:
           format: date-time
       required:
         - id
+        - created_at
         - demand
         - supply
         - client
