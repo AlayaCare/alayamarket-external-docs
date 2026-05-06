@@ -2938,6 +2938,9 @@ components:
                   expires_at:
                     type: string
                     format: date-time
+                  created_at:
+                    type: string
+                    format: date-time
                   demand_labels:
                     type: array
                     items:
@@ -2949,6 +2952,7 @@ components:
                   - start_at
                   - end_at
                   - expires_at
+                  - created_at
               client:
                 title: OutboxShiftOfferCreateItemClientResponse
                 description: The `client` object included in the response when creating a shift offer.
@@ -3112,6 +3116,9 @@ components:
                   expires_at:
                     type: string
                     format: date-time
+                  created_at:
+                    type: string
+                    format: date-time
                   demand_labels:
                     type: array
                     items:
@@ -3122,6 +3129,7 @@ components:
                   - care_type
                   - start_at
                   - expires_at
+                  - created_at
               client:
                 title: OutboxBundleOfferCreateItemClientResponse
                 type: object
@@ -7501,6 +7509,9 @@ components:
         id:
           type: string
           format: uuid
+        created_at:
+          type: string
+          format: date-time
         supply:
           $ref: '#/components/schemas/OrganizationLeanCore'
         client:
@@ -7516,6 +7527,7 @@ components:
           format: date-time
       required:
         - id
+        - created_at
         - supply
         - client
         - service
@@ -7538,6 +7550,9 @@ components:
         id:
           type: string
           format: uuid
+        created_at:
+          type: string
+          format: date-time
         demand:
           $ref: '#/components/schemas/OrganizationLeanCore'
         client:
@@ -7553,6 +7568,7 @@ components:
           format: date-time
       required:
         - id
+        - created_at
         - demand
         - client
         - service
@@ -7575,6 +7591,9 @@ components:
         id:
           type: string
           format: uuid
+        created_at:
+          type: string
+          format: date-time
         demand:
           $ref: '#/components/schemas/OrganizationLeanCore'
         supply:
@@ -7592,6 +7611,7 @@ components:
           format: date-time
       required:
         - id
+        - created_at
         - demand
         - supply
         - client
