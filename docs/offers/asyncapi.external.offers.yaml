@@ -253,6 +253,10 @@ components:
           type: string
           format: uuid
           description: ID of the related sequence
+        message_created_at:
+          type: string
+          format: datetime
+          description: Timestamp of when the message was created
         file:
           type: object
           properties:
@@ -274,6 +278,7 @@ components:
         - sender
         - category
         - sequence_id
+        - message_created_at
     InboxMessageEventPayload:
       allOf:
         - $ref: '#/components/schemas/MessageEventPayloadCore'
