@@ -4363,6 +4363,9 @@ components:
     RiskCore:
       type: object
       properties:
+        id:
+          type: string
+          format: uuid
         name:
           type: string
         category:
@@ -4374,6 +4377,9 @@ components:
           type: integer
         start_date:
           # this might be unclear
+          type: string
+          format: date
+        end_date:
           type: string
           format: date
 
