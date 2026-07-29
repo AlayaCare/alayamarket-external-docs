@@ -4376,12 +4376,13 @@ components:
           # number ? allergy severity is a string ?
           type: integer
         start_date:
-          # this might be unclear
           type: string
           format: date
         end_date:
           type: string
           format: date
+        external_id:
+          type: string
 
     AllergyCore:
       type: object
