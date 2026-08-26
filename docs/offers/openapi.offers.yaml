@@ -4136,6 +4136,8 @@ components:
               id:
                 type: string
                 # format: uuid
+              external_id:
+                type: string
               first_name:
                 type: string
               last_name:
@@ -6248,6 +6250,8 @@ components:
                   id:
                     type: string
                     # format: uuid
+                  external_id:
+                    type: string
                   first_name:
                     type: string
                   last_name:
