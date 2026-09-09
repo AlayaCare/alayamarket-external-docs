@@ -1089,6 +1089,7 @@ paths:
         - $ref: '#/components/parameters/SequenceIdQueryParam'
         - $ref: '#/components/parameters/MessageSenderTypeQueryParam'
         - $ref: '#/components/parameters/MessageCategoryQueryParam'
+        - $ref: '#/components/parameters/MessageSubcategoryQueryParam'
         - $ref: '#/components/parameters/PageNumberParam'
         - $ref: '#/components/parameters/ItemsPerPageParam'
         - in: query
@@ -1484,6 +1485,7 @@ paths:
         - $ref: '#/components/parameters/SequenceIdQueryParam'
         - $ref: '#/components/parameters/MessageSenderTypeQueryParam'
         - $ref: '#/components/parameters/MessageCategoryQueryParam'
+        - $ref: '#/components/parameters/MessageSubcategoryQueryParam'
         - $ref: '#/components/parameters/PageNumberParam'
         - $ref: '#/components/parameters/ItemsPerPageParam'
         - in: query
@@ -1705,6 +1707,7 @@ paths:
         - $ref: '#/components/parameters/SequenceIdQueryParam'
         - $ref: '#/components/parameters/MessageSenderTypeQueryParam'
         - $ref: '#/components/parameters/MessageCategoryQueryParam'
+        - $ref: '#/components/parameters/MessageSubcategoryQueryParam'
         - $ref: '#/components/parameters/PageNumberParam'
         - $ref: '#/components/parameters/ItemsPerPageParam'
         - in: query
@@ -2770,6 +2773,11 @@ components:
       name: category
       schema:
         $ref: '#/components/schemas/MessageCategoryCore'
+    MessageSubcategoryQueryParam:
+      in: query
+      name: subcategory
+      schema:
+        $ref: '#/components/schemas/MessageSubcategoryCore'
 
   schemas:
     StatusHealthzResponse:
@@ -7176,6 +7184,12 @@ components:
         - client_attachment
         - comment
 
+    MessageSubcategoryCore:
+      type: string
+      enum:
+        - general
+      default: general
+
     MessageSenderTypeCore:
       type: string
       enum:
@@ -7189,6 +7203,8 @@ components:
           format: uuid
         category:
           $ref: '#/components/schemas/MessageCategoryCore'
+        subcategory:
+          $ref: '#/components/schemas/MessageSubcategoryCore'
         text:
           type: string
           maxLength: 2500
@@ -7228,6 +7244,8 @@ components:
               format: uuid
             category:
               $ref: '#/components/schemas/MessageCategoryCore'
+            subcategory:
+              $ref: '#/components/schemas/MessageSubcategoryCore'
             sender_type:
               $ref: '#/components/schemas/MessageSenderTypeCore'
             text:
@@ -7261,6 +7279,7 @@ components:
             - id
             - sequence_id
             - category
+            - subcategory
             - sender_type
             - created_at
         sender:
@@ -7311,6 +7330,8 @@ components:
           format: uuid
         category:
           $ref: '#/components/schemas/MessageCategoryCore'
+        subcategory:
+          $ref: '#/components/schemas/MessageSubcategoryCore'
         sender_type:
           $ref: '#/components/schemas/MessageSenderTypeCore'
         text:
@@ -7337,6 +7358,7 @@ components:
       required:
         - id
         - category
+        - subcategory
         - sender_type
         - created_at
 
@@ -7366,6 +7388,8 @@ components:
               format: uuid
             category:
               $ref: '#/components/schemas/MessageCategoryCore'
+            subcategory:
+              $ref: '#/components/schemas/MessageSubcategoryCore'
             sender_type:
               $ref: '#/components/schemas/MessageSenderTypeCore'
             text:
@@ -7400,6 +7424,7 @@ components:
             - id
             - sequence_id
             - category
+            - subcategory
             - sender_type
             - created_at
         sender:
