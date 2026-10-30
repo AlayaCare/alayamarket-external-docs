@@ -2778,6 +2778,9 @@ components:
       name: subcategory
       schema:
         $ref: '#/components/schemas/MessageSubcategoryCore'
+      description: |
+        Subcategory of the Messages to filter on.
+        Multiple values are supported (in an `OR` fashion).
 
   schemas:
     StatusHealthzResponse:
@@ -4181,7 +4184,6 @@ components:
                 type: string
               email:
                 type: string
-                format: email
               is_active:
                 type: boolean
                 default: true
@@ -4211,7 +4213,6 @@ components:
               minLength: 1
             email:
               type: string
-              format: email
             phone_number:
               description: Main phone number.
               type: string
@@ -6296,7 +6297,6 @@ components:
                     type: string
                   email:
                     type: string
-                    format: email
                   is_active:
                     type: boolean
                     default: true
@@ -6327,7 +6327,6 @@ components:
                   minLength: 1
                 email:
                   type: string
-                  format: email
                 phone_number:
                   description: Main phone number.
                   type: string
@@ -7188,6 +7187,8 @@ components:
       type: string
       enum:
         - general
+        - billing
+        - clinical
       default: general
 
     MessageSenderTypeCore:
